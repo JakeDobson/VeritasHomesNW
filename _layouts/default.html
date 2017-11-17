@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- multiple includes here for JS / CSS / Metadata / Google Analytics / etc -->
+	</head>
+	<body>
+		{% include header.html  %}
+		{% include content.html %}
+		{% include footer.html  %}
+
+			<!-- {% assign about = site.pages | where: 'title', 'About' | first %}
+			<p>{{about.content }}</p>
+			<hr />
+			{% assign pgTitle = page.title %}
+			<ul>
+				<li>{{pgTitle}}</li>
+				<li>{{site.title}}</li>
+				<li>{{site.time}}</li>
+				<li>{{site.pages[0]}}</li>
+				<li>{{site.twitter_username}}</li>
+			</ul>
+			<hr />
+			<ul>
+				{% for page in site.pages %}
+					{% unless page.title == null %}
+						<li>{{page.content}}</li>
+					{% endunless %}
+				{% endfor %}
+			</ul> -->
+
+	</body>
+</html>

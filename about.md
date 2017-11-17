@@ -1,18 +1,16 @@
 ---
 title: About
 permalink: "/about/"
-layout: page
+image: "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
+layout: default
 ---
 
-Hopefully won't even need to use another page for this website. So should only have index.md in root directory. I think, for now...
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec tincidunt ante, eget ullamcorper ligula. Donec nec velit et nulla eleifend varius sed sit amet arcu. Cras fringilla tincidunt vehicula. Aenean eget erat id arcu efficitur semper. Donec tempor lacus ac felis sagittis tempor eu vitae quam. Nullam feugiat est a ipsum varius maximus. Vestibulum faucibus mi tortor, non euismod metus imperdiet eget. Proin lacus augue, rutrum gravida blandit a, varius ut ligula. Nam augue leo, tempor nec neque a, sollicitudin blandit magna. Maecenas libero dui, luctus eu diam venenatis, porttitor fringilla risus. In hac habitasse platea dictumst. Sed tristique purus enim, vel malesuada tellus vehicula vel. Morbi arcu justo, porttitor eu ullamcorper ut, tristique non metus.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+In hac habitasse platea dictumst. Praesent sagittis nisi in tellus viverra bibendum. Phasellus a odio at diam aliquet posuere. Fusce sed mi turpis. Suspendisse lorem lorem, faucibus euismod felis nec, semper bibendum ipsum. Suspendisse nibh leo, bibendum id interdum eu, tincidunt vel ante. Vivamus id dui dapibus, efficitur nulla sit amet, mollis arcu. Donec vel sem vitae urna vehicula tristique nec a augue. Etiam sit amet ante quis purus pretium pretium eget sed urna. Pellentesque congue lacus ut semper faucibus. Sed vel leo ut lacus vestibulum euismod. Nullam eleifend mauris sed ligula iaculis rutrum. Nam lobortis nunc nec eros porttitor porta. Duis dignissim dolor lorem, eu placerat urna facilisis condimentum. Nulla vitae scelerisque diam, molestie ullamcorper eros.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+Nullam pellentesque eros vel elit dictum feugiat. Vestibulum fermentum a dui ut iaculis. Aliquam erat volutpat. Donec nec nunc in orci venenatis pulvinar. Donec enim lacus, ornare in risus id, imperdiet volutpat mauris. Ut molestie euismod leo vitae pretium. Quisque fringilla rhoncus tincidunt. Donec sit amet auctor tellus, eu aliquet dui. Duis sem tortor, lobortis vitae nulla in, semper porta lacus. Donec auctor accumsan turpis, ac hendrerit magna tincidunt et. Morbi sed augue ipsum. Aliquam dignissim ultrices ante vitae lobortis. Morbi orci libero, blandit eu porttitor ac, tempor sed lacus.
 
+Nam maximus iaculis erat eget convallis. Suspendisse sapien eros, vestibulum eu risus non, ultrices convallis leo. Suspendisse nisl arcu, laoreet et sodales id, sodales convallis nibh. Quisque malesuada nisi dolor, at tempor justo interdum vel. Cras sollicitudin molestie mollis. Mauris vitae suscipit sapien. Ut aliquam, leo non tristique tincidunt, lorem metus varius lorem, sed pretium nisl ante vitae arcu. Donec lacus risus, fringilla et nisl nec, tincidunt consequat mauris.
 
-[jekyll-organization]: https://github.com/jekyll
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris scelerisque dui vel diam semper rhoncus. Vivamus ultrices, sem at pretium vehicula, ante turpis fringilla ligula, accumsan cursus felis nulla nec tellus. Fusce non tristique nisi, accumsan mattis magna. Phasellus rutrum mi at tortor varius, nec ullamcorper lacus sagittis. Nulla faucibus felis a eleifend laoreet. Morbi et massa cursus, luctus enim vel, porttitor nisi. Mauris ut finibus velit. Integer mauris libero, convallis nec sodales in, pharetra eget orci. Pellentesque consectetur, erat finibus ullamcorper iaculis, nunc sapien varius nunc, eu convallis diam diam ac elit. Donec malesuada, dolor et viverra maximus, ex massa suscipit nisl, eu hendrerit leo augue et neque. Donec et diam non lectus facilisis eleifend. Ut porttitor augue risus, ac hendrerit nisl facilisis et.

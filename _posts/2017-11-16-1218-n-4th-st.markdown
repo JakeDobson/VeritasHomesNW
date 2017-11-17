@@ -1,9 +1,6 @@
 ---
-title: 1218 N 4th St, Tacoma, WA 98403
-date: 2017-11-16 19:43:00 Z
-categories:
-- jekyll
-- update
+title: 1218 N 4th St
+date: 2017-11-16 11:43:00 -08:00
 tags:
 - '1218'
 id: 1218
@@ -16,14 +13,13 @@ images:
   after:
     image: "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
 links:
-  blog: http://medium.com/@veritashomes
   map: http://goo.gl/maps/zJAauVQM2HM2
   listing: http://redfin.com
 dates:
   start:
-    date: 2017-07-10 00:00:00 Z
+    date: 2017-07-09 17:00:00 -07:00
   end:
-    date: 2017-09-08 00:00:00 Z
+    date: 2017-09-07 17:00:00 -07:00
 details:
   size: 1350 square feet
   bed: 3 bedroom
@@ -32,4 +28,3 @@ details:
 layout: post
 ---
 
-All new flooring, cabinets, quartz counters, stainless steel appliances, windows, doors, trim, int/ext paint, updated electrical and plumbing.
