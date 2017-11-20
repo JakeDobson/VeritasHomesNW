@@ -1,0 +1,33 @@
+---
+title: 7412 South G St
+date: 2017-11-20 14:27:00 -08:00
+id: 7412
+images:
+- "/uploads/image_preview-bd73b6.jpeg"
+- "/uploads/Front-fed26b.jpeg"
+- "/uploads/Kitchen%202-003276.jpg"
+- "/uploads/Demo'd%20Kitchen-ec2d07.jpg"
+- "/uploads/Back-a235b4.jpg"
+- "/uploads/Back-2-218223.JPG"
+address:
+  street: 7412 South G St
+  locale: Tacoma, WA 98408
+links:
+  blog: http://medium.com/@veritashomes
+  map: https://goo.gl/maps/zJAauVQM2HM2
+  listing: http://redfin.com
+dates:
+  start:
+    date: 2017-07-09 17:00:00 -07:00
+  end:
+    date: 2017-09-07 17:00:00 -07:00
+details:
+  size: 1350 Square Feet
+  bed: 3 Bedroom
+  bath: 1 Bathroom
+  feature: Detached 2 Car Garage
+---
+
+Brought back to life with all new flooring, cabinets, quartz counters, stainless steel appliances, windows, doors, trim, int/ext paint, updated electrical and plumbing, this home is an example of the mission of Veritas. We use quality materials and craftsmanship to provide an excellent home for the community that will stand for many decades to come.
+
+Veritas is a local family owned company who purchases homes ‘as-is’ with cash and seeks to provide a hassle-free experience and act with integrity in an industry where that is often lacking. 
