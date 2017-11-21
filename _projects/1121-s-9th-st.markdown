@@ -1,0 +1,30 @@
+---
+title: 1121 S 9th St
+date: 2017-11-21 11:29:00 -08:00
+identifier: 1121
+images:
+- "/uploads/skullyIcon_messages_iPad_67x50@2x.png"
+- "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
+- "/uploads/RedTomos.jpg"
+address:
+  street: 1121 S 9th St
+  locale: Tacoma, WA 98405
+links:
+  blog: medium.com/@veritashomes
+  map: https://goo.gl/maps/VwNKip15S9T2
+  listing: redfin.com
+dates:
+  start:
+    date: 2017-11-21 17:00:00 -08:00
+  end:
+    date: 2017-11-21 17:00:00 -08:00
+details:
+  size: 1350 Square Feet
+  bed: 3 Bedroom
+  bath: 2 Bathroom
+  feature: Detached Garage/Shed
+---
+
+Awesome description of this terrific home.
+
+Probably should add another paragraph, because this home is so terrific!

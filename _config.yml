@@ -17,7 +17,7 @@ url: http://veritashomesnw.siteleaf.net
 headerTitle:
   topText: VERITAS
   bottomText: TRUTH TO HOME SOLUTIONS
-logoText: Logo
+logo: "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
 links:
   blog: Blog
   projects: Projects
