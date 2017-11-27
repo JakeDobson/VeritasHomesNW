@@ -6,7 +6,7 @@ images:
 - "/uploads/placeholderMountains.png"
 - "/uploads/placeholder.jpg"
 - "/uploads/ErlichSmokedTheWeed.jpg"
-- "/uploads/CD.png"
+- "/uploads/SkullyLogo.png"
 address:
   street: 1218 N 4th St
   locale: Tacoma, WA 98405
