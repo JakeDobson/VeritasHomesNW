@@ -1,34 +1,28 @@
 ---
 title: 1218 N 4th St
-date: 2017-11-21 13:22:00 -08:00
+date: 2017-11-27 11:45:00 -08:00
 identifier: 1218
 images:
-- "/uploads/placeholderMountains.png"
-- "/uploads/placeholder.jpg"
-- "/uploads/ErlichSmokedTheWeed.jpg"
-- "/uploads/SkullyLogo.png"
+- image: "/uploads/CD.png"
+  alt: 
+- image: 
+  alt: no image here
+- image: "/uploads/placeholderMountains.png"
+  alt: mountains
 address:
   street: 1218 N 4th St
-  locale: Tacoma, WA 98405
+  locale: Tacoma, WA 98403
 links:
-  blog: medium.com/@veritashomes
-  map: https://goo.gl/maps/VwNKip15S9T2
-  listing: redfin.com
-dates:
-  start:
-    date: 2011-08-23 18:00:00 -07:00
-  end:
-    date: 2017-11-21 17:00:00 -08:00
+  blog: medium.com/@JordanRobertDobson
+  map: https://goo.gl/maps/Z7SyFQTtziF2
 details:
-  size: 2000 Square Feet
+  size: 2500 Square Feet
   bed: 3 Bedroom
   bath: 4 Bathroom
-  feature:
-  - 3-story house
-  - detached garage
-  - wood floors
+dates:
+  start:
+    date: 2017-11-27 00:00:00 -08:00
+  end:
+    date: 2017-11-30 00:00:00 -08:00
 ---
 
-Another awesome description of Jordan's house.
-
-Of course, let's add another paragraph for sanity's sake.

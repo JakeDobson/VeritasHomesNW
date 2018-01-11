@@ -7,8 +7,8 @@
 	{{project.details.size}}<BR>{{project.details.bed}}<BR>{{project.details.bath}}<BR>{{project.details.feature}}<P>
 	start date -- {{project.dates.start.date}}<BR>
 	end date -- {{project.dates.end.date}}<P>
-	{% for image in project.images %}
-		<img src="{{image}}" width="450" height="300"/>
-	{% endfor %}
+	{% for img in project.images %}
+		<img src="{{img.image}}" width="450" height="300" alt="{{img.image.alt}}"/>
+	{% endfor %}<P>
 {% endfor %}
 <hr/>

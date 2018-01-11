@@ -11,6 +11,33 @@ collections:
   uploads:
     title: Uploads
     output: true
+defaults:
+- scope:
+    path: ''
+    type: projects
+  values:
+    layout: default
+    identifier: 
+    images:
+    - image: 
+      alt: 
+    address:
+      street: 
+      locale: 
+    links:
+      blog: 
+      map: 
+      listing: 
+    details:
+      size: 
+      bed: 
+      bath: 
+      feature: 
+    dates:
+      start:
+        date: 
+      end:
+        date: 
 description: VeritasHomesNW description goes here.
 baseurl: 
 url: http://veritashomesnw.siteleaf.net

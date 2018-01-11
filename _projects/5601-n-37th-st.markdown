@@ -1,0 +1,29 @@
+---
+title: 5601 N 37th St
+date: 2017-11-27 11:16:00 -08:00
+identifier: 5601
+images:
+- image: "/uploads/ErlichSmokedTheWeed.jpg"
+  alt: alt text example
+- image: "/uploads/SkullyLogo.png"
+- image: "/uploads/RedTomos.jpg"
+address:
+  street: 5601 N 37th St
+  locale: Tacoma, WA 98407
+links:
+  blog: http://medium.com/@JakeDobson
+  map: https://goo.gl/maps/Z7SyFQTtziF2
+  listing: redfin.com
+details:
+  size: 1200 Square Feet
+  bed: 2 Bedroom
+  bath: 1 Bathroom
+  feature: Fireplace, Balcony, Quartz Countertops, Free Rent!
+dates:
+  start:
+    date: 2016-02-12 17:00:00 -08:00
+  end:
+    date: 2017-02-28 17:00:00 -08:00
+---
+
+Jake's place
