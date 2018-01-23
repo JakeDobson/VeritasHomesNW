@@ -3,8 +3,10 @@
 	{{project.identifier}}<P>
 	<h1>{{project.address.street}}, {{project.address.locale}}</h1>
 	<h4>{{project.links.blog}}<BR>{{project.links.map}}<BR>{{project.links.listing}}</h4>
-	{{project.content}}<P>
-	{{project.details.size}}<BR>{{project.details.bed}}<BR>{{project.details.bath}}<BR>{{project.details.feature}}<P>
+	{{project.content}}
+	<P>
+	{{project.details.size}}<BR>{{project.details.bed}}<BR>{{project.details.bath}}<BR>{{project.details.feature}}
+	<P>
 	start date -- {{project.dates.start.date}}<BR>
 	end date -- {{project.dates.end.date}}<P>
 	{% for img in project.images %}
