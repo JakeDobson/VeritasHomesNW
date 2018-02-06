@@ -1,31 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8' />
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
-	<link rel='stylesheet' type='text/css' href='default.css'/>
-	<script type='text/javascript' src='default.js'></script>
-</head>
-<body>
-	<script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw';
-	</script>
-	<div id='overlay'></div>
-	<div id='map'>
-		<script>
-			var map = new mapboxgl.Map({
-				container:			'map',
-				zoom:				10,
-				center: 			[-122.089348, 47.450844],
-				style:				'mapbox://styles/mapbox/satellite-v9?optimize=true',
-				interactive: 		true,
-				attributionControl: true,
-				id: 'mapID'
-			});
+	<head>
+	    <meta charset='utf-8'/>
+	    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+		 <link
+		 	href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css'
+			rel='stylesheet'/>
+		<link rel='stylesheet' type='text/css' href='default.css'/>
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
+		<script type='text/javascript' src='default.js'></script>
+	</head>
+	<body>
+		<div id='map'>
+			<div id='overlay'></div>
+		</div>
+		<script async>
+			document.addEventListener('DOMContentLoaded', loadMap());
 		</script>
-	</div>
-</body>
+	</body>
 </html>
 
 
