@@ -13,7 +13,6 @@ function loadMap () {
 		interactive: 		true,
 		attributionControl: false,
 	});
-	document.getElementById('overlay').style.backgroundColor = "rgba(0,0,0,0.8)";
 	map.flyTo({
 		center: [-122.472398, 47.250291],
 		zoom: 15 ,
@@ -22,6 +21,7 @@ function loadMap () {
 		offset: [offsetX, 0],
 		pitch: 25
 	});
+	document.getElementById('overlay').style.backgroundColor = "rgba(0,0,0,0.8)";
 }
 
 
