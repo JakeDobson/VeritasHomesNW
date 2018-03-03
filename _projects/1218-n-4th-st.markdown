@@ -1,0 +1,28 @@
+---
+title: 1218 N 4th St
+date: 2017-11-27 11:45:00 -08:00
+identifier: 1218
+images:
+- image: "/uploads/CD.png"
+  alt: 
+- image: 
+  alt: no image here
+- image: "/uploads/placeholderMountains.png"
+  alt: mountains
+address:
+  street: 1218 N 4th St
+  locale: Tacoma, WA 98403
+links:
+  blog: medium.com/@JordanRobertDobson
+  map: https://goo.gl/maps/Z7SyFQTtziF2
+details:
+  size: 2500 Square Feet
+  bed: 3 Bedroom
+  bath: 4 Bathroom
+dates:
+  start:
+    date: 2017-11-27 00:00:00 -08:00
+  end:
+    date: 2017-11-30 00:00:00 -08:00
+---
+

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset='utf-8'/>
+	    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+		 <link
+		 	href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css'
+			rel='stylesheet'/>
+		<link rel='stylesheet' type='text/css' href='default.css'/>
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
+		<script type='text/javascript' src='default.js'></script>
+	</head>
+	<body>
+		<div id='map'>
+			<div id='overlay'></div>
+		</div>
+		<script async>
+			document.addEventListener('DOMContentLoaded', loadMap());
+		</script>
+	</body>
+</html>
+
+
+
+
+<!--
+
+### Other ###
+<div id="mapTransitionCover" class="">&nbsp;</div>
+<div id="contentPanel"></div>
+<div id="marker"></div>
+
+
+function slideshow(index) {
+// How do we fly out?
+map.flyTo(locations[index].camera);
+mapCanvas.classList.add('zoomed-in');
+map.once('moveend', function() {
+	mapTransitionCover.classList.remove("visible");
+  // locations[index].camera.zoom = 18;
+  // map.flyTo(locations[index].camera);
+
+
+  // map.once('moveend', function() {
+  //
+  //   // mapTransitionCover.classList.remove("visible");
+  // });
+});
+
+	// map.once('moveend', function() {
+	// 	window.setTimeout(function() {
+	// 		index = (index + 1 === locations.length) ? 0 : index + 1;
+	// 		slideshow(index);
+	// 	}, 3000 );
+	// });
+}
+
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+var mapTransitionCover = document.getElementById('mapTransitionCover');
+var mapWrapper = document.getElementById('map');
+var mapCanvas = null;
+
+function switchLayer(layer) {
+	var layerId = layer.target.id;
+	map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+}
+
+for (var i = 0; i < inputs.length; i++) {
+	inputs[i].onclick = switchLayer;
+}
+
+map.on('load', function () {
+	// map.addLayer({
+	//     'id': 'washington',
+	//     'type': 'fill',
+	//     'source': {
+	//         'type': 'geojson',
+	//         'data': {
+	//             'type': 'Feature',
+	//             'geometry': {
+	//                 'type': 'Polygon',
+	//                 'coordinates': [[[-124.63522560000001, 47.90813350000001],
+	//                     [-117.42604649999998, 47.6587802],
+	//                     [-118.34302079999998, 46.0645809],
+	//                     [-123.83125339999998, 46.1878841]]]
+	//             }
+	//         }
+	//     },
+	//     'layout': {},
+	//     'paint': {
+	//         'fill-color': '#000',
+	//         'fill-opacity': 0.8
+	//     }
+	// });
+	//moveToLocation(0);
+});
+
+function moveToLocation(index, marker) {
+slideshow(index);
+mapTransitionCover.classList.add("visible");
+}
+
+//add markers to map
+geojson.features.forEach(function(marker, index) {
+//window.alert(index);
+	//create dom element for the marker
+	var el = document.createElement('div');
+	el.className = 'marker';
+	el.style.backgroundImage = 'url(https://www.udot.utah.gov/i/udot/ugate/sld/home.png';
+	el.style.width  = marker.properties.iconSize[0] + 'px';
+	el.style.height = marker.properties.iconSize[1]+ 'px';
+
+	el.addEventListener('click', function() {
+		console.log(marker.properties.message);
+  console.log(marker.properties.description);
+  moveToLocation(index, marker);
+	});
+
+	//add marker to map
+	new mapboxgl.Marker(el)
+		.setLngLat(marker.geometry.coordinates)
+		.addTo(map);
+});
+
+mapCanvas = mapWrapper.getElementsByTagName("canvas")[0];
+
+
+### geojson ###
+var geojson = {
+"type": "FeatureCollection",
+"features": [
+	{
+		"type": "Feature",
+		"properties": {
+			"message": "3UILT",
+			"description": "Cat",
+			"iconSize": [20, 20]
+	},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.438872, 47.241754]
+		}
+	},
+	{
+		"type": "Feature",
+		"properties": {
+			"message": "Jordan/Liz home",
+			"description": "Foo",
+			"iconSize": [20, 20]
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.45658679999997, 47.2598111]
+		}
+	},
+	{
+		"type": "Feature",
+		"properties": {
+			"message": "Jake home",
+			"description": "Bar",
+			"iconSize": [20, 20]
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.51341609999997, 47.2827543]
+		}
+	}
+]};
+
+var locations = [{
+	"id": "2",
+	"title": "3UILT",
+	"camera": {
+		center: [-122.438872, 47.241754],
+		zoom: 17,
+		pitch: 50
+	}
+}, {
+	"id": "3",
+	"title": "Jordan/Liz Home",
+	"camera": {
+		center: [-122.45658679999997, 47.2598111],
+		zoom: 17,
+		pitch: 50
+	}
+}, {
+	"id": "1",
+	"title": "Jake Home",
+	"camera": {
+		center: [-122.51341609999997, 47.2827543],
+		zoom: 17,
+		pitch: 50
+	}
+}];
+
+
+### Styling ###
+<style>
+	#marker {
+		display: block;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+	}
+
+  .mapboxgl-canvas {
+    /* Zoomed Out */
+    filter: grayscale(100) contrast(1) brightness(1);
+    /*transition: .75s filter ease;*/
+
+  }
+
+  .mapboxgl-canvas.zoomed-in{
+    /* Zoomed In */
+    filter: grayscale(100) contrast(10) brightness(.125);
+    transition: .25s filter ease;
+  }
+
+  #mapTransitionCover.hidden{
+	display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: .75s opacity ease;
+  }
+
+#mapTransitionCover.hidden{
+	opacity: .75;
+	pointer-events: all;
+}
+
+#contentPanel{
+	position: absolute;
+	top: 	0;
+	bottom: 0;
+	left: 	500px;
+	right: 	0;
+	background-color: rgba(0,0,0,.5);
+	-webkit-backdrop-filter: blur(20px);
+	/* Turn off */
+	display: none;
+}
+</style>
+
+-->

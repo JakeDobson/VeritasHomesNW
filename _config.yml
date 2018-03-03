@@ -1,0 +1,60 @@
+---
+title: VeritasHomesNW
+timezone: America/Los_Angeles
+collections:
+  posts:
+    title: Posts
+    output: true
+  projects:
+    title: Projects
+    output: false
+  uploads:
+    title: Uploads
+    output: false
+defaults:
+- scope:
+    path: ''
+    type: projects
+  values:
+    layout: default
+    identifier: 
+    images:
+    - image: 
+      alt: 
+    address:
+      street: 
+      locale: 
+    links:
+      blog: 
+      map: 
+      listing: 
+    details:
+      size: 
+      bed: 
+      bath: 
+      feature: 
+    dates:
+      start:
+        date: 
+      end:
+        date: 
+description: VeritasHomesNW description goes here.
+baseurl: 
+url: http://veritashomesnw.siteleaf.net
+headerTitle:
+  topText: VERITAS
+  bottomText: TRUTH TO HOME SOLUTIONS
+logo: "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
+links:
+  blog: Blog
+  projects: Projects
+  aboutUs: About Us
+  fb: Facebook
+markdown: kramdown
+theme: minima
+plugins:
+- jekyll-feed
+footer:
+  phone: "(206) 883-5212"
+  email: Neil@VeritasHomesNW.com
+  office: 2701 California Ave SW, Seattle, WA 98116

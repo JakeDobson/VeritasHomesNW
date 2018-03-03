@@ -1,0 +1,20 @@
+<main>
+	<!-- Content Goes Here -->
+	{% assign content = site.pages | where: 'title', 'Home' | first %}
+	{% assign contentHero = content.hero %}
+	{{contentHero.title}}<BR>
+	{{contentHero.subtitle}}<BR>
+	{{contentHero.button}}
+	<hr />
+</main>
+
+
+<!--
+{% for contentPg in site.pages %}
+	{% if contentPg.title == 'Home' %}
+		{{contentPg.hero.title}}<br>
+		{{contentPg.hero.subtitle}}<br>
+		{{contentPg.hero.button}}
+	{% endif %}
+{% endfor %}
+-->

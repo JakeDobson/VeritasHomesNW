@@ -1,0 +1,17 @@
+---
+title: 1121 S 9th St
+date: 2017-11-27 12:06:00 -08:00
+identifier: 1121
+address:
+  street: 1121 S 9th St
+links:
+  listing: redfin.com
+details:
+  bed: 3 Bedroom
+  bath: 2 Bathroom
+  feature: Basement
+---
+
+Jordan's Rental Place.
+
+Straight across from People's Park!
