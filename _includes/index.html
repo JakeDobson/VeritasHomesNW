@@ -8,7 +8,7 @@
 		<script src='https://unpkg.com/mapbox@1.0.0-beta10/dist/mapbox-sdk.min.js'></script>
 
 		<!-- <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css" rel="stylesheet" />		 -->
-		
+
 		<style type="text/css">
 			/******************************************************************************/
 			/*															Variables																			*/
@@ -35,7 +35,7 @@
 			@media (min-width: 35em) { :root {--bp: 'medium'} }
 			@media (min-width: 100em){ :root {--bp: 'large' } }
 			@media (min-width: 120em){ :root {--bp: 'huge'  } }
-			
+
 
 
 			body::after {
@@ -44,7 +44,7 @@
 			}
 
 			html { font-size: 62.5%; }
-			
+
 			body, main, #coverSite {
 				min-width:  100vw;
 				min-height: 100vh;
@@ -192,7 +192,7 @@
 			}
 
       #logo > * { fill: currentColor; }
-      
+
 			/******************************************************************************/
 			/*														Debug Stuff																			*/
       /******************************************************************************/
@@ -317,7 +317,7 @@
 					});
 				},
 			}
-			
+
 			$.LOADING = {
 				exitLoadingState: () => {
 					// Get the opacity of the logo
@@ -327,7 +327,7 @@
 					// Logo is greater than 95% so remove loading animation & set loadingComplete state.
 					$.STATES.loadingComplete();
 				},
-				
+
 				logoTransitionToTop: () => {
 					$.logo.classList.remove("loading");
 					$.logo.classList.add("top");
@@ -342,14 +342,14 @@
 					$.COVER.hide();
 				}
 			}
-			
+
 			$.COVER = {
 				show: () => { $.cover.classList.remove( "hidden" ); },
 				hide: () => { $.cover.classList.add(    "hidden" ); }
 			}
 
 			$.RESIZE = {
-				
+
 				getScreenSize: () => {
 					$.screen = $.body.getBoundingClientRect();
 				},
@@ -375,7 +375,7 @@
 						});
 					}
 					$.RESIZE.getScreenSize();
-					if ($.DEV.enabled) $.DEV.updatePanelSize(); 
+					if ($.DEV.enabled) $.DEV.updatePanelSize();
 					return null;
 				}
 			}
@@ -395,7 +395,7 @@
 
 					// YO JAKE! Add this - It's in Framer
 					//$.MAPBOX.toggleOfficeMarker((location === $.MAPBOX.locations.office) ? 'on' : 'off');
-					
+
 					return null;
 				},
 
@@ -417,7 +417,7 @@
 				map:      		 null,
 				markers:			 {
 					office:     null,
-					locations: [] 
+					locations: []
 				},
 				locations: 		 {
 					current: null,
@@ -444,7 +444,7 @@
 					id: "cj8m9b6630wdy33rtnol47ydv",
 					accessToken: "sk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajhtYWkxaW4wd25kMndwZmc0ZG01b29lIn0.NPn9doCB7aiJpctcxiNiUA"
 				},
-				
+
 				datasetCallback: (error, dataset) => {
 					$.MAPBOX.dataset = dataset;
 					$.MAPBOX.createMapAndEvent();
@@ -596,7 +596,7 @@
 					m.style.cursor             = "pointer";
 					m.style.boxShadow					 = "0 0 1px 1px rgba(255,255,255,.15), 0 0 0px 1px rgba(255,255,255,.10), inset 0 0 8px 1px rgba(000,000,000,1.0)";
 
-					if (isOffice) { 
+					if (isOffice) {
 						m.style.visibility = "hidden";
 						$.MAPBOX.markers.office = m;
 					} else {
@@ -646,14 +646,14 @@
 				$.SETUP.getElements();
 				$.RESIZE.handleResize();
 				$.SETUP.getMapBoxObjects();
-				
+
 			});
 			window.addEventListener("load", (event) => {
 				console.log("All resources finished loading!");
 				/* TO DO --> load the MAP
 				*/
 			});
-		
+
 		</script>
   </head>
   <body>
@@ -667,7 +667,7 @@
     <main>
       <svg id="veritasLogo" class="logo light loading centered" viewBox="0 0 32 32"><use xlink:href="#logo"></use></svg>
 			<div id="coverSite"></div>
-			<div id="map"></div> 
+			<div id="map"></div>
 			<!-- .getElements to grab map-->
     </main>
     <svg id="logo" viewBox="0 0 56 60">
