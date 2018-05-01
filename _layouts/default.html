@@ -1,26 +1,13 @@
-
-{% include index.html %}
-
-<!-- {% assign about = site.pages | where: 'title', 'About' | first %}
-<p>{{about.content }}</p>
-<hr />
-{% assign pgTitle = page.title %}
-<ul>
-	<li>{{pgTitle}}</li>
-	<li>{{site.title}}</li>
-	<li>{{site.time}}</li>
-	<li>{{site.pages[0]}}</li>
-	<li>{{site.twitter_username}}</li>
-</ul>
-<hr />
-<ul>
-	{% for page in site.pages %}
-		{% unless page.title == null %}
-			<li>{{page.content}}</li>
-		{% endunless %}
-	{% endfor %}
-</ul>
-
-
-
--->
+<!DOCTYPE html>
+<html lang="en_US">
+  <head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, width=device-width" />
+        {% include externalScripts.html %}
+        {% include internalStyles.html  %}
+        {% include internalScripts.html %}
+    </head>
+    <body>
+        {% include _index.html %}
+    </body>
+</html>
