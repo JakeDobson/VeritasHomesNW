@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en_US">
+<html lang="en_US" class ="no-js">
   <head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -11,3 +11,42 @@
         {% include _index.html %}
     </body>
 </html>
+
+
+<!--
+
+*********************************************************************************
+|    																		    |
+|                                   TODO									    |
+|   																		    |
+*********************************************************************************
+
+ - Screen Sizes Obj
+		- portrait or landscape?
+			->>> added $.ratio and printing out orientation and aspect ratio when screen size changes
+	- marker for office
+	- hide other markers when zoomed into a property
+	- edge gradients
+
+*** mobile Safari ***
+		- no aside shown until device rotated
+		- markers can be off screen, but should not be
+		- markers also don't offset right, dont think want offset for small/tiny screen?
+		- upside down(orientation (-)180 degrees is not looking good...
+
+-->
+
+
+<!--
+
+************************Size Bucket********************************************
+	
+->    DEVICE     =  WIDE, TALL  =>  ASIDE	=> RATIO  => OFFSET?
+
+-> 6+ portrait   =  375w, 667h  => TINY	    =>  .56   => NO
+-> 6+ landscape  =  667w, 375h  => MEDIUM   => 1.77   => YES
+-> 5  portrait   =  320w, 529h  => TINY	    =>  .69   => NO
+-> 5  landscape  =  568w, 320h  => MEDIUM   => 1.77   => YES
+-> ?? 
+
+-->

@@ -1,6 +1,6 @@
 <style type="text/css">
 /******************************************************************************/
-/*  Variables																  */
+/*                              Variables									  */
 /******************************************************************************/
     :root {
         --white: #ffffff;
@@ -78,12 +78,13 @@
     }
 
     .zoomed-out #map .mapboxgl-canvas,
-                #map .mapboxgl-canvas{ filter: grayscale(100) contrast(1) brightness(.66); }
-    .zoomed-in  #map .mapboxgl-canvas{ filter: grayscale(100) contrast(1) brightness(1); }
+                #map .mapboxgl-canvas{  -webkit-filter: grayscale(1) contrast(1) brightness(.66);
+                                                filter: grayscale(1) contrast(1) brightness(.66); }
+    /* .zoomed-in  #map .mapboxgl-canvas{ filter: grayscale(100) contrast(1) brightness(1); } */
 
 
     /******************************************************************************/
-        /*													Logo States & Settings 														*/
+    /*							Logo States & Settings                            */
     /******************************************************************************/
 
     .logo {
@@ -170,8 +171,9 @@
         animation-iteration-count: 1;
         animation-delay: 0s;
     }
-        /******************************************************************************/
-        /* Asset Logo SVG  for reuse - We hide this assest & use the <use xlink:href="#logo"> instead on the page */
+    /******************************************************************************/
+    /*                         Asset Logo SVG  for reuse                          */
+    /* We hide this assest & use the <use xlink:href="#logo"> instead on the page */
     /******************************************************************************/
     #logo {
             width:  var(--sizeNone);
@@ -182,7 +184,7 @@
     #logo > * { fill: currentColor; }
 
     /******************************************************************************/
-    /*														Debug Stuff																			*/
+    /*								Debug Stuff									  */
     /******************************************************************************/
 
     #grid {
