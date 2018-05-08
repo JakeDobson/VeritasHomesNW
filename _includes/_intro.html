@@ -18,10 +18,11 @@
         transform: translate(0, 64px);
         opacity: -1;
         transition: all .5s ease .1s;
+        z-index: 1000;
     }
 
     #intro.animateIn {
-        transform: translate(0, 0px);
+        transform: translate(0, 0);
         opacity: 1;
     }
 
@@ -80,14 +81,12 @@
 
     #intro a:hover {
         -webkit-filter: grayscale(1) brightness(1);
-                filter: grayscale(1) brightness(1); }
+                filter: grayscale(1) brightness(1);
     }
 
     #intro a:active {
-        -webkit-filter: grayscale(0) brightness(0);
-                filter: grayscale(0) brightness(0);
-                opacity: .5;
-        }
+        -webkit-filter: grayscale(0) brightness(.66);
+                filter: grayscale(0) brightness(.66);
     }
 
 </style>

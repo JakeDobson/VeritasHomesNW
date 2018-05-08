@@ -6,11 +6,9 @@
         win:    null,
         logo:   null,
         cover:  null,
-        screen: null,
         ratio:  null,
         map:    null,
         intro:  null,
-        map:    null,
 
         breakpoints: {
             tiny:   "tiny",
@@ -31,6 +29,15 @@
         MAPBOX:  {},
         DEV: 	 {},
         UI:      {},
+
+        SCREEN:  {
+            size:        null,
+            orientation: null,
+            ratio:       null,
+        },
+
+        PORTRAIT:  "portrait",
+        LANDSCAPE: "landscape",
     };
 
     //set default size
@@ -56,7 +63,6 @@
         mapClickHandler: function () {
             if (!$.map) $.map = document.querySelector(".mapboxgl-canvas-container");
             $.map.addEventListener('click', (event) => {
-                $.MAPBOX.clearActiveMarkers();
                 $.ZOOM.initial();
             });
         },
@@ -134,20 +140,11 @@
     $.RESIZE = {
 
         getScreenSize: function () {
-            // Get screen size
-            $.screen = $.body.getBoundingClientRect();
-            // TODO: Need to get if landscape or portrait to determine how to calculate ratio.
+            $.SCREEN.size = $.body.getBoundingClientRect();
+        },
 
-            // TODO: Don't do Ratio work in here... Move this out.
-            // Calculate current ratio
-            // $.ratio  = $.screen.width / $.screen.height;
-            //
-            // if ($.ratio > 1) {
-            //     console.log("orientation: LANDSCAPE => " + $.ratio);
-            //     //TODO: enter a func that handles the layout based on orientation
-            // } else {
-            //     console.log("orientation: PORTRAIT => " + $.ratio);
-            // };
+        getScreenOrientation: function() {
+            $.SCREEN.orientation = ($.SCREEN.size.width >= $.SCREEN.size.height) ? $.LANDSCAPE : $.PORTRAIT;
         },
 
         //func to read/set CSS breakpoint ** may need to throttle this **
@@ -171,6 +168,8 @@
                 });
             }
             $.RESIZE.getScreenSize();
+            $.RESIZE.getScreenOrientation();
+            console.log("Orientation: " + $.SCREEN.orientation);
             if ($.DEV.enabled) $.DEV.updatePanelSize();
             return null;
         }
@@ -178,14 +177,17 @@
 
     $.ZOOM = {
         to: function (location) {
-            // Easy Out if we don't have what we need
+            // Easy Outs -> if we don't have what we need
             if( !location                               ) return;
             if( !$.MAPBOX.map                           ) return;
             if( location === $.MAPBOX.locations.current ) return;
+
             // Update the current location
             $.MAPBOX.locations.current = location;
+
             // Tell map to fly to location
             if($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
+
             // Tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -193,6 +195,7 @@
         },
 
         initial: function () {
+            $.MAPBOX.clearActiveMarkers();
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
@@ -203,15 +206,15 @@
     };
 
     $.MAPBOX = {
-        client:   		 null,
-        tiles:    		 null,
-        dataset:  		 null,
-        map:      		 null,
-        markers:	     {
+        client:   	   null,
+        tiles:    	   null,
+        dataset:  	   null,
+        map:      	   null,
+        markers:       {
             office:    null,
             locations: []
         },
-        locations: 		 {
+        locations:     {
             current: null,
             office:  {},
             initial: {},
@@ -222,18 +225,18 @@
         locationZoom:  13.5,
         locationPitch: 50,
         coordsOffice:  [-122.386888, 47.5791677],
-        animation: {
+        animation:     {
             speed: 2
         },
-        offset: {
+        offset:        {
             // TODO: Need to make these responsive to the window type
             y: () => 40,
-            x: () => ($.screen.width - 32) / 4
+            x: () => ($.SCREEN.size.width - 32) / 4
         },
-        api: {
+        api:           {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
         },
-        dataset: {
+        dataset:       {
             id: "cj9oy3jrk2uks2wpge13y8nl4",
             accessToken: "sk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajhtYWkxaW4wd25kMndwZmc0ZG01b29lIn0.NPn9doCB7aiJpctcxiNiUA"
         },
@@ -438,8 +441,8 @@
                 // createPanel by adding the aside via script
             }
 
-            if (!$.screen.width && !$.screen.height) $.RESIZE.getScreenSize();
-            panel.innerHTML = "<strong>" + $.size + "</strong> " + $.screen.width + "&times;" + $.screen.height;
+            if (!$.SCREEN.size.width && !$.SCREEN.size.height) $.RESIZE.getScreenSize();
+            panel.innerHTML = "<strong>" + $.size + "</strong> " + $.SCREEN.size.width + "&times;" + $.SCREEN.size.height;
         }
     }
 
@@ -459,20 +462,22 @@
         $.SETUP.getMapBoxObjects();
     });
 
-    //listen for orientation changes => portrait v landscape
-    window.addEventListener("orientationchange", function (event) {
-        $.RESIZE.getScreenSize();
+    // //listen for orientation changes => portrait v landscape
+    // window.addEventListener("orientationchange", function () {
+    //     alert("orientationchange");
+    //     $.RESIZE.getScreenSize();
+    //
+    //     // TODO: Add these functions
+    //     // $.RESIZE.getScreenOrientation();
+    //     // $.RESIZE.getScreenRatio();
+    //
+    //     // TODO: Do this work in a function instead
+    //     // if ($.screen.width / $.screen.height < 1) {
+    //     //     alert("NO OFFSET --> ASPECT RATIO: " + $.screen.width/$.screen.height + " < 1");
+    //     // } else {
+    //     //     return null;
+    //     // };
+    // }, false);
 
-        // TODO: Add these functions
-        // $.RESIZE.getScreenOrientation();
-        // $.RESIZE.getScreenRatio();
-
-        // TODO: Do this work in a function instead
-        // if ($.screen.width / $.screen.height < 1) {
-        //     alert("NO OFFSET --> ASPECT RATIO: " + $.screen.width/$.screen.height + " < 1");
-        // } else {
-        //     return null;
-        // };
-    }, false);
 
 </script>

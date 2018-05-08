@@ -35,7 +35,8 @@
 
     body,
     main,
-    #coverSite {
+    #coverSite,
+    #gradients {
         min-width:  100vw;
         min-height: 100vh;
         max-width:  100vw;
@@ -51,7 +52,7 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         max-height: 100vh;
         max-width: 100vw;
-        /* overflow: hidden; */
+        overflow: hidden;
     }
 
     main {
@@ -66,7 +67,7 @@
         opacity: 1;
         background: var(--black);
         z-index: 999;
-        transition: opacity 2s ease-in;
+        transition: opacity 2s ease-in 1s;
         visibility: visible;
     }
 
@@ -74,6 +75,38 @@
         opacity: 0;
         pointer-events: none;
     }
+
+    /* Gradients */
+
+    #gradients,
+    #gradients #gradientLeft,
+    #gradients #gradientRight {
+        position: absolute;
+        top:    0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    #gradients {
+        background: transparent;
+        left:  0;
+        right: 0;
+        z-index: 998;
+    }
+
+    #gradients #gradientLeft{
+        background-image: linear-gradient(112.5deg, rgba(0,0,0,.9), rgba(0,0,0,0) 50%, rgba(0,0,0,0));
+        left:     0;
+        right:  50%;
+    }
+
+    #gradients #gradientRight{
+        background-image: linear-gradient(90deg, rgba(0,0,0,0),  rgba(0,0,0,.95));
+        right:    0;
+        left:     40%;
+    }
+
+    /* MAP */
 
     #map {
         position: relative;
@@ -100,7 +133,7 @@
         left: 50vw;
         top:  50vh;
         transform: translate(-50%, -50%);
-        z-index: 1000;
+        z-index: 2000;
     }
 
     /* Colors */
@@ -214,16 +247,38 @@
     div.marker.mapboxgl-marker::before {
         content: "";
         position: absolute;
-        top:  50%;
-        left: 50%;
-        width:  300%;
-        height: 300%;
+        top:     50%;
+        left:    50%;
+        width:  200%;
+        height: 200%;
         background: transparent;
         transform: translate(-50%, -50%);
         border-radius: 50%;
     }
 
     div.marker.mapboxgl-marker:first-of-type + div.marker.mapboxgl-marker { z-index: 200; }
+
+    .marker{
+        -webkit-filter: grayscale(0) brightness(1);
+                filter: grayscale(0) brightness(1);
+    }
+
+    .marker:hover{
+        -webkit-filter: grayscale(1) brightness(1);
+                filter: grayscale(1) brightness(1);
+    }
+
+    .marker:active{
+        -webkit-filter: grayscale(0) brightness(.66);
+                filter: grayscale(0) brightness(.66);
+    }
+
+    /* When Cursor is selected */
+    .marker.active {
+        cursor: default !important;
+        -webkit-filter: grayscale(0) brightness(1);
+                filter: grayscale(0) brightness(1);
+    }
 
 
 
