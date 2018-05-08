@@ -66,19 +66,19 @@
 
     $.SUPPORTS = {
         cssFilters: function () {
-            if (!Modernizr.cssfilters) { window.alert("NO CSS FILTERS") }
+            if (!Modernizr.cssfilters) { console.log("NO CSS FILTERS") }
         },
         
         cssPointerEvents: function () {
-            if (!Modernizr.csspointerevents) { window.alert("NO CSS POINTER EVENTS") }
+            if (!Modernizr.csspointerevents) { console.log("NO CSS POINTER EVENTS") }
         },
 
         forceTouch: function () {
-            if (!Modernizr.forcetouch) { window.alert("NO FORCE TOUCH") }
+            if (!Modernizr.forcetouch) { console.log("NO FORCE TOUCH") }
         },
 
         touchEvents: function () {
-            if (!Modernizr.touchevents) { window.alert("NO TOUCH EVENTS") }
+            if (!Modernizr.touchevents) { console.log("NO TOUCH EVENTS") }
         }
     }
 
@@ -286,8 +286,10 @@
                 west:  center[0]
             };
 
+
             $.MAPBOX.dataset.features.forEach( function (location) {
                 center = location.geometry.coordinates;
+                console.log(center);
 
                 if (bounds.west  > center[0]) bounds.west  = center[0];
                 if (bounds.south > center[1]) bounds.south = center[1];
@@ -299,7 +301,7 @@
             var diffLat    = (bounds.south - bounds.north) / 2;
             var centerLong = bounds.west   + diffLong;
             var centerLat  = bounds.north  + diffLat;
-            return $.MAPBOX.initialCenter = [centerLong, centerLat];
+            return $.MAPBOX.initialCenter  = [centerLong, centerLat];
         },
 
         initialOffset: function () {
