@@ -18,7 +18,7 @@
             huge:   "huge",
         },
 
-        size: "",
+        size: "", // TODO: Remove this and use the $.SCREEN.breakpoints.width/height
 
         SETUP:   {},
         LOADING: {},
@@ -34,6 +34,10 @@
             size:        null,
             orientation: null,
             ratio:       null,
+            breakpoints: {
+                width:  null,
+                height: null,
+            }
         },
 
         PORTRAIT:  "portrait",
@@ -147,6 +151,10 @@
             $.SCREEN.orientation = ($.SCREEN.size.width >= $.SCREEN.size.height) ? $.LANDSCAPE : $.PORTRAIT;
         },
 
+        getScreenRatio: function(){
+
+        },
+
         //func to read/set CSS breakpoint ** may need to throttle this **
         handleResize: function () {
             console.log("Screen Resized");
@@ -167,9 +175,15 @@
                     }
                 });
             }
+
             $.RESIZE.getScreenSize();
             $.RESIZE.getScreenOrientation();
+            $.RESIZE.getScreenRatio();
+
+            alert($.SCREEN.orientation + " : " + $.SCREEN.size.width/$.SCREEN.size.height);
             console.log("Orientation: " + $.SCREEN.orientation);
+            console.log("Ratio: " + $.SCREEN.size.width/$.SCREEN.size.height);
+
             if ($.DEV.enabled) $.DEV.updatePanelSize();
             return null;
         }
