@@ -1,14 +1,13 @@
 <script text="text/javascript">
     //global obj
     var $ = {
-        body:   null,
-        html:   null,
-        win:    null,
-        logo:   null,
-        cover:  null,
-        ratio:  null,
-        map:    null,
-        intro:  null,
+        body:        null,
+        html:        null,
+        win:         null,
+        logo:        null,
+        cover:       null,
+        map:         null,
+        intro:       null,
 
         breakpoints: {
             tiny:   "tiny",
@@ -28,20 +27,20 @@
         ZOOM:    {},
         MAPBOX:  {},
         DEV: 	 {},
-        UI:      {},
+        //list of UI elements...
+        UI: {
 
-        SCREEN:  {
+        },
+        //size, ratio, orientation
+        SCREEN: {
             size:        null,
-            orientation: null,
             ratio:       null,
+            orientation: null,
             breakpoints: {
                 width:  null,
                 height: null,
-            }
+            },
         },
-
-        PORTRAIT:  "portrait",
-        LANDSCAPE: "landscape",
     };
 
     //set default size
@@ -66,20 +65,21 @@
 
         mapClickHandler: function () {
             if (!$.map) $.map = document.querySelector(".mapboxgl-canvas-container");
-            $.map.addEventListener('click', (event) => {
+            $.map.addEventListener('click', function (event) {
+                $.MAPBOX.clearActiveMarkers();
                 $.ZOOM.initial();
             });
         },
 
-        logoClickHandler: () => {
+        logoClickHandler: function () {
             // TODO: Make this be a UI element
-            document.getElementById("talkToUs").addEventListener('click', () => {
+            document.getElementById("talkToUs").addEventListener('click', function () {
                 // TODO: This is temporary and should be a state change
                 $.ZOOM.office();
             });
 
             // TODO: Make this be a UI element
-            $.logo.addEventListener('click', (event) => {
+            $.logo.addEventListener('click', function (event)  {
                 $.ZOOM.initial();
             });
         },
@@ -142,9 +142,19 @@
     }
 
     $.RESIZE = {
-
+        /** screen dimensions
+        * @return {frame}
+        */
         getScreenSize: function () {
             $.SCREEN.size = $.body.getBoundingClientRect();
+            $.SCREEN.ratio = $.SCREEN.size.width / $.SCREEN.size.height;
+            if ($.SCREEN.ratio >= 1) {
+                // $.SCREEN.orientation = true;
+                console.log("orientation: LANDSCAPE => " + $.SCREEN.ratio);
+            } else {
+                // $.SCREEN.orientation = false;
+                console.log("orientation: PORTRAIT => " + $.SCREEN.ratio);
+            };
         },
 
         getScreenOrientation: function() {
@@ -162,7 +172,7 @@
             var size = $.win.getComputedStyle($.body, ':after').getPropertyValue('content');
             //make sure to update panel size
             //check if size property changed, then update the class/remove previous setting
-            if (size != $.size) {
+            if (size != $.SCREEN.size) {
                 //loop breakpoints, find match to ensure tracking in JS
                 Object.keys($.breakpoints).forEach(function(key) {
                     //match found
@@ -180,28 +190,41 @@
             $.RESIZE.getScreenOrientation();
             $.RESIZE.getScreenRatio();
 
-            alert($.SCREEN.orientation + " : " + $.SCREEN.size.width/$.SCREEN.size.height);
+            //alert($.SCREEN.orientation + " : " + $.SCREEN.size.width/$.SCREEN.size.height);
             console.log("Orientation: " + $.SCREEN.orientation);
             console.log("Ratio: " + $.SCREEN.size.width/$.SCREEN.size.height);
 
             if ($.DEV.enabled) $.DEV.updatePanelSize();
             return null;
+        },
+        /**portrait or landscape ¯\_(ツ)_/¯
+        * @return 
+        */
+        getScreenOrientation: function () {
+            //return port or landscape
+            
+        },
+        /** calc current ratio
+        * if ratio > 1 -> 
+        *   @param {width}
+        *   @param {height}
+        *   @return {orientation}
+        */
+        getScreenRatio: function () {
+            $.SCREEN.ratio = $.SCREEN.size.width / $.SCREEN.size.height;
         }
     }
 
     $.ZOOM = {
         to: function (location) {
-            // Easy Outs -> if we don't have what we need
+            // Easy Out if we don't have what we need
             if( !location                               ) return;
             if( !$.MAPBOX.map                           ) return;
             if( location === $.MAPBOX.locations.current ) return;
-
             // Update the current location
             $.MAPBOX.locations.current = location;
-
             // Tell map to fly to location
             if($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
-
             // Tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -209,7 +232,6 @@
         },
 
         initial: function () {
-            $.MAPBOX.clearActiveMarkers();
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
@@ -220,15 +242,15 @@
     };
 
     $.MAPBOX = {
-        client:   	   null,
-        tiles:    	   null,
-        dataset:  	   null,
-        map:      	   null,
-        markers:       {
+        client:   		 null,
+        tiles:    		 null,
+        dataset:  		 null,
+        map:      		 null,
+        markers:	     {
             office:    null,
             locations: []
         },
-        locations:     {
+        locations: 		 {
             current: null,
             office:  {},
             initial: {},
@@ -239,18 +261,18 @@
         locationZoom:  13.5,
         locationPitch: 50,
         coordsOffice:  [-122.386888, 47.5791677],
-        animation:     {
+        animation: {
             speed: 2
         },
-        offset:        {
+        offset: {
             // TODO: Need to make these responsive to the window type
             y: () => 40,
             x: () => ($.SCREEN.size.width - 32) / 4
         },
-        api:           {
+        api: {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
         },
-        dataset:       {
+        dataset: {
             id: "cj9oy3jrk2uks2wpge13y8nl4",
             accessToken: "sk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajhtYWkxaW4wd25kMndwZmc0ZG01b29lIn0.NPn9doCB7aiJpctcxiNiUA"
         },
@@ -447,51 +469,32 @@
     $.DEV = {
         enabled: true,
         //helper to vizualize page size by changing bg
-        updatePanelSize: function() {
+        updatePanelSize: function () {
             var panel = document.getElementById('sizePanel');
 
-            if(!panel){
-                // <aside id="sizePanel"></aside>
+            if (!panel) {
+                <aside id="sizePanel"></aside>
                 // createPanel by adding the aside via script
-            }
+            };
 
             if (!$.SCREEN.size.width && !$.SCREEN.size.height) $.RESIZE.getScreenSize();
-            panel.innerHTML = "<strong>" + $.size + "</strong> " + $.SCREEN.size.width + "&times;" + $.SCREEN.size.height;
-        }
+            panel.innerHTML = "<strong>" + $.size + "</strong>" + $.SCREEN.size.width + "&times;" + $.SCREEN.size.height;
+        },
     }
 
 /******************************************************************************/
-/*													DOCUMENT EVENTS	          */
+/*								DOCUMENT EVENTS	                              */
 /******************************************************************************/
 
     window.addEventListener("resize", $.RESIZE.handleResize, false);
 
-    window.addEventListener("load", (event) => {
+    window.addEventListener("load", function (event) {
         console.log("All resources finished loading!");
     });
 
-    document.addEventListener("DOMContentLoaded", (event) => {
+    document.addEventListener("DOMContentLoaded", function (event) {
         $.SETUP.getElements();
         $.RESIZE.handleResize();
         $.SETUP.getMapBoxObjects();
     });
-
-    // //listen for orientation changes => portrait v landscape
-    // window.addEventListener("orientationchange", function () {
-    //     alert("orientationchange");
-    //     $.RESIZE.getScreenSize();
-    //
-    //     // TODO: Add these functions
-    //     // $.RESIZE.getScreenOrientation();
-    //     // $.RESIZE.getScreenRatio();
-    //
-    //     // TODO: Do this work in a function instead
-    //     // if ($.screen.width / $.screen.height < 1) {
-    //     //     alert("NO OFFSET --> ASPECT RATIO: " + $.screen.width/$.screen.height + " < 1");
-    //     // } else {
-    //     //     return null;
-    //     // };
-    // }, false);
-
-
 </script>
