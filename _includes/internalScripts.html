@@ -8,6 +8,7 @@
         cover:  null,
         screen: null,
         map:    null,
+        intro:  null,
 
         breakpoints: {
             tiny:   "tiny",
@@ -26,8 +27,9 @@
         RESIZE:  {},
         ZOOM:    {},
         MAPBOX:  {},
-        DEV: 		 {},
+        DEV: 	 {},
     };
+
     //set default size
     $.size = $.breakpoints.tiny;
 
@@ -37,7 +39,8 @@
             $.html  = document;
             $.win   = window;
             $.logo  = document.getElementById("veritasLogo");
-            $.cover = document.getElementById("coverSite"  );
+            $.cover = document.getElementById("coverSite");
+            $.intro = document.getElementById("intro");
         },
 
         getMapBoxObjects: () => {
@@ -50,15 +53,19 @@
         mapClickHandler: () => {
             $.map = document.querySelector(".mapboxgl-canvas-container");
             $.map.addEventListener('click', (event) => {
+                $.MAPBOX.clearActiveMarkers();
                 $.ZOOM.initial();
             });
         },
 
         logoClickHandler: () => {
-            console.log("logoClickHandler");
-            $.logo.addEventListener('click', (event) => {
-                console.log("$.logo.addEventListener");
+            // TODO: This is temporary and should be a state change
+            document.getElementById("talkToUs").addEventListener('click', () => {
                 $.ZOOM.office();
+            });
+
+            $.logo.addEventListener('click', (event) => {
+                $.ZOOM.initial();
             });
         },
     }
@@ -76,6 +83,7 @@
         logoTransitionToTop: () => {
             $.logo.classList.remove("loading");
             $.logo.classList.add("top");
+            $.intro.classList.add("animateIn");
         }
     }
 
@@ -131,15 +139,12 @@
             if( !location                               ) return;
             if( !$.MAPBOX.map                           ) return;
             if( location === $.MAPBOX.locations.current ) return;
-            // * Fix! - Leave this for now Jake until we start mobile testing
-            // updateLocationForOffset(location)
+            // Update the current location
             $.MAPBOX.locations.current = location;
-            console.log(location);
-
+            // Tell map to fly to location
             if($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
-
-            // YO JAKE! Add this - It's in Framer
-            //$.MAPBOX.toggleOfficeMarker((location === $.MAPBOX.locations.office) ? 'on' : 'off');
+            // Tell office marker to be active if it's selected
+            $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
             return null;
         },
@@ -149,7 +154,6 @@
         },
 
         office: () => {
-            console.log("!!!!!!!");
             $.ZOOM.to($.MAPBOX.locations.office);
         }
 
@@ -160,8 +164,8 @@
         tiles:    		 null,
         dataset:  		 null,
         map:      		 null,
-        markers:			 {
-            office:     null,
+        markers:	     {
+            office:    null,
             locations: []
         },
         locations: 		 {
@@ -171,7 +175,7 @@
         },
         initialCenter: [],
         initialPitch:  0,
-        initialZoom:   9.55,
+        initialZoom:   9.5,
         locationZoom:  13.5,
         locationPitch: 50,
         coordsOffice:  [-122.386888, 47.5791677],
@@ -179,14 +183,14 @@
             speed: 2
         },
         offset: {
-            y: () => 32,
+            y: () => 40,
             x: () => ($.screen.width - 32) / 4
         },
         api: {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
         },
         dataset: {
-            id: "cj8m9b6630wdy33rtnol47ydv",
+            id: "cj9oy3jrk2uks2wpge13y8nl4",
             accessToken: "sk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajhtYWkxaW4wd25kMndwZmc0ZG01b29lIn0.NPn9doCB7aiJpctcxiNiUA"
         },
 
@@ -198,12 +202,9 @@
         isReady: () => {
             $.SETUP.mapClickHandler();
             $.SETUP.logoClickHandler();
-            $.MAPBOX.map.addSource("points", {
-                    "type": "geojson",
-                    "data": {
-                        "type": "FeatureCollection",
-                        "features": $.MAPBOX.dataset.features
-                    }
+            $.MAPBOX.map.addSource("points", { "type": "geojson", "data": {
+                    "type": "FeatureCollection",
+                    "features": $.MAPBOX.dataset.features }
                 });
             $.MAPBOX.setupLocations();
             $.MAPBOX.addMarkers();
@@ -255,7 +256,6 @@
 
             $.MAPBOX.dataset.features.forEach((location) => {
                 center = location.geometry.coordinates;
-
                 if (bounds.west  > center[0]) bounds.west  = center[0];
                 if (bounds.south > center[1]) bounds.south = center[1];
                 if (bounds.east  < center[0]) bounds.east  = center[0];
@@ -276,6 +276,18 @@
             );
         },
 
+        /**
+        * Removes all active class names from makers that are set with class active.
+        * @return {void}
+        */
+        clearActiveMarkers: () => {
+            var activeMarkers = document.querySelectorAll('.active');
+            for (var index = 0; index < activeMarkers.length; index++) {
+                activeMarkers[index].classList.remove('active');
+            }
+            return null;
+        },
+
         addMarkers: () => {
             // Add All the locations from Mapbox
             $.MAPBOX.dataset.features.forEach((location, index) => {
@@ -283,22 +295,24 @@
             });
             // Add the Office, our Custom Property
             $.MAPBOX.setupMarker($.MAPBOX.locations.office.center, $.MAPBOX.dataset.features.length, true);
+            // Add the center point
+            // $.MAPBOX.setupMarker($.MAPBOX.locations.initial.center, $.MAPBOX.dataset.features.length+1, false);
         },
 
         /**
-            * Define what the function does on this line... then describe params and return val
-            * @param  {Array}  coordinates
-            * @param  {Number} index
-            * @param  {Bool}   isOffice
-            * @return {void}
-            */
+        * Setup for Marker Creation, Adds to Map, Click Events and storing in location object
+        * @param  {Array}  coordinates
+        * @param  {Number} index
+        * @param  {Bool}   isOffice
+        * @return {void}
+        */
         setupMarker: (coordinates, index, isOffice = false) => {
             const htmlMarker = $.MAPBOX.createHTMLMarker(index, isOffice);
             const marker     = new $.MAPBOX.tiles.Marker(htmlMarker).setLngLat(coordinates).addTo($.MAPBOX.map);
 
             htmlMarker.addEventListener('click', (event) => {
                 // Remove all the markers that are active & set clicked marker to active
-                document.querySelectorAll('.active').forEach((mrkr) => { mrkr.classList.remove('active'); });
+                $.MAPBOX.clearActiveMarkers();
                 htmlMarker.classList.add('active');
                 // Call function & Block event from triggering Map
                 $.MAPBOX.markerClicked(htmlMarker);
@@ -319,30 +333,36 @@
             return null;
         },
 
+        /**
+        * Office Marker needs help to get active since you never click on it
+        * We also clear other markers active state if this is set to active.
+        * @param  {Bool}   toActive
+        * @return {void}
+        */
+        officeMarkerActive: (toActive) => {
+            const officeMarker = document.querySelector(".marker.office");
+            if (toActive){
+                $.MAPBOX.clearActiveMarkers();
+                officeMarker.classList.add("active");
+            }else{
+                officeMarker.classList.remove("active");
+            }
+            return null
+        },
+
         createHTMLMarker: (index, isOffice) => {
-            const m = document.createElement("div");
-            // * Fix! - Need to finish the styling here after design is ready
-            m.className								 = "marker";
-            m.index 									 = index;
-            m.isOffice 								 = isOffice;
-            m.style.width              = "56px";
-            m.style.height             = "56px";
-            // * Fix! - These things should be set in a "DESIGN CONFIG Variable AND NOT MANAGED HERE"
-            // m.style.width              = "#{SIZE.MARKER}px";
-            // m.style.height             = "#{SIZE.MARKER}px";
-            // m.style.backgroundSize     = "#{SIZE.PIN}";
-            // m.style.backgroundImage    = "url(images/marker.png)";
-            // m.style.backgroundColor    = "rgba(0,0,0,.33)";
-            // m.style.boxShadow					 = "0 0 1px 1px rgba(255,255,255,.15), 0 0 0px 1px rgba(255,255,255,.10), inset 0 0 8px 1px rgba(000,000,000,1.0)";
-            m.style.backgroundColor    = "#00A4B1";
-            m.style.backgroundRepeat   = "no-repeat";
-            m.style.backgroundPosition = "50%";
-            m.style.borderRadius       = "50%";
-            m.style.cursor             = "pointer";
-            m.style.boxShadow					 = "0 0 1px 1px rgba(255,255,255,.15), 0 0 0px 1px rgba(255,255,255,.10), inset 0 0 8px 1px rgba(000,000,000,1.0)";
+            const m  = document.createElement("div");
+            const cn = (isOffice) ? "marker office" : "marker";
+
+            m.className     = cn;
+            m.index         = index;
+            m.isOffice      = isOffice;
+            m.style.width   = "32px";
+            m.style.height  = "32px";
+            m.style.cursor  = "pointer";
+            m.innerHTML     = "<svg><use xlink:href='#mapMarker'></use></svg>";
 
             if (isOffice) {
-                m.style.visibility = "hidden";
                 $.MAPBOX.markers.office = m;
             } else {
                 $.MAPBOX.markers.locations[index] = m;
@@ -354,12 +374,8 @@
         markerClicked: (marker) => {
             if(marker === $.MAPBOX.markers.office) return null;
 
-            // Log out marker & the location Data
-            // console.log($.MAPBOX.markers.locations[marker.index]);
-            // console.log($.MAPBOX.locations[`location${marker.index}`]);
+            $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
 
-            $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]); // setCameraTo(cameraLocation["location#{marker.index}"])
-            // setHitAreaSelected(navLinks.projects)
             // secondaryTransition("show")
 
             return null;
@@ -381,22 +397,23 @@
     }
 
 /******************************************************************************/
-/*													DOCUMENT EVENTS																		*/
+/*													DOCUMENT EVENTS	          */
 /******************************************************************************/
 
     window.addEventListener("resize", $.RESIZE.handleResize, false);
-    document.addEventListener("DOMContentLoaded", (event) => {
-        console.log("HTML Page Parsed");
-        console.log($);
-        $.SETUP.getElements();
-        $.RESIZE.handleResize();
-        $.SETUP.getMapBoxObjects();
 
-    });
     window.addEventListener("load", (event) => {
         console.log("All resources finished loading!");
         /* TO DO --> load the MAP
         */
     });
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        $.SETUP.getElements();
+        $.RESIZE.handleResize();
+        $.SETUP.getMapBoxObjects();
+
+    });
+
 
 </script>

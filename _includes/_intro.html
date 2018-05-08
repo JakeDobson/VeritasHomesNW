@@ -1,0 +1,116 @@
+
+
+<section id="intro">
+    <h1>Make Selling&nbsp;Easy</h1>
+    <p>Thinking about selling your home?</p>
+    <a href="#contact" id="talkToUs">Talk To Us</a>
+</section>
+
+<style type="text/css">
+
+    #intro {
+        position: absolute;
+        top: calc(50% - 120px);
+        left: calc(50% + 16px);
+        width: 410px;
+        font-family: Gotham, Helvetica, sans-serif;
+        color: white;
+        transform: translate(0, 64px);
+        opacity: 0;
+        transition: all .5s ease .1s;
+    }
+
+    #intro.animateIn {
+        transform: translate(0, 0px);
+        opacity: 1;
+    }
+
+    #intro h1,
+    #intro p,
+    #intro a {
+        color: inherit;
+    }
+
+
+    #intro h1,
+    #intro p {
+        line-height: 1.3;
+        margin:  0;
+        padding: 0;
+        text-shadow: 1px  1px 5px #000,
+                    -1px -1px 5px #000,
+                     1px -1px 5px #000,
+                    -1px  1px 5px #000;
+    }
+
+    #intro h1,
+    #intro a {
+        text-transform: uppercase;
+    }
+
+    #intro h1 {
+        font-size: 48px;
+        letter-spacing: 4px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        margin-top: -12px;
+    }
+
+    #intro p {
+        font-size: 24px;
+        font-weight: 200;
+        margin-bottom: 32px;
+        line-height: 1;
+    }
+
+    #intro a,
+    #intro a:visited {
+        display: inline-block;
+        line-height: 1;
+        letter-spacing: 1px;
+        padding: 19px 24px 17px;
+        font-weight: 600;
+        font-size: 20px;
+        text-decoration: none;
+        background-color: rgba(0, 164, 177, 0.75);
+        border-radius: 2px;
+        -webkit-filter: grayscale(0) brightness(1);
+                filter: grayscale(0) brightness(1);
+    }
+
+    #intro a:hover {
+        -webkit-filter: grayscale(1) brightness(1);
+                filter: grayscale(1) brightness(1); }
+    }
+
+    #intro a:active {
+        -webkit-filter: grayscale(0) brightness(0);
+                filter: grayscale(0) brightness(0);
+                opacity: .5;
+        }
+    }
+
+</style>
+
+
+<!-- <div id="markers"></div>
+<style type="text/css">
+
+    #markers {
+        position: absolute;
+        left: 200px;
+        top: 300px;
+        width: 200px;
+        height: 500px;
+        background-color: red;
+        opacity: .25;
+    }
+</style>
+<script type="text/javascript">
+    // loop over markers to find marker size
+    // ....
+    // Then draw a box does it fit?
+
+    var markers = document.getElementById("markers");
+    markers.style.left = '400px';
+</script> -->

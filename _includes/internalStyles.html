@@ -12,7 +12,7 @@
         --heightAside: 14rem;
 
         --sizeNone:     0rem;
-        --sizeLogoHalf: 3rem;
+        --sizeLogoHalf: 3.4rem;
         --sizeLogo:     calc(var(--sizeLogoHalf) * 2);
 
         --posLogoTop:   6.4rem;
@@ -47,6 +47,9 @@
         color:      var(--white);
         background: var(--black);
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        max-height: 100vh;
+        max-width: 100vw;
+        /* overflow: hidden; */
     }
 
     main {
@@ -74,16 +77,14 @@
         position: relative;
         width: 100vw;
         height: 100vh;
-        /* filter: grayscale(100) contrast(1) brightness(1); */
     }
 
     .zoomed-out #map .mapboxgl-canvas,
-                #map .mapboxgl-canvas{ filter: grayscale(100) contrast(1) brightness(.66); }
-    .zoomed-in  #map .mapboxgl-canvas{ filter: grayscale(100) contrast(1) brightness(1); }
-
+                #map .mapboxgl-canvas{ -webkit-filter: grayscale(1) contrast(1) brightness(.66);
+                                               filter: grayscale(1) contrast(1) brightness(.66); }
 
     /******************************************************************************/
-        /*													Logo States & Settings 														*/
+    /*													Logo States & Settings    */
     /******************************************************************************/
 
     .logo {
@@ -110,15 +111,15 @@
         0%   { opacity: 0; }
         100% { opacity: 1; }
     }
-    @-moz-keyframes loadingLogo {
+    @-moz-keyframes    loadingLogo {
         0%   { opacity: 0; }
         100% { opacity: 1; }
     }
-    @-o-keyframes loadingLogo {
+    @-o-keyframes      loadingLogo {
         0%   { opacity: 0; }
         100% { opacity: 1; }
     }
-    @keyframes loadingLogo {
+    @keyframes         loadingLogo {
         0%   { opacity: 0; }
         100% { opacity: 1; }
     }
@@ -141,19 +142,19 @@
         65%  { top: calc(var(--posLogoTop) - 1vh); }
         100% { top:      var(--posLogoTop);        }
     }
-    @-moz-keyframes topLogo {
+    @-moz-keyframes    topLogo {
         0%   { top: 50vh; }
         10%  { top: 50.5vh; }
         65%  { top: calc(var(--posLogoTop) - 1vh); }
         100% { top:      var(--posLogoTop);        }
     }
-    @-o-keyframes topLogo {
+    @-o-keyframes      topLogo {
         0%   { top: 50vh; }
         10%  { top: 50.5vh; }
         65%  { top: calc(var(--posLogoTop) - 1vh); }
         100% { top:      var(--posLogoTop);        }
     }
-    @keyframes topLogo {
+    @keyframes         topLogo {
         0%   { top: 50vh; }
         10%  { top: 50.5vh; }
         65%  { top: calc(var(--posLogoTop) - 1vh); }
@@ -170,73 +171,57 @@
         animation-iteration-count: 1;
         animation-delay: 0s;
     }
-        /******************************************************************************/
-        /* Asset Logo SVG  for reuse - We hide this assest & use the <use xlink:href="#logo"> instead on the page */
+
     /******************************************************************************/
-    #logo {
-            width:  var(--sizeNone);
-            height: var(--sizeNone);
-            display: block;
-        }
+    /* Asset Logo SVG  for reuse - We hide this assest & use the <use xlink:href="#logo"> instead on the page */
+    /******************************************************************************/
+
+    #logo,
+    #mapMarker {
+        width:  var(--sizeNone);
+        height: var(--sizeNone);
+        display: block;
+    }
 
     #logo > * { fill: currentColor; }
 
-    /******************************************************************************/
-    /*														Debug Stuff																			*/
-    /******************************************************************************/
+    .mapboxgl-ctrl-logo { visibility: hidden; }
 
-    #grid {
-        width: 100vw;
-        height: 100vh;
+
+    .marker > svg {
+        width:  64px;
+        height: 76.8px;
         position: absolute;
-        top: 0;
-        z-index: 1001;
-        pointer-events: none;
-    }
-
-    .hline, .vline {
-        background-color: cyan;
-        position: absolute;
-    }
-
-    .hline {
-        top: 50%;
+        top:  0;
         left: 0;
-        right: 0;
-        height: 1px;
-        transform: translate(0, -.5px);
+        filter: drop-shadow(0 0 5px rgba(0,0,0,.75));
+        transform: scale(.66) translate(-8px, -12px);
+        transform-origin: 0 0;
+        transition: transform .25s ease-out;
     }
 
-    .vline {
-        top: 0;
+    .marker.active > svg { transform: scale(1) translate(-16px, -32px); }
+
+    .marker.office        { opacity: 0; transition: opacity .5s ease   0s; pointer-events: none; }
+    .marker.office.active { opacity: 1; transition: opacity .5s ease .25s; pointer-events: all;}
+
+    div.marker.mapboxgl-marker {
+        z-index: 1;
+        border-radius: 50%;
+    }
+
+    div.marker.mapboxgl-marker::before {
+        content: "";
+        position: absolute;
+        top: 50%;
         left: 50%;
-        bottom: 0;
-        width: 1px;
-        transform: translate(-.5px, 0);
+        background: transparent;
+        width: 300%;
+        height: 300%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
     }
 
-    /* Show width and height in a panel */
-    aside {
-        position: fixed;
-        border-radius: .25rem;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: inline-block;
-        color: #000;
-        font-size: .75rem;
-        line-height: 1.25rem;
-        font-weight: 100;
-        text-transform: none;
-        padding: 0 .5rem;
-        top:   .5rem;
-        right: .5rem;
-        z-index: 1003;
-        text-transform: uppercase;
-    }
-
-    .tiny	aside { background: rgb(192, 239, 255); }
-    .small 	aside { background: rgb(255, 165,   0); }
-    .medium aside { background: rgb(255, 255,   0); }
-    .large 	aside { background: rgb( 70, 255,  70); }
-    .huge	aside { background: rgb(255,  43,  43); }
+    div.marker.mapboxgl-marker:first-of-type + div.marker.mapboxgl-marker { z-index: 200; }
 
 </style>

@@ -1,0 +1,190 @@
+<style type="text/css">
+/******************************************************************************/
+/*														Debug Stuff																			*/
+/******************************************************************************/
+
+    #grid {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        z-index: 1001;
+        pointer-events: none;
+        display: none;
+    }
+
+    #grid:target{ display:block; }
+
+    .hline,
+    .vline,
+    .tline,
+    .bline,
+    .lline,
+    .lline2,
+    .rline,
+    .rline2,
+    .nline,
+    .mline,
+    .nline::before {
+        background-color: magenta;
+        position: absolute;
+    }
+
+    .tline::after,
+    .bline::after,
+    .lline::after,
+    .rline::after,
+    .lline2::after,
+    .rline2::after,
+    .nline::after,
+    .vline::after,
+    .mline::after {
+        content: "";
+        position: absolute;
+        background-color: rgba(0, 170, 255, 0.25);
+    }
+
+    .tline,
+    .bline,
+    .mline,
+    .nline,
+    .nline::before {
+        left:  0;
+        right: 0;
+        height: 1px;
+    }
+
+    .lline ,
+    .lline2,
+    .rline ,
+    .rline2 {
+        top:    0;
+        bottom: 0;
+        width: 1px;
+    }
+
+    .lline::after ,
+    .lline2::after,
+    .rline::after ,
+    .rline2::after,
+    .vline::after {
+        width:  32px;
+        top:    0;
+        bottom: 0;
+        transform: translate(-50%,0);
+    }
+
+    .tline::after,
+    .bline::after,
+    .nline::after,
+    .mline::after {
+        content: "";
+        position: absolute;
+        height: 32px;
+        left:  0;
+        right: 0;
+        background-color: rgba(0, 170, 255, 0.25);
+    }
+
+    .nline {
+        top: 112px;
+        transform: translate(0, -.5px);
+    }
+
+    .mline        { top: calc(50% + 40px); }
+
+    .nline::after { transform: translate(0, -32px); }
+    .mline::after { transform: translate(0, -16px); }
+
+    .hline {
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 0px;
+        transform: translate(0, -.5px);
+        opacity: .25;
+        border-bottom: 1px dashed cyan;
+    }
+
+    .vline {
+        left: 50%;
+        top:    0;
+        bottom: 0;
+        width: 1px;
+        transform: translate(-.5px, 0);
+    }
+
+    .tline {
+        top: 32px;
+        transform: translate(0, -.5px);
+        z-index: 20;
+    }
+
+    .bline {
+        bottom: 32px;
+        transform: translate(0, .5px);
+        z-index: 20;
+    }
+
+    .lline {
+        left: 16px;
+        transform: translate(-.5px, 0);
+    }
+
+    .rline {
+        right: 16px;
+        transform: translate(.5px, 0);
+    }
+
+    .lline2 {
+        left: calc(25% + 8px);
+        transform: translate(-.5px, 0);
+    }
+
+    .rline2 {
+        right: calc(25% + 8px);
+        transform: translate(.5px, 0);
+    }
+
+    .tline::after { transform: translate(0, -100%);}
+    .bline::after { transform: translate(0, 0);}
+
+    #grid .pane {
+        position: absolute;
+        width: calc(25% - 32px - 8px);
+        top: 112px;
+        left: calc( 0% + 32px      );
+        left: calc(25% + 8px + 16px);
+        left: calc(50% + 16px      );
+        left: calc(75% + 16px - 8px      );
+        bottom: 32px;
+        background-color: yellow;
+        opacity: .2;
+        display: none;
+    }
+
+    /* Show width and height in a panel */
+    aside {
+        position: fixed;
+        border-radius: .25rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: inline-block;
+        color: #000;
+        font-size: .75rem;
+        line-height: 1.25rem;
+        font-weight: 100;
+        text-transform: none;
+        padding: 0 .5rem;
+        top:   .5rem;
+        right: .5rem;
+        z-index: 1003;
+        text-transform: uppercase;
+    }
+
+    .tiny	aside { background: rgb(192, 239, 255); }
+    .small 	aside { background: rgb(255, 165,   0); }
+    .medium aside { background: rgb(255, 255,   0); }
+    .large 	aside { background: rgb( 70, 255,  70); }
+    .huge	aside { background: rgb(255,  43,  43); }
+
+</style>
