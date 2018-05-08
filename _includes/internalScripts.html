@@ -1,14 +1,16 @@
 <script text="text/javascript">
     //global obj
-    const $ = {
+    var $ = {
         body:   null,
         html:   null,
         win:    null,
         logo:   null,
         cover:  null,
         screen: null,
+        ratio:  null,
         map:    null,
         intro:  null,
+        map:    null,
 
         breakpoints: {
             tiny:   "tiny",
@@ -28,13 +30,14 @@
         ZOOM:    {},
         MAPBOX:  {},
         DEV: 	 {},
+        UI:      {},
     };
 
     //set default size
     $.size = $.breakpoints.tiny;
 
     $.SETUP = {
-        getElements: () => {
+        getElements: function () {
             $.body  = document.body;
             $.html  = document;
             $.win   = window;
@@ -43,15 +46,15 @@
             $.intro = document.getElementById("intro");
         },
 
-        getMapBoxObjects: () => {
+        getMapBoxObjects: function () {
             $.MAPBOX.client = new MapboxClient($.MAPBOX.dataset.accessToken);
             $.MAPBOX.tiles  = mapboxgl;
             $.MAPBOX.tiles.accessToken = $.MAPBOX.api.accessToken;
             $.MAPBOX.client.listFeatures($.MAPBOX.dataset.id, {}, $.MAPBOX.datasetCallback);
         },
 
-        mapClickHandler: () => {
-            $.map = document.querySelector(".mapboxgl-canvas-container");
+        mapClickHandler: function () {
+            if (!$.map) $.map = document.querySelector(".mapboxgl-canvas-container");
             $.map.addEventListener('click', (event) => {
                 $.MAPBOX.clearActiveMarkers();
                 $.ZOOM.initial();
@@ -59,28 +62,48 @@
         },
 
         logoClickHandler: () => {
-            // TODO: This is temporary and should be a state change
+            // TODO: Make this be a UI element
             document.getElementById("talkToUs").addEventListener('click', () => {
+                // TODO: This is temporary and should be a state change
                 $.ZOOM.office();
             });
 
+            // TODO: Make this be a UI element
             $.logo.addEventListener('click', (event) => {
                 $.ZOOM.initial();
             });
         },
     }
 
+    $.SUPPORTS = {
+        cssFilters: function () {
+            if (!Modernizr.cssfilters) { console.log("NO CSS FILTERS") }
+        },
+
+        cssPointerEvents: function () {
+            if (!Modernizr.csspointerevents) { console.log("NO CSS POINTER EVENTS") }
+        },
+
+        forceTouch: function () {
+            if (!Modernizr.forcetouch) { console.log("NO FORCE TOUCH") }
+        },
+
+        touchEvents: function () {
+            if (!Modernizr.touchevents) { console.log("NO TOUCH EVENTS") }
+        }
+    }
+
     $.LOADING = {
-        exitLoadingState: () => {
+        exitLoadingState: function () {
             // Get the opacity of the logo
-            let logoOpacity = $.win.getComputedStyle($.logo, null).getPropertyValue("opacity");
+            var logoOpacity = $.win.getComputedStyle($.logo, null).getPropertyValue("opacity");
             // Check if the logo opacity is lower then 95%, if so check again in 10 milliseconds
             if(logoOpacity < .95) { return setTimeout($.LOADING.exitLoadingState, 10);}
             // Logo is greater than 95% so remove loading animation & set loadingComplete state.
             $.STATES.loadingComplete();
         },
 
-        logoTransitionToTop: () => {
+        logoTransitionToTop: function () {
             $.logo.classList.remove("loading");
             $.logo.classList.add("top");
             $.intro.classList.add("animateIn");
@@ -88,35 +111,55 @@
     }
 
     $.STATES = {
-        loadingComplete: () => {
+        loadingComplete: function () {
             // Move the logo to the top
             $.LOADING.logoTransitionToTop();
             // We need to also remove the site cover
             $.COVER.hide();
+        },
+
+        contentLoaded: function () {
+            $.SUPPORTS.cssFilters();
+            $.SUPPORTS.cssPointerEvents();
+            $.SUPPORTS.forceTouch();
+            $.SUPPORTS.touchEvents();
         }
     }
 
     $.COVER = {
-        show: () => { $.cover.classList.remove( "hidden" ); },
-        hide: () => { $.cover.classList.add(    "hidden" ); }
+        show: function () { $.cover.classList.remove( "hidden" ); },
+        hide: function () { $.cover.classList.add(    "hidden" ); }
     }
 
     $.RESIZE = {
 
-        getScreenSize: () => {
+        getScreenSize: function () {
+            // Get screen size
             $.screen = $.body.getBoundingClientRect();
+            // TODO: Need to get if landscape or portrait to determine how to calculate ratio.
+
+            // TODO: Don't do Ratio work in here... Move this out.
+            // Calculate current ratio
+            // $.ratio  = $.screen.width / $.screen.height;
+            //
+            // if ($.ratio > 1) {
+            //     console.log("orientation: LANDSCAPE => " + $.ratio);
+            //     //TODO: enter a func that handles the layout based on orientation
+            // } else {
+            //     console.log("orientation: PORTRAIT => " + $.ratio);
+            // };
         },
 
         //func to read/set CSS breakpoint ** may need to throttle this **
-        handleResize: () => {
+        handleResize: function () {
             console.log("Screen Resized");
             //read CSS psuedo element and it's after value
-            const size = $.win.getComputedStyle($.body, ':after').getPropertyValue('content');
+            var size = $.win.getComputedStyle($.body, ':after').getPropertyValue('content');
             //make sure to update panel size
             //check if size property changed, then update the class/remove previous setting
             if (size != $.size) {
                 //loop breakpoints, find match to ensure tracking in JS
-                Object.keys($.breakpoints).forEach((key) => {
+                Object.keys($.breakpoints).forEach(function(key) {
                     //match found
                     if ($.breakpoints[key] == size) {
                         //add new class, remove other
@@ -134,7 +177,7 @@
     }
 
     $.ZOOM = {
-        to: (location) => {
+        to: function (location) {
             // Easy Out if we don't have what we need
             if( !location                               ) return;
             if( !$.MAPBOX.map                           ) return;
@@ -149,7 +192,7 @@
             return null;
         },
 
-        initial: () => {
+        initial: function () {
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
@@ -183,6 +226,7 @@
             speed: 2
         },
         offset: {
+            // TODO: Need to make these responsive to the window type
             y: () => 40,
             x: () => ($.screen.width - 32) / 4
         },
@@ -194,12 +238,12 @@
             accessToken: "sk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajhtYWkxaW4wd25kMndwZmc0ZG01b29lIn0.NPn9doCB7aiJpctcxiNiUA"
         },
 
-        datasetCallback: (error, dataset) => {
+        datasetCallback: function (error, dataset) {
             $.MAPBOX.dataset = dataset;
             $.MAPBOX.createMapAndEvent();
         },
 
-        isReady: () => {
+        isReady: function () {
             $.SETUP.mapClickHandler();
             $.SETUP.logoClickHandler();
             $.MAPBOX.map.addSource("points", { "type": "geojson", "data": {
@@ -211,24 +255,24 @@
             $.LOADING.exitLoadingState();
         },
 
-        setupLocations: () => {
+        setupLocations: function () {
             $.MAPBOX.locations.office = {
                 center: $.MAPBOX.coordsOffice,
                 zoom:   $.MAPBOX.locationZoom,
                 pitch:	$.MAPBOX.locationPitch,
                 speed:  $.MAPBOX.animation.speed,
-                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // Check! - ensure updates on Screen Resize
+                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // TODO: Check! - ensure updates on Screen Resize
             }
             $.MAPBOX.locations.initial = {
                 center: $.MAPBOX.initialCenter,
                 zoom:   $.MAPBOX.initialZoom,
                 pitch:	$.MAPBOX.initialPitch,
                 speed:  $.MAPBOX.animation.speed,
-                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // Check! - ensure updates on Screen Resize
+                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // TODO: Check! - ensure updates on Screen Resize
             }
         },
 
-        createMapAndEvent: () => {
+        createMapAndEvent: function () {
             $.MAPBOX.getInitialCenter();
             $.MAPBOX.map = new $.MAPBOX.tiles.Map({
                     container: "map",
@@ -244,17 +288,18 @@
             $.MAPBOX.map.on("load", $.MAPBOX.isReady);
         },
 
-        getInitialCenter: () => {
+        getInitialCenter: function () {
             //$.MAPBOX.locations = $.MAPBOX.dataset.features;
-            let center = $.MAPBOX.dataset.features[0].geometry.coordinates;
-            let bounds = {
+            var center = $.MAPBOX.dataset.features[0].geometry.coordinates;
+            var bounds = {
                 north: center[1],
                 east:  center[0],
                 south: center[1],
                 west:  center[0]
             };
 
-            $.MAPBOX.dataset.features.forEach((location) => {
+
+            $.MAPBOX.dataset.features.forEach( function (location) {
                 center = location.geometry.coordinates;
                 if (bounds.west  > center[0]) bounds.west  = center[0];
                 if (bounds.south > center[1]) bounds.south = center[1];
@@ -262,17 +307,17 @@
                 if (bounds.north < center[1]) bounds.north = center[1];
             });
 
-            const diffLong   = (bounds.east  - bounds.west)  / 2;
-            const diffLat    = (bounds.south - bounds.north) / 2;
-            const centerLong = bounds.west   + diffLong;
-            const centerLat  = bounds.north  + diffLat;
-            return $.MAPBOX.initialCenter = [centerLong, centerLat];
+            var diffLong   = (bounds.east  - bounds.west)  / 2;
+            var diffLat    = (bounds.south - bounds.north) / 2;
+            var centerLong = bounds.west   + diffLong;
+            var centerLat  = bounds.north  + diffLat;
+            return $.MAPBOX.initialCenter  = [centerLong, centerLat];
         },
 
-        initialOffset: () => {
+        initialOffset: function () {
             $.MAPBOX.map.panBy(
                 [$.MAPBOX.offset.x(), -$.MAPBOX.offset.y()],
-                {easing: () => 1 }
+                { easing: function () { return 1 } }
             );
         },
 
@@ -290,7 +335,7 @@
 
         addMarkers: () => {
             // Add All the locations from Mapbox
-            $.MAPBOX.dataset.features.forEach((location, index) => {
+            $.MAPBOX.dataset.features.forEach( function (location, index) {
                 $.MAPBOX.setupMarker(location.geometry.coordinates, index);
             });
             // Add the Office, our Custom Property
@@ -310,7 +355,7 @@
             const htmlMarker = $.MAPBOX.createHTMLMarker(index, isOffice);
             const marker     = new $.MAPBOX.tiles.Marker(htmlMarker).setLngLat(coordinates).addTo($.MAPBOX.map);
 
-            htmlMarker.addEventListener('click', (event) => {
+            htmlMarker.addEventListener('click', function (event) {
                 // Remove all the markers that are active & set clicked marker to active
                 $.MAPBOX.clearActiveMarkers();
                 htmlMarker.classList.add('active');
@@ -371,7 +416,7 @@
             return m;
         },
 
-        markerClicked: (marker) => {
+        markerClicked: function (marker) {
             if(marker === $.MAPBOX.markers.office) return null;
 
             $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
@@ -385,13 +430,15 @@
     $.DEV = {
         enabled: true,
         //helper to vizualize page size by changing bg
-        updatePanelSize: () => {
-            let panel = document.getElementById('sizePanel');
+        updatePanelSize: function() {
+            var panel = document.getElementById('sizePanel');
+
             if(!panel){
                 // <aside id="sizePanel"></aside>
                 // createPanel by adding the aside via script
             }
-            if(!$.screen.width && !$.screen.height) $.RESIZE.getScreenSize();
+
+            if (!$.screen.width && !$.screen.height) $.RESIZE.getScreenSize();
             panel.innerHTML = "<strong>" + $.size + "</strong> " + $.screen.width + "&times;" + $.screen.height;
         }
     }
@@ -404,16 +451,28 @@
 
     window.addEventListener("load", (event) => {
         console.log("All resources finished loading!");
-        /* TO DO --> load the MAP
-        */
     });
 
     document.addEventListener("DOMContentLoaded", (event) => {
         $.SETUP.getElements();
         $.RESIZE.handleResize();
         $.SETUP.getMapBoxObjects();
-
     });
 
+    //listen for orientation changes => portrait v landscape
+    window.addEventListener("orientationchange", function (event) {
+        $.RESIZE.getScreenSize();
+
+        // TODO: Add these functions
+        // $.RESIZE.getScreenOrientation();
+        // $.RESIZE.getScreenRatio();
+
+        // TODO: Do this work in a function instead
+        // if ($.screen.width / $.screen.height < 1) {
+        //     alert("NO OFFSET --> ASPECT RATIO: " + $.screen.width/$.screen.height + " < 1");
+        // } else {
+        //     return null;
+        // };
+    }, false);
 
 </script>
