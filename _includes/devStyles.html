@@ -152,11 +152,11 @@
     #grid .pane {
         position: absolute;
         width: calc(25% - 32px - 8px);
+        left: calc( 0% + 32px       );
+        left: calc(25% + 8px + 16px );
+        left: calc(50% + 16px       );
+        left: calc(75% + 16px - 8px );
         top: 112px;
-        left: calc( 0% + 32px      );
-        left: calc(25% + 8px + 16px);
-        left: calc(50% + 16px      );
-        left: calc(75% + 16px - 8px      );
         bottom: 32px;
         background-color: yellow;
         opacity: .2;
@@ -167,24 +167,26 @@
     aside {
         position: fixed;
         border-radius: .25rem;
-        background-color: rgba(0,0,0,0.5);
-        display: inline-block;
+        background-color: rgba(255, 255, 255, .5);
+        display: block;
         color: #000;
-        font-size: .75rem;
+        font-size:    .75rem;
         line-height: 1.25rem;
         font-weight: 100;
         text-transform: none;
         padding: 0 .5rem;
-        bottom: .5rem;
+        bottom:   .5rem;
         right:  .5rem;
         z-index: 1003;
         text-transform: uppercase;
     }
 
-    .tiny	aside { background: rgb(192, 239, 255); }
-    .small 	aside { background: rgb(255, 165,   0); }
-    .medium aside { background: rgb(255, 255,   0); }
-    .large 	aside { background: rgb( 70, 255,  70); }
-    .huge	aside { background: rgb(255,  43,  43); }
+    /* TODO: need width & height breakpoints */
+
+    /* .tiny	aside { background-color: rgb(192, 239, 255); } */
+    .mobile	aside { background-color: rgb(255, 165,   0); }
+    .normal aside { background-color: rgb(255, 255,   0); }
+    .huge   aside { background-color: rgb( 70, 255,  70); }
+    /* .huge	aside { background-color: rgb(255,  43,  43); } */
 
 </style>
