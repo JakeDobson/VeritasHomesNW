@@ -39,11 +39,11 @@ defaults:
       end:
         date: 
 baseurl: 
-links:
-  blog:
-    title: Blog
+stuff:
+  newss:
+    title: Newss
     url: http://medium.com
-  projects:
+  houses:
     title: Projects
     url: "#projects"
   aboutUs:
