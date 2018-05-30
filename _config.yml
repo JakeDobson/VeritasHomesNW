@@ -42,13 +42,13 @@ baseurl:
 links:
   blog:
     title: Blog
-    link: http://medium.com
+    url: http://medium.com
   projects:
     title: Projects
-    link: "#projects"
+    url: "#projects"
   aboutUs:
     title: About Us
-    link: "#aboutUs"
+    url: "#aboutUs"
   fb:
     title: Facebook
     link: http://facebook.com
