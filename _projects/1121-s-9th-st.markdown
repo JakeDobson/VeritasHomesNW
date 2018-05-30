@@ -2,6 +2,9 @@
 title: 1121 S 9th St
 date: 2017-11-27 12:06:00 -08:00
 identifier: 1121
+images:
+- image: "/uploads/skullyIcon_messages_iPad_67x50@2x.png"
+  alt: alt
 address:
   street: 1121 S 9th St
 links:
