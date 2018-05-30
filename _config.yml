@@ -38,18 +38,20 @@ defaults:
         date: 
       end:
         date: 
-description: VeritasHomesNW description goes here.
 baseurl: 
-url: http://veritashomesnw.siteleaf.net
-headerTitle:
-  topText: VERITAS
-  bottomText: TRUTH TO HOME SOLUTIONS
-logo: "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
 links:
-  blog: Blog
-  projects: Projects
-  aboutUs: About Us
-  fb: Facebook
+  blog:
+    title: Blog
+    link: http://medium.com
+  projects:
+    title: Projects
+    link: "#projects"
+  aboutUs:
+    title: About Us
+    link: "#aboutUs"
+  fb:
+    title: Facebook
+    link: http://facebook.com
 markdown: kramdown
 theme: minima
 plugins:
