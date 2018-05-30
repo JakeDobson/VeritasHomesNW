@@ -1,37 +1,51 @@
 <!DOCTYPE html>
-<html lang="en-US">
-	<head>
-		<meta charset="utf-8">
-		<!-- multiple includes here for JS / CSS / Metadata / Google Analytics / etc -->
-		<!-- <link rel="stylesheet" type="text/css" href="default.css"/> -->
-		<!--<script src="default.js"></script>-->
-	</head>
-	<body>
-			{% include index.html %}
-	</body>
+<html lang="en_US" class ="no-js">
+  <head>
+        <title>Veritas Homes</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, width=device-width" />
+        {% include externalScripts.html %}
+        {% include internalStyles.html  %}
+        {% include devStyles.html       %}
+        {% include internalScripts.html %}
+    </head>
+    <body>
+        {% include _dev.html   %}
+        {% include _index.html %}
+        {% include _svg.html   %}
+    </body>
 </html>
 
 
-<!-- {% assign about = site.pages | where: 'title', 'About' | first %}
-<p>{{about.content }}</p>
-<hr />
-{% assign pgTitle = page.title %}
-<ul>
-	<li>{{pgTitle}}</li>
-	<li>{{site.title}}</li>
-	<li>{{site.time}}</li>
-	<li>{{site.pages[0]}}</li>
-	<li>{{site.twitter_username}}</li>
-</ul>
-<hr />
-<ul>
-	{% for page in site.pages %}
-		{% unless page.title == null %}
-			<li>{{page.content}}</li>
-		{% endunless %}
-	{% endfor %}
-</ul>
+<!--
+
+*********************************************************************************
+|    																		    |
+|                                   TODO									    |
+|   																		    |
+*********************************************************************************
+
+ - constant for holding "box-size" and/or "zoom-level" for markers to fall into/use
+
+*** mobile Safari ***
+		- no aside shown until device rotated
+		- markers can be off screen, but should not be
+		- markers also don't offset right, dont think want offset for small/tiny screen?
+		- upside down(orientation (-)180 degrees is not looking good...
+
+-->
 
 
+<!--
+
+************************Size Bucket********************************************
+
+->    DEVICE     =  WIDE, TALL  =>  ASIDE	=> RATIO  => OFFSET?
+
+-> 6+ portrait   =  375w, 667h  => TINY	    =>  .56   => NO
+-> 6+ landscape  =  667w, 375h  => MEDIUM   => 1.77   => YES
+-> 5  portrait   =  320w, 529h  => TINY	    =>  .69   => NO
+-> 5  landscape  =  568w, 320h  => MEDIUM   => 1.77   => YES
+-> ??
 
 -->

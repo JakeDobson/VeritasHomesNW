@@ -1,0 +1,297 @@
+<style type="text/css">
+/******************************************************************************/
+/*                              Variables									  */
+/******************************************************************************/
+    :root {
+        --white: #ffffff;
+        --blue:  #009dac;
+        --black: #000000;
+        --gray:  #808080;
+        --colorNone: transparent;
+
+        --heightAside: 14rem;
+
+        --sizeNone:     0rem;
+        --sizeLogoHalf: 3.4rem;
+        --sizeLogo:     calc(var(--sizeLogoHalf) * 2);
+
+        --posLogoTop:   6.4rem;
+    }
+
+
+    /* @media (min-width: 10em) { :root {--bpw: 'tiny'  } } */
+    @media (min-width: 10rem) { :root {--bpw: 'ws' } }
+    @media (min-width: 60rem) { :root {--bpw: 'wm'} }
+    @media (min-width: 140rem){ :root {--bpw: 'wl' } }
+    /* @media (min-width: 120em){ :root {--bpw: 'huge'  } } */
+
+    /* @media (min-height: 10em) { :root {--bph: 'tiny'  } } */
+    @media (min-height: 10rem) { :root {--bph: 'hs' } }
+    @media (min-height: 40rem) { :root {--bph: 'hm'} }
+    @media (min-height: 90rem) { :root {--bph: 'hl' } }
+    /* @media (min-height: 120em){ :root {--bph: 'huge'  } } */
+
+
+    body::after {
+        content: var(--bpw, 'avg');
+        display: none;
+    }
+
+    body::before {
+        content: var(--bph, 'medium');
+        display: none;
+    }
+
+    html { font-size: 62.5%; }
+
+    body,
+    main,
+    #coverSite,
+    #gradients {
+        min-width:  100vw;
+        min-height: 100vh;
+        max-width:  100vw;
+        max-height: 100vh;
+        margin:  0;
+        padding: 0;
+    }
+
+    body {
+        font-size: 1.6rem;
+        color:      var(--white);
+        background: var(--black);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        max-height: 100vh;
+        max-width: 100vw;
+        overflow: hidden;
+    }
+
+    main {
+        margin-top: 1rem;
+        position: relative;
+        background: var(--gray);
+        z-index: 1;
+    }
+
+    #coverSite {
+        position: absolute;
+        pointer-events: all;
+        opacity: 1;
+        background: var(--black);
+        z-index: 999;
+        transition: opacity 2s ease-in 1s;
+        visibility: visible;
+    }
+
+    #coverSite.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Gradients */
+
+    #gradients,
+    #gradients #gradientLeft,
+    #gradients #gradientRight {
+        position: absolute;
+        top:    0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    #gradients {
+        background: transparent;
+        left:  0;
+        right: 0;
+        z-index: 998;
+    }
+
+    #gradients #gradientLeft{
+        background-image: linear-gradient(112.5deg, rgba(0,0,0,.9), rgba(0,0,0,0) 50%, rgba(0,0,0,0));
+        left:     0;
+        right:  50%;
+    }
+
+    #gradients #gradientRight{
+        background-image: linear-gradient(90deg, rgba(0,0,0,0),  rgba(0,0,0,.95));
+        right:    0;
+        left:     40%;
+    }
+
+    /* MAP */
+
+    #map {
+        position: relative;
+        width:  100vw;
+        height: 100vh;
+    }
+
+    .zoomed-out #map .mapboxgl-canvas,
+                #map .mapboxgl-canvas{ -webkit-filter: grayscale(1) contrast(1) brightness(.66);
+                                               filter: grayscale(1) contrast(1) brightness(.66); }
+
+    /******************************************************************************/
+    /*													Logo States & Settings    */
+    /******************************************************************************/
+
+    .logo {
+        display: inline;
+        width: var(--sizeLogo);
+        color: var(--white);
+    }
+
+    .logo.centered {
+        position: absolute;
+        left: 50vw;
+        top:  50vh;
+        transform: translate(-50%, -50%);
+        z-index: 2000;
+    }
+
+    /* Colors */
+    .logo.light { color: var( --white ); }
+    .logo.dark  { color: var( --black ); }
+    .logo.blue  { color: var( --blue  ); }
+
+    /* Loading */
+    @-webkit-keyframes loadingLogo {
+        0%   { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-moz-keyframes    loadingLogo {
+        0%   { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @-o-keyframes      loadingLogo {
+        0%   { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @keyframes         loadingLogo {
+        0%   { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    .logo.loading {
+        opacity: 0;
+        animation-name: loadingLogo;
+        animation-duration: 1s;
+        animation-direction: alternate;
+        animation-timing-function: linear;
+        animation-fill-mode: forwards;
+        animation-iteration-count:infinite;
+        animation-delay: 1s;
+    }
+
+    /* Logo To Top */
+    @-webkit-keyframes topLogo {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        100% { top:      var(--posLogoTop);        }
+    }
+    @-moz-keyframes    topLogo {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        100% { top:      var(--posLogoTop);        }
+    }
+    @-o-keyframes      topLogo {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        100% { top:      var(--posLogoTop);        }
+    }
+    @keyframes         topLogo {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        100% { top:      var(--posLogoTop);        }
+    }
+
+    .logo.top {
+        opacity: 1;
+        animation-name: topLogo;
+        animation-duration: .75s;
+        animation-direction: normal;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: forwards;
+        animation-iteration-count: 1;
+        animation-delay: 0s;
+    }
+    /******************************************************************************/
+    /*                         Asset Logo SVG  for reuse                          */
+    /* We hide this assest & use the <use xlink:href="#logo"> instead on the page */
+    /******************************************************************************/
+
+    #logo,
+    #mapMarker {
+        width:  var(--sizeNone);
+        height: var(--sizeNone);
+        display: block;
+    }
+
+    #logo > * { fill: currentColor; }
+
+    .mapboxgl-ctrl-logo { visibility: hidden; }
+
+    .marker > svg {
+        width:  64px;
+        height: 76.8px;
+        position: absolute;
+        top:  0;
+        left: 0;
+        filter: drop-shadow(0 0 5px rgba(0,0,0,.75));
+        transform: scale(.66) translate(-8px, -12px);
+        transform-origin: 0 0;
+        transition: transform .25s ease-out;
+    }
+
+    .marker.active > svg { transform: scale(1) translate(-16px, -32px); }
+
+    .marker.office        { opacity: 0; transition: opacity .5s ease   0s; pointer-events: none; }
+    .marker.office.active { opacity: 1; transition: opacity .5s ease .25s; pointer-events: all;  }
+
+    div.marker.mapboxgl-marker {
+        z-index: 1;
+        border-radius: 50%;
+    }
+
+    div.marker.mapboxgl-marker::before {
+        content: "";
+        position: absolute;
+        top:     50%;
+        left:    50%;
+        width:  200%;
+        height: 200%;
+        background: transparent;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+    }
+
+    div.marker.mapboxgl-marker:first-of-type + div.marker.mapboxgl-marker { z-index: 200; }
+
+    .marker{
+        -webkit-filter: grayscale(0) brightness(1);
+                filter: grayscale(0) brightness(1);
+    }
+
+    .marker:hover{
+        -webkit-filter: grayscale(1) brightness(1);
+                filter: grayscale(1) brightness(1);
+    }
+
+    .marker:active{
+        -webkit-filter: grayscale(0) brightness(.66);
+                filter: grayscale(0) brightness(.66);
+    }
+
+    /* When Cursor is selected */
+    .marker.active {
+        cursor: default !important;
+        -webkit-filter: grayscale(0) brightness(1);
+                filter: grayscale(0) brightness(1);
+    }
+
+
+
+</style>
