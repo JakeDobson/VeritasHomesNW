@@ -10,15 +10,16 @@
         {% include internalScripts.html %}
     </head>
     <body>
-        <div style="display: none">
+        <!-- <div style="display: none"> -->
+            {% comment %}
+            {% include header.html %}
             {% include projects.html %}
-            {% include content.html %}
             {% include footer.html %}
-        </div>
+            {% endcomment %}
+        <!-- </div> -->
         {% include _dev.html   %}
         {% include _index.html %}
         {% include _svg.html   %}
-        {% include header.html %}
     </body>
 </html>
 
