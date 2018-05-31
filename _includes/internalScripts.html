@@ -252,25 +252,22 @@
             //set layout to false, so can be set later inside our loops
             var layoutMatchFound = false;
             //loop rules to check if match found yet, once found --> return out
-            Object.keys($.layouts.rules).forEach(function (key) {
+            Object.keys($.layouts.rules).forEach(function (type) {
                 if (layoutMatchFound) return;
-                console.log(key, $.layouts.rules[key]);
+                console.log(type);
                 //if no match, check if breakpoints are equal, set to true --> return out
-                $.layouts.rules[key].forEach(function (rule) {
+                $.layouts.rules[type].forEach(function (rule) {
                     if (layoutMatchFound) return;
                     if (rule[0] == $.SCREEN.breakpoint.width && rule[1] == $.SCREEN.breakpoint.height) {
-                        console.log("$$$$$ MATCH FOUND $$$$$ ___ RULE => " + rule);
+                        console.log("$$$$$ MATCH FOUND $$$$$ ___ RULE => " + rule + type);
                         layoutMatchFound = true;
-                        
-                        // TODO: write class, remove previous class, store in OBJ --> classList add/remove
-                        // @JORDAN: how does the below code look...??? and what is it useful for?
-                        
-                        $.body.classList.remove(rule[0,1]);
-                        $.body.classList.add(rule);
-                        $.SCREEN.breakpoint.width =  rule[0];
-                        $.SCREEN.breakpoint.height = rule[1];
+                        //remove previous class, write class, store in OBJ
+                        $.body.classList.remove($.SCREEN.layout);
+                        $.body.classList.add(type);
+                        $.SCREEN.layout = type;
                         // DEV: hide content to ensure working status or something else...
-                        document.getElementById("intro").setAttribute("style", "display: none");
+                        //IDK if this works, or how to trigger it...
+                        // document.getElementById("intro").setAttribute("style", "display: none");
                     }
                 });
             });
@@ -539,7 +536,17 @@
             //     createPanel by adding the aside via script
             // };
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
-            panel.innerHTML = "<strong>" + $.SCREEN.breakpoint.width + "</strong> " + $.SCREEN.size.width + "&times;" + $.SCREEN.size.height;
+            panel.innerHTML = "<strong>"                    +
+                                $.SCREEN.size.width         +
+                                    "&times;"               +
+                                $.SCREEN.size.height        +
+                                    " | "                   +
+                                $.SCREEN.breakpoint.width   +
+                                    "/"                     +
+                                $.SCREEN.breakpoint.height  +
+                                    " | "                   +
+                                $.SCREEN.layout             +
+                            "</strong>";
         },
     }
 
