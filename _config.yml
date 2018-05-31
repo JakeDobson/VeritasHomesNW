@@ -38,12 +38,13 @@ defaults:
         date: 
       end:
         date: 
+description: Description is necessary for SiteLeaf to work...
 baseurl: 
 links:
   blog:
     title: Blog
     url: http://medium.com
-  houses:
+  projects:
     title: Projects
     url: "#projects"
   aboutUs:
@@ -60,4 +61,3 @@ footer:
   phone: "(206) 883-5212"
   email: Neil@VeritasHomesNW.com
   office: 2701 California Ave SW, Seattle, WA 98116
-description: Description is necessary for SiteLeaf to work...

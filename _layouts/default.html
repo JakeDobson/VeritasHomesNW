@@ -3,16 +3,24 @@
   <head>
         <title>Veritas Homes</title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        {% comment %}
         {% include externalScripts.html %}
         {% include internalStyles.html  %}
         {% include devStyles.html       %}
         {% include internalScripts.html %}
+        {% endcomment %}
     </head>
     <body>
+        {% include header.html %}
+        {% comment %}
+        {% include projects.html %}
+        {% include content.html %}
         {% include _dev.html   %}
         {% include _index.html %}
         {% include _svg.html   %}
+        {% include footer.html %}
+        {% endcomment %}
     </body>
 </html>
 
