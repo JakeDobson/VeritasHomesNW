@@ -38,18 +38,21 @@ defaults:
         date: 
       end:
         date: 
-description: VeritasHomesNW description goes here.
+description: Description is necessary for SiteLeaf to work...
 baseurl: 
-url: http://veritashomesnw.siteleaf.net
-headerTitle:
-  topText: VERITAS
-  bottomText: TRUTH TO HOME SOLUTIONS
-logo: "/uploads/skullyIcon_messages_iPadPro_74x55@2x.png"
 links:
-  blog: Blog
-  projects: Projects
-  aboutUs: About Us
-  fb: Facebook
+  blog:
+    title: Blog
+    url: http://medium.com
+  projects:
+    title: Projects
+    url: "#projects"
+  aboutUs:
+    title: About Us
+    url: "#aboutUs"
+  fb:
+    title: Facebook
+    link: http://facebook.com
 markdown: kramdown
 theme: minima
 plugins:

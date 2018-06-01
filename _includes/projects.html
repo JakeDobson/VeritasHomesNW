@@ -1,0 +1,17 @@
+<body>
+	{% for project in site['projects'] %}
+		{{project.identifier}}<p>
+		<h1>{{project.address.street}}, {{project.address.locale}}</h1>
+		<h4>{{project.links.blog}}<br>{{project.links.map}}<br>{{project.links.listing}}</h4>
+		{{project.content}}
+		<p>
+		{{project.details.size}}<br>{{project.details.bed}}<br>{{project.details.bath}}<br>{{project.details.feature}}
+		<p>
+		start date -- {{project.dates.start.date}}<br>
+		end date -- {{project.dates.end.date}}<p>
+		{% for img in project.images %}
+			<img src="{{img.image}}" width="450" height="300" alt="{{img.image.alt}}"/>
+		{% endfor %}<p>
+	{% endfor %}
+	<hr/>
+</body>

@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en_US" class ="no-js">
   <head>
+        <title>Veritas Homes</title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
         {% include externalScripts.html %}
         {% include internalStyles.html  %}
         {% include devStyles.html       %}
         {% include internalScripts.html %}
     </head>
     <body>
+        <!-- <div style="display: none"> -->
+            {% comment %}
+            {% include header.html %}
+            {% include projects.html %}
+            {% include footer.html %}
+            {% endcomment %}
+        <!-- </div> -->
         {% include _dev.html   %}
         {% include _index.html %}
         {% include _svg.html   %}
@@ -24,12 +32,6 @@
 |   																		    |
 *********************************************************************************
 
- - Screen Sizes Obj
-		- portrait or landscape?
-			->>> added $.ratio and printing out orientation and aspect ratio when screen size changes
-	- marker for office
-	- hide other markers when zoomed into a property
-    - edge gradients
  - constant for holding "box-size" and/or "zoom-level" for markers to fall into/use
 
 *** mobile Safari ***
