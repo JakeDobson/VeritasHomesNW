@@ -1,4 +1,7 @@
 <style type="text/css">
+
+    html { font-size: 62.5%; }
+
 /******************************************************************************/
 /*                              Variables									  */
 /******************************************************************************/
@@ -18,31 +21,30 @@
         --posLogoTop:   6.4rem;
     }
 
-
     /* @media (min-width: 10em) { :root {--bpw: 'tiny'  } } */
-    @media (min-width: 10rem) { :root {--bpw: 'ws' } }
-    @media (min-width: 60rem) { :root {--bpw: 'wm'} }
-    @media (min-width: 140rem){ :root {--bpw: 'wl' } }
+    @media (min-width: 10rem) { :root {--bpw: 'ws' } } /* 100px  */
+    @media (min-width: 60rem) { :root {--bpw: 'wm' } } /* 600px  */
+    @media (min-width: 140rem){ :root {--bpw: 'wl' } } /* 1400px */
     /* @media (min-width: 120em){ :root {--bpw: 'huge'  } } */
 
     /* @media (min-height: 10em) { :root {--bph: 'tiny'  } } */
-    @media (min-height: 10rem) { :root {--bph: 'hs' } }
-    @media (min-height: 40rem) { :root {--bph: 'hm'} }
-    @media (min-height: 90rem) { :root {--bph: 'hl' } }
+    @media (min-height: 10rem) { :root {--bph: 'hs' } } /* 100px */
+    @media (min-height: 40rem) { :root {--bph: 'hm' } } /* 400px */
+    @media (min-height: 90rem) { :root {--bph: 'hl' } } /* 900px */
     /* @media (min-height: 120em){ :root {--bph: 'huge'  } } */
 
 
     body::after {
-        content: var(--bpw, 'avg');
+        content: var(--bpw, 'ws');
         display: none;
     }
 
     body::before {
-        content: var(--bph, 'medium');
+        content: var(--bph, 'hs');
         display: none;
     }
 
-    html { font-size: 62.5%; }
+
 
     body,
     main,
@@ -67,7 +69,7 @@
     }
 
     main {
-        margin-top: 1rem;
+        /* margin-top: 1rem; */
         position: relative;
         background: var(--gray);
         z-index: 1;
