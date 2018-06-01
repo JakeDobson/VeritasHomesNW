@@ -148,11 +148,13 @@
         },
 
         getScreenOrientation: function() {
+            if(!$.SCREEN.size) $.RESIZE.getScreenSize();
             $.SCREEN.orientation = ($.SCREEN.size.width >= $.SCREEN.size.height) ? $.LANDSCAPE : $.PORTRAIT;
         },
 
         getScreenRatio: function(){
-
+            if(!$.SCREEN.size) $.RESIZE.getScreenSize();
+            $.SCREEN.ratio = $.SCREEN.size.width / $.SCREEN.size.height;
         },
 
         //func to read/set CSS breakpoint ** may need to throttle this **
@@ -180,7 +182,7 @@
             $.RESIZE.getScreenOrientation();
             $.RESIZE.getScreenRatio();
 
-            alert($.SCREEN.orientation + " : " + $.SCREEN.size.width/$.SCREEN.size.height);
+            //alert($.SCREEN.orientation + " : " + $.SCREEN.size.width/$.SCREEN.size.height);
             console.log("Orientation: " + $.SCREEN.orientation);
             console.log("Ratio: " + $.SCREEN.size.width/$.SCREEN.size.height);
 
