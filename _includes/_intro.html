@@ -1,5 +1,5 @@
 
-<section id="intro">
+<section style="font-family: 'Gotham'" id="intro">
     <h1>Make Selling&nbsp;Easy</h1>
     <p>Thinking about selling your home?</p>
     <a href="#contact" id="talkToUs">Talk To Us</a>
@@ -7,17 +7,21 @@
 
 <style type="text/css">
 
+    .compact #intro {
+        display: none;
+    }
+
     #intro {
         position: absolute;
         top: calc(50% - 120px);
         left: calc(50% + 16px);
         width: 410px;
-        font-family: Gotham, Helvetica, sans-serif;
+        font-family: "Gotham", Helvetica, sans-serif;
         color: white;
         transform: translate(0, 64px);
         opacity: -1;
         transition: all .5s ease .1s;
-        z-index: 1000;
+        z-index: 2000;
     }
 
     #intro.animateIn {
