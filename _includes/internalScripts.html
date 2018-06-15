@@ -1,12 +1,12 @@
 <script text="text/javascript">
     //global obj
     var $ = {
-        body: null,
-        html: null,
-        win: null,
-        logo: null,
+        body:  null,
+        html:  null,
+        win:   null,
+        logo:  null,
         cover: null,
-        map: null,
+        map:   null,
         intro: null,
 
         breakpoints: {
@@ -22,7 +22,7 @@
             types: {
                 compact: "compact",
                 split: "split",
-                backup: "backup",
+                backup: "backup", // CHECK: if we need this?
             },
             rules: {
                 compact: [],
@@ -287,6 +287,7 @@
             $.MAPBOX.locations.current = location;
             //tell map to fly to location
             if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
+            console.log("FIT BOUNDS???");
             //tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -317,6 +318,7 @@
             initial: {},
         },
         initialCenter: [],
+        initialBounds: [],
         initialPitch: 0,
         initialZoom: 9.5,
         locationZoom: 13.5,
@@ -353,6 +355,9 @@
                 }
             });
             $.MAPBOX.setupLocations();
+            $.MAPBOX.map.fitBounds($.MAPBOX.initialBounds, {
+                padding: { top: 100, bottom: 25, left: 0, right: 0 }
+            });
             $.MAPBOX.addMarkers();
             $.LOADING.exitLoadingState();
         },
@@ -386,8 +391,8 @@
                 attributionControl: false,
                 logoPosition: "bottom-right",
             });
-            $.MAPBOX.initialOffset();
             $.MAPBOX.map.on("load", $.MAPBOX.isReady);
+            $.MAPBOX.initialOffset();
         },
 
         getInitialCenter: function () {
@@ -413,10 +418,12 @@
             var diffLat    = (bounds.south - bounds.north) / 2;
             var centerLong = bounds.west  + diffLong;
             var centerLat  = bounds.north + diffLat;
-            return $.MAPBOX.initialCenter = [centerLong, centerLat];
+            $.MAPBOX.initialBounds = [bounds.west - .1, bounds.south - .2, bounds.east + .1 , bounds.north + .15];
+            return  $.MAPBOX.initialCenter = [centerLong, centerLat], $.MAPBOX.initialBounds;
         },
 
         initialOffset: function () {
+            //create variable for initial bounds
             $.MAPBOX.map.panBy(
                 [$.MAPBOX.offset.x(), -$.MAPBOX.offset.y()],
                 { easing: function () { return 1 } }
