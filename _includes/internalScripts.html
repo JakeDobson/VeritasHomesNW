@@ -327,17 +327,6 @@
         animation: {
             speed: 2
         },
-        offset: {
-            // TODO: Need to make these responsive to the window type
-            y: () => 1,
-            x: () => 1
-        },
-        padding: {
-            top:    0,
-            bottom: 0,
-            right:  0,
-            left:   0
-        },
         api: {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
         },
@@ -361,11 +350,11 @@
                 }
             });
             $.MAPBOX.setupLocations();
-            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, {
-                padding: {top: 200, bottom: 110, left: 0, right: 0},
-                offset: [0, 0]
-            });
             $.MAPBOX.addMarkers();
+            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, {
+                padding: {top: 120, bottom: 260, left: 0, right: 0},
+                offset: [0, 180]
+            });
             $.LOADING.exitLoadingState();
         },
 
@@ -424,10 +413,11 @@
             var diffLat     = (bounds.south  - bounds.north) / 2;
             var centerLong  = bounds.west    + diffLong;
             var centerLat   = bounds.north   + diffLat;
-            $.MAPBOX.bounds = [ bounds.west - 1,
+            $.MAPBOX.bounds = [ bounds.west,
                                 bounds.south,
-                                bounds.east + 1,
+                                bounds.east,
                                 bounds.north];
+            console.log($.MAPBOX.bounds);
             return $.MAPBOX.initialCenter = [centerLong, centerLat];
         },
 
