@@ -20,11 +20,13 @@
 
         layouts: {
             types: {
+                mobile: "mobile",
                 compact: "compact",
                 split: "split",
                 backup: "backup", // CHECK: if we need this?
             },
             rules: {
+                mobile: [],
                 compact: [],
                 split: [],
                 backup: [], // CHECK: if we need this?
@@ -65,11 +67,14 @@
     $.SCREEN.breakpoint.height = $.breakpoints.hs;
 
     //set default layout category
-    $.SCREEN.layout = $.layouts.types.compact;
+    $.SCREEN.layout = $.layouts.types.mobile;
 
     //set layout rules
+    $.layouts.rules.mobile = [
+        [$.breakpoints.ws, $.breakpoints.hs]
+    ];
+
     $.layouts.rules.compact = [
-        [$.breakpoints.ws, $.breakpoints.hs],
         [$.breakpoints.ws, $.breakpoints.hm],
         [$.breakpoints.ws, $.breakpoints.hl],
         [$.breakpoints.wm, $.breakpoints.hs],
@@ -287,7 +292,7 @@
             $.MAPBOX.locations.current = location;
             //tell map to fly to location
             if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
-            console.log("FIT BOUNDS???");
+            console.log("ZOOM");
             //tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -295,6 +300,7 @@
         },
 
         initial: function () {
+            console.log("INIT");
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
@@ -327,6 +333,11 @@
         animation: {
             speed: 2
         },
+        offset: {
+            // TODO: Need to make these responsive to the window type
+            y: () => 40,
+            x: () => ($.SCREEN.size.width - 32) / 4
+        },
         api: {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
         },
@@ -351,10 +362,12 @@
             });
             $.MAPBOX.setupLocations();
             $.MAPBOX.addMarkers();
-            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, {
-                padding: {top: 120, bottom: 260, left: 0, right: 0},
-                offset: [0, 180]
-            });
+            if ($.layouts.rules.mobile) {
+                $.MAPBOX.map.fitBounds($.MAPBOX.bounds, {
+                    padding: {top: 120, bottom: 260, left: 0, right: 0},
+                    offset: [0, 180]
+                });
+            };
             $.LOADING.exitLoadingState();
         },
 
@@ -364,13 +377,14 @@
                 zoom:   $.MAPBOX.locationZoom,
                 pitch:  $.MAPBOX.locationPitch,
                 speed:  $.MAPBOX.animation.speed,
-                //offset: $.MAPBOX.offset// CHECK: ensure updates on Screen Resize
+                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]// CHECK: ensure updates on Screen Resize
             }
             $.MAPBOX.locations.initial = {
                 center: $.MAPBOX.initialCenter,
                 zoom:   $.MAPBOX.initialZoom,
                 pitch:  $.MAPBOX.initialPitch,
                 speed:  $.MAPBOX.animation.speed,
+                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]
             }
         },
 
@@ -386,8 +400,11 @@
                 attributionControl: false,
                 logoPosition: "bottom-right",
             });
+            if ($.SCREEN.layout !== $.layouts.rules.mobile) {
+                console.log($.SCREEN.layout);
+                $.MAPBOX.initialOffset();
+            }
             $.MAPBOX.map.on("load", $.MAPBOX.isReady);
-            // $.MAPBOX.initialBounds;
         },
 
         getInitialCenter: function () {
@@ -417,20 +434,26 @@
                                 bounds.south,
                                 bounds.east,
                                 bounds.north];
-            console.log($.MAPBOX.bounds);
             return $.MAPBOX.initialCenter = [centerLong, centerLat];
         },
 
-        initialBounds: function (location) {
-            //create variable for initial bounds
-            console.log("initialBounds!!!");
-            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, {
-                linear: false,
-                padding: $.MAPBOX.padding,
-                offset:  $.MAPBOX.offset,
-                easing: function () { return 1 }
-            });
+        initialOffset: function () {
+            $.MAPBOX.map.panBy(
+                [$.MAPBOX.offset.x(), -$.MAPBOX.offset.y()],
+                { easing: function () { return 1 } }
+            );
         },
+
+        // initialBounds: function (location) {
+        //     //create variable for initial bounds
+        //     console.log("initialBounds!!!");
+        //     $.MAPBOX.map.fitBounds($.MAPBOX.bounds, {
+        //         linear: false,
+        //         padding: $.MAPBOX.padding,
+        //         offset:  $.MAPBOX.offset,
+        //         easing: function () { return 1 }
+        //     });
+        // },
 
         /**
         * Removes all active class names from makers that are set with class active.
