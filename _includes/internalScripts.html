@@ -286,9 +286,14 @@
             if (location === $.MAPBOX.locations.current) return;
             //update the current location
             $.MAPBOX.locations.current = location;
+
             //tell map to fly to location
-            if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
-            console.log("ZOOM");
+            if(location === $.MAPBOX.locations.initial) {
+                $.MAPBOX.fitInitialBounds();
+            } else {
+                if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
+            }
+            
             //tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -296,7 +301,6 @@
         },
 
         initial: function () {
-            console.log("INIT");
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
@@ -368,14 +372,8 @@
                 pitch:  $.MAPBOX.locationPitch,
                 speed:  $.MAPBOX.animation.speed,
                 offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]// CHECK: ensure updates on Screen Resize
-            }
-            // $.MAPBOX.locations.initial = {
-            //     center: $.MAPBOX.initialCenter,
-            //     zoom:   $.MAPBOX.initialZoom,
-            //     pitch:  $.MAPBOX.initialPitch,
-            //     speed:  $.MAPBOX.animation.speed,
-            //     offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]
-            // }
+            };
+            $.MAPBOX.locations.initial = { center: $.MAPBOX.initialCenter };
         },
 
         createMapAndEvent: function () {
@@ -390,54 +388,57 @@
                 attributionControl: false,
                 logoPosition: "bottom-right",
             });
-            $.MAPBOX.fitBounds();
+            $.MAPBOX.fitInitialBounds();
             $.MAPBOX.map.on("load", $.MAPBOX.isReady);
         },
 
         getInitialCenter: function () {
-            // $.MAPBOX.locations = $.MAPBOX.dataset.features;
-            var center = $.MAPBOX.dataset.features[0].geometry.coordinates;
-            var bounds = {
-                north: center[1],
-                east:  center[0],
-                south: center[1],
-                west:  center[0]
-            };
 
-
+            var bounds = new mapboxgl.LngLatBounds();
+            //extend bounds to fit coordinates of homes
             $.MAPBOX.dataset.features.forEach(function (location) {
-                center = location.geometry.coordinates;
-                if (bounds.west  > center[0]) bounds.west  = center[0];
-                if (bounds.south > center[1]) bounds.south = center[1];
-                if (bounds.east  < center[0]) bounds.east  = center[0];
-                if (bounds.north < center[1]) bounds.north = center[1];
+                bounds.extend(location.geometry.coordinates);
             });
 
-            var diffLong    = (bounds.east   - bounds.west ) / 2;
-            var diffLat     = (bounds.south  - bounds.north) / 2;
-            var centerLong  = bounds.west    + diffLong;
-            var centerLat   = bounds.north   + diffLat;
-            $.MAPBOX.bounds = [ bounds.west,
-                                bounds.south,
-                                bounds.east,
-                                bounds.north];
-            return $.MAPBOX.initialCenter = [centerLong, centerLat];
+            $.MAPBOX.bounds = bounds;
+            $.MAPBOX.initialCenter = bounds.getCenter();
+
+            // $.MAPBOX.locations = $.MAPBOX.dataset.features;
+        //     var center = $.MAPBOX.dataset.features[0].geometry.coordinates;
+        //     var bounds = {
+        //         north: center[1],
+        //         east:  center[0],
+        //         south: center[1],
+        //         west:  center[0]
+        //     };
+
+
+        //     $.MAPBOX.dataset.features.forEach(function (location) {
+        //         center = location.geometry.coordinates;
+        //         if (bounds.west  > center[0]) bounds.west  = center[0];
+        //         if (bounds.south > center[1]) bounds.south = center[1];
+        //         if (bounds.east  < center[0]) bounds.east  = center[0];
+        //         if (bounds.north < center[1]) bounds.north = center[1];
+        //     });
+
+        //     var diffLong    = (bounds.east   - bounds.west ) / 2;
+        //     var diffLat     = (bounds.south  - bounds.north) / 2;
+        //     var centerLong  = bounds.west    + diffLong;
+        //     var centerLat   = bounds.north   + diffLat;
+        //     $.MAPBOX.bounds = [ bounds.west,
+        //                         bounds.south,
+        //                         bounds.east,
+        //                         bounds.north];
+        //     return $.MAPBOX.initialCenter = [centerLong, centerLat];
         },
 
-        fitBounds: function () {
+        fitInitialBounds: function () {
             var padding = {
                 top:    112 + 32,   //top margin + half-marker
                 bottom: 96,         //bottom margin + full-marker
                 left:   64,         //left margin + half-marker
                 right:  64          //full-marker
             };
-            //FIX: put this where the bounds are set
-            var bounds = new mapboxgl.LngLatBounds();
-            //extend bounds to fit coordinates of homes
-            $.MAPBOX.dataset.features.forEach(function (location) {
-                bounds.extend(location.geometry.coordinates);
-            });
-            //END FIX
 
             if ($.SCREEN.layout === $.layouts.types.default) {
                 //weird offset hack + full-marker
@@ -451,7 +452,7 @@
                 padding.right  = $.SCREEN.size.width / 4;   //weird offset hack + full-marker
             }
 
-            $.MAPBOX.map.fitBounds(bounds, { padding: padding });
+            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, { padding: padding });
         },
 
         /**
@@ -507,7 +508,7 @@
                 pitch:  $.MAPBOX.locationPitch,
                 zoom:   $.MAPBOX.locationZoom,
                 speed:  $.MAPBOX.animation.speed,
-                //offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()], // Check! - ensure updates on Screen Resize
+                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()], // Check! - ensure updates on Screen Resize
             };
             return null;
         },
