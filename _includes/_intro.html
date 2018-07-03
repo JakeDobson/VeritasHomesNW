@@ -7,25 +7,32 @@
 
 <style type="text/css">
 
+    /* br {
+        display: none;
+    } */
 
     #intro {
         position: absolute;
-        top: calc(50% - 120px);
-        left: calc(50% + 16px);
-        width: 410px;
+        top: calc(50% - 12rem);
+        left: calc(50% + 1.6rem);
+        width: 41rem;
         font-family: "Gotham", Helvetica, sans-serif;
         color: white;
-        transform: translate(0, 64px);
+        transform: translate(0, 6.4rem);
         opacity: -1;
         transition: all .5s ease .1s;
         z-index: 2000;
     }
-    .compact #intro {
+    .compact.portrait #intro {
         width: auto;
         top: 6.1rem;
         left: 1.6rem;
         right: 1.6rem;
         /* outline: 2px solid green; */
+    }
+
+    .compact.landscape #intro {
+        top: 12rem;
     }
 
     #intro.animateIn {

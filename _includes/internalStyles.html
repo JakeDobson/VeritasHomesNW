@@ -77,6 +77,10 @@
         overflow: hidden;
     }
 
+    .compact .landscape body {
+
+    }
+
     main {
         /* margin-top: 1rem; */
         position: relative;
@@ -155,10 +159,6 @@
         width: var(--sizeLogoCompact);
     }
 
-    .mobile .logo {
-        width: var(--sizeLogoCompact);
-    }
-
     .logo.centered {
         position: absolute;
         left: 50vw;
@@ -201,7 +201,7 @@
         animation-delay: 1s;
     }
 
-    /* SPLIT -- Logo To Top */
+    /* DEFAULT -- Logo To Top */
     @-webkit-keyframes topLogo {
         0%   { top: 50vh; }
         10%  { top: 50.5vh; }
