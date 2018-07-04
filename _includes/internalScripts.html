@@ -547,19 +547,17 @@
             };
 
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
-
-            // Write Status to the panel
-            panel.innerHTML = "<strong>"                    +
-                                $.SCREEN.size.width         +
-                                    "&times;"               +
-                                $.SCREEN.size.height        +
-                                    " | "                   +
-                                $.SCREEN.breakpoint.width   +
-                                    "&nbsp;"                +
-                                $.SCREEN.breakpoint.height  +
-                                    " | "                   +
-                                $.SCREEN.layout             +
-                            "</strong>";
+            panel.innerHTML =   "<strong>"                      +
+                                    $.SCREEN.size.width         +
+                                        "&times;"               +
+                                    $.SCREEN.size.height        +
+                                        " | "                   +
+                                    $.SCREEN.breakpoint.width   +
+                                        "/"                     +
+                                    $.SCREEN.breakpoint.height  +
+                                        " | "                   +
+                                    $.SCREEN.layout             +
+                                "</strong>";
         },
     }
 
