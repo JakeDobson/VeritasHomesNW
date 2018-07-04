@@ -61,11 +61,11 @@
     };
 
     //set default size
-    $.SCREEN.breakpoint.width = $.breakpoints.ws;
+    $.SCREEN.breakpoint.width  = $.breakpoints.ws;
     $.SCREEN.breakpoint.height = $.breakpoints.hs;
 
     //set default layout category
-    $.SCREEN.layout = $.layouts.types.backup;
+    $.SCREEN.layout = $.layouts.types.compact;
 
     //set layout rules
     $.layouts.rules.compact = [
@@ -185,6 +185,7 @@
         getScreenSize: function () {
             $.SCREEN.size = $.body.getBoundingClientRect();
         },
+
         /**
         * Update the document for Resizing and the related variables and CSS classes for layout
         * CHECK: if we need to throttle this
@@ -193,9 +194,12 @@
         */
         handleResize: function (initial) {
             console.log("Screen Resized");
+
             //read CSS psuedo elements and its before & after value
             var sizeW = $.win.getComputedStyle($.body, ':after').getPropertyValue('content');
             var sizeH = $.win.getComputedStyle($.body, ':before').getPropertyValue('content');
+
+            console.log("size", sizeW, sizeH);
 
             function checkBreakpointChange(newSize, dimension, initial) {
                 var bp = $.SCREEN.breakpoint;
@@ -213,19 +217,21 @@
                     });
                 }
             }
-            checkBreakpointChange(sizeW, $.WIDTH, initial);
+            checkBreakpointChange(sizeW, $.WIDTH,  initial);
             checkBreakpointChange(sizeH, $.HEIGHT, initial);
-            //set title of browser to it's rule dimensions
-            document.getElementsByTagName("title")[0].innerHTML = "w: " + $.SCREEN.breakpoint.width + " \nh: " + $.SCREEN.breakpoint.height;
+
             //update $.RESIZE properties for layout
             $.RESIZE.getLayoutCategory();
             $.RESIZE.getScreenSize();
             $.RESIZE.getScreenOrientation();
             $.RESIZE.getScreenRatio();
+
             //make sure to update panel size if we have one
             if ($.DEV.enabled) $.DEV.updatePanelSize();
+
             return null;
         },
+
         /**portrait or landscape ¯\_(ツ)_/¯
         * @return
         */
@@ -234,6 +240,7 @@
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
             $.SCREEN.orientation = ($.SCREEN.size.width >= $.SCREEN.size.height) ? $.LANDSCAPE : $.PORTRAIT;
         },
+
         /** calc current ratio
         * if ratio > 1 ->
         *   @param {width}
@@ -245,6 +252,7 @@
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
             $.SCREEN.ratio = $.SCREEN.size.width / $.SCREEN.size.height;
         },
+
         /**determine layout category
         * @return
         */
@@ -252,25 +260,17 @@
             //set layout to false, so can be set later inside our loops
             var layoutMatchFound = false;
             //loop rules to check if match found yet, once found --> return out
-            Object.keys($.layouts.rules).forEach(function (key) {
+            Object.keys($.layouts.rules).forEach(function (type) {
                 if (layoutMatchFound) return;
-                console.log(key, $.layouts.rules[key]);
                 //if no match, check if breakpoints are equal, set to true --> return out
-                $.layouts.rules[key].forEach(function (rule) {
+                $.layouts.rules[type].forEach(function (rule) {
                     if (layoutMatchFound) return;
                     if (rule[0] == $.SCREEN.breakpoint.width && rule[1] == $.SCREEN.breakpoint.height) {
-                        console.log("$$$$$ MATCH FOUND $$$$$ ___ RULE => " + rule);
                         layoutMatchFound = true;
-
-                        // TODO: write class, remove previous class, store in OBJ --> classList add/remove
-                        // @JORDAN: how does the below code look...??? and what is it useful for?
-
-                        $.body.classList.remove(rule[0,1]);
-                        $.body.classList.add(rule);
-                        $.SCREEN.breakpoint.width =  rule[0];
-                        $.SCREEN.breakpoint.height = rule[1];
-                        // DEV: hide content to ensure working status or something else...
-                        document.getElementById("intro").setAttribute("style", "display: none");
+                        //remove previous class, write class, store in OBJ
+                        $.body.classList.remove($.SCREEN.layout);
+                        $.body.classList.add(type);
+                        $.SCREEN.layout = type;
                     }
                 });
             });
@@ -360,16 +360,16 @@
         setupLocations: function () {
             $.MAPBOX.locations.office = {
                 center: $.MAPBOX.coordsOffice,
-                zoom: $.MAPBOX.locationZoom,
-                pitch: $.MAPBOX.locationPitch,
-                speed: $.MAPBOX.animation.speed,
+                zoom:   $.MAPBOX.locationZoom,
+                pitch:  $.MAPBOX.locationPitch,
+                speed:  $.MAPBOX.animation.speed,
                 offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // CHECK: ensure updates on Screen Resize
             }
             $.MAPBOX.locations.initial = {
                 center: $.MAPBOX.initialCenter,
-                zoom: $.MAPBOX.initialZoom,
-                pitch: $.MAPBOX.initialPitch,
-                speed: $.MAPBOX.animation.speed,
+                zoom:   $.MAPBOX.initialZoom,
+                pitch:  $.MAPBOX.initialPitch,
+                speed:  $.MAPBOX.animation.speed,
                 offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // CHECK: ensure updates on Screen Resize
             }
         },
@@ -395,24 +395,24 @@
             var center = $.MAPBOX.dataset.features[0].geometry.coordinates;
             var bounds = {
                 north: center[1],
-                east: center[0],
+                east:  center[0],
                 south: center[1],
-                west: center[0]
+                west:  center[0]
             };
 
 
             $.MAPBOX.dataset.features.forEach(function (location) {
                 center = location.geometry.coordinates;
-                if (bounds.west > center[0]) bounds.west = center[0];
+                if (bounds.west  > center[0]) bounds.west  = center[0];
                 if (bounds.south > center[1]) bounds.south = center[1];
-                if (bounds.east < center[0]) bounds.east = center[0];
+                if (bounds.east  < center[0]) bounds.east  = center[0];
                 if (bounds.north < center[1]) bounds.north = center[1];
             });
 
-            var diffLong = (bounds.east - bounds.west) / 2;
-            var diffLat = (bounds.south - bounds.north) / 2;
-            var centerLong = bounds.west + diffLong;
-            var centerLat = bounds.north + diffLat;
+            var diffLong   = (bounds.east  - bounds.west ) / 2;
+            var diffLat    = (bounds.south - bounds.north) / 2;
+            var centerLong = bounds.west  + diffLong;
+            var centerLat  = bounds.north + diffLat;
             return $.MAPBOX.initialCenter = [centerLong, centerLat];
         },
 
@@ -443,6 +443,7 @@
             //add the Office, our Custom Property...and a great show
             $.MAPBOX.setupMarker($.MAPBOX.locations.office.center, $.MAPBOX.dataset.features.length, true);
             //add the center point
+            // TODO: Make sure we need this or not?
             // $.MAPBOX.setupMarker($.MAPBOX.locations.initial.center, $.MAPBOX.dataset.features.length+1, false);
         },
 
@@ -472,9 +473,9 @@
             //add Location to location Object
             $.MAPBOX.locations[`location${index}`] = {
                 center: coordinates,
-                pitch: $.MAPBOX.locationPitch,
-                zoom: $.MAPBOX.locationZoom,
-                speed: $.MAPBOX.animation.speed,
+                pitch:  $.MAPBOX.locationPitch,
+                zoom:   $.MAPBOX.locationZoom,
+                speed:  $.MAPBOX.animation.speed,
                 offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()], // Check! - ensure updates on Screen Resize
             };
             return null;
@@ -522,7 +523,7 @@
             if (marker === $.MAPBOX.markers.office) return null;
 
             $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
-
+            // TODO: Implement this when Stable Map is built
             //secondaryTransition("show")
 
             return null;
@@ -534,12 +535,26 @@
         //helper to vizualize page size by changing bg
         updatePanelSize: function () {
             var panel = document.getElementById('sizePanel');
-            // if (!panel) {
-            //     <aside id="sizePanel"></aside>
-            //     createPanel by adding the aside via script
-            // };
+
+            // Add it to the document if it doesn't exist.
+            if (panel === null) {
+                panel    = document.createElement('aside');
+                panel.id = "sizePanel";
+                $.body.prepend(panel);
+            };
+
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
-            panel.innerHTML = "<strong>" + $.SCREEN.breakpoint.width + "</strong> " + $.SCREEN.size.width + "&times;" + $.SCREEN.size.height;
+            panel.innerHTML =   "<strong>"                      +
+                                    $.SCREEN.size.width         +
+                                        "&times;"               +
+                                    $.SCREEN.size.height        +
+                                        " | "                   +
+                                    $.SCREEN.breakpoint.width   +
+                                        "/"                     +
+                                    $.SCREEN.breakpoint.height  +
+                                        " | "                   +
+                                    $.SCREEN.layout             +
+                                "</strong>";
         },
     }
 
@@ -554,8 +569,11 @@
     });
 
     document.addEventListener("DOMContentLoaded", function (event) {
-        $.SETUP.getElements();
-        $.RESIZE.handleResize(true);
-        $.SETUP.getMapBoxObjects();
+        var stupidZeroDelay = 0;
+        setTimeout(function(){
+            $.SETUP.getElements();
+            $.RESIZE.handleResize(true);
+            $.SETUP.getMapBoxObjects();
+        }, stupidZeroDelay);
     });
 </script>
