@@ -4,10 +4,11 @@
 /******************************************************************************/
 
     #grid {
-        width: 100vw;
-        height: 100vh;
         position: absolute;
         top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         z-index: 1001;
         pointer-events: none;
         display: none;
@@ -101,9 +102,10 @@
         left: 0;
         right: 0;
         height: 0px;
-        transform: translate(0, -.5px);
-        opacity: .25;
-        border-bottom: 1px dashed cyan;
+        transform: translate(0, 0);
+        opacity: 1;
+        border-bottom: 1px dashed rgba(0,255,255,.25);
+        background-color: rgba(255,0,255,.25);
     }
 
     .vline {
@@ -149,19 +151,36 @@
     .tline::after { transform: translate(0, -100%);}
     .bline::after { transform: translate(0, 0);}
 
+
+    /* Compact Alignment */
+
+    .compact .nline {
+        top: 64px;
+        background-color: transparent;
+    }
+
+    .compact .mline {
+        top: calc(50% + 16px);
+    }
+
+
+
+    /* TODO: Remove when no longer using to measure */
     #grid .pane {
         position: absolute;
         width: calc(25% - 32px - 8px);
-        left: calc( 0% + 32px       );
-        left: calc(25% + 8px + 16px );
-        left: calc(50% + 16px       );
-        left: calc(75% + 16px - 8px );
+        left:  calc( 0% + 32px       );
+        left:  calc(25% + 8px + 16px );
+        left:  calc(50% + 16px       );
+        left:  calc(75% + 16px - 8px );
         top: 112px;
         bottom: 32px;
         background-color: yellow;
         opacity: .2;
         display: none;
     }
+
+    .compact #grid .pane { top: 64px; }
 
     /* Show width and height in a panel */
     aside {
@@ -181,12 +200,20 @@
         text-transform: uppercase;
     }
 
-    /* TODO: need width & height breakpoints */
+    aside::before {
+        /* Increases the hit area during testing */
+        content: "";
+        position: absolute;
+        top:   -1.5rem;
+        bottom: -.5rem;
+        left:   -.5rem;
+        right:  -.5rem;
+        background-color: transparent;
+    }
 
-    /* .tiny	aside { background-color: rgb(192, 239, 255); } */
-    .mobile	aside { background-color: rgb(255, 165,   0); }
-    .normal aside { background-color: rgb(255, 255,   0); }
-    .huge   aside { background-color: rgb( 70, 255,  70); }
-    /* .huge	aside { background-color: rgb(255,  43,  43); } */
+    .split   aside,
+    .default aside { background-color: rgba(70, 255,  70, .5); }
+    .compact aside { background-color: rgba(255, 165,  0, .5); }
+    .null    aside { background-color: rgba(255, 0,    0, .5); }
 
 </style>
