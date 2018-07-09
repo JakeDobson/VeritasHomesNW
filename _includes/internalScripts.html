@@ -1,12 +1,12 @@
 <script text="text/javascript">
     //global obj
     var $ = {
-        body: null,
-        html: null,
-        win: null,
-        logo: null,
+        body:  null,
+        html:  null,
+        win:   null,
+        logo:  null,
         cover: null,
-        map: null,
+        map:   null,
         intro: null,
 
         breakpoints: {
@@ -21,12 +21,12 @@
         layouts: {
             types: {
                 compact: "compact",
-                split: "split",
-                backup: "backup",
+                default: "default",
+                backup: "backup", // CHECK: if we need this?
             },
             rules: {
                 compact: [],
-                split: [],
+                default: [],
                 backup: [], // CHECK: if we need this?
             }
         },
@@ -68,6 +68,7 @@
     $.SCREEN.layout = $.layouts.types.compact;
 
     //set layout rules
+
     $.layouts.rules.compact = [
         [$.breakpoints.ws, $.breakpoints.hs],
         [$.breakpoints.ws, $.breakpoints.hm],
@@ -76,7 +77,7 @@
         [$.breakpoints.wl, $.breakpoints.hs],
     ];
 
-    $.layouts.rules.split = [
+    $.layouts.rules.default = [
         [$.breakpoints.wm, $.breakpoints.hm],
         [$.breakpoints.wm, $.breakpoints.hl],
         [$.breakpoints.wl, $.breakpoints.hm],
@@ -219,13 +220,10 @@
             }
             checkBreakpointChange(sizeW, $.WIDTH,  initial);
             checkBreakpointChange(sizeH, $.HEIGHT, initial);
-
             //update $.RESIZE properties for layout
             $.RESIZE.getLayoutCategory();
             $.RESIZE.getScreenSize();
             $.RESIZE.getScreenOrientation();
-            $.RESIZE.getScreenRatio();
-
             //make sure to update panel size if we have one
             if ($.DEV.enabled) $.DEV.updatePanelSize();
 
@@ -238,7 +236,9 @@
         getScreenOrientation: function () {
             //grab values we need before continuing...
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
+            $.body.classList.remove($.SCREEN.orientation);
             $.SCREEN.orientation = ($.SCREEN.size.width >= $.SCREEN.size.height) ? $.LANDSCAPE : $.PORTRAIT;
+            $.body.classList.add($.SCREEN.orientation);
         },
 
         /** calc current ratio
@@ -259,6 +259,7 @@
         getLayoutCategory: function () {
             //set layout to false, so can be set later inside our loops
             var layoutMatchFound = false;
+            // if ($.RESIZE.getScreenOrientation() === $.LANDSCAPE) $.SCREEN.layout = $.layouts.types.split;
             //loop rules to check if match found yet, once found --> return out
             Object.keys($.layouts.rules).forEach(function (type) {
                 if (layoutMatchFound) return;
@@ -285,8 +286,14 @@
             if (location === $.MAPBOX.locations.current) return;
             //update the current location
             $.MAPBOX.locations.current = location;
+
             //tell map to fly to location
-            if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
+            if(location === $.MAPBOX.locations.initial) {
+                $.MAPBOX.fitInitialBounds();
+            } else {
+                if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
+            }
+            
             //tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -322,6 +329,7 @@
         locationZoom: 13.5,
         locationPitch: 50,
         coordsOffice: [-122.386888, 47.5791677],
+        bounds: [],
         animation: {
             speed: 2
         },
@@ -363,15 +371,9 @@
                 zoom:   $.MAPBOX.locationZoom,
                 pitch:  $.MAPBOX.locationPitch,
                 speed:  $.MAPBOX.animation.speed,
-                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // CHECK: ensure updates on Screen Resize
-            }
-            $.MAPBOX.locations.initial = {
-                center: $.MAPBOX.initialCenter,
-                zoom:   $.MAPBOX.initialZoom,
-                pitch:  $.MAPBOX.initialPitch,
-                speed:  $.MAPBOX.animation.speed,
-                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()] // CHECK: ensure updates on Screen Resize
-            }
+                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]// CHECK: ensure updates on Screen Resize
+            };
+            $.MAPBOX.locations.initial = { center: $.MAPBOX.initialCenter };
         },
 
         createMapAndEvent: function () {
@@ -386,41 +388,71 @@
                 attributionControl: false,
                 logoPosition: "bottom-right",
             });
-            $.MAPBOX.initialOffset();
+            $.MAPBOX.fitInitialBounds();
             $.MAPBOX.map.on("load", $.MAPBOX.isReady);
         },
 
         getInitialCenter: function () {
-            // $.MAPBOX.locations = $.MAPBOX.dataset.features;
-            var center = $.MAPBOX.dataset.features[0].geometry.coordinates;
-            var bounds = {
-                north: center[1],
-                east:  center[0],
-                south: center[1],
-                west:  center[0]
-            };
 
-
+            var bounds = new mapboxgl.LngLatBounds();
+            //extend bounds to fit coordinates of homes
             $.MAPBOX.dataset.features.forEach(function (location) {
-                center = location.geometry.coordinates;
-                if (bounds.west  > center[0]) bounds.west  = center[0];
-                if (bounds.south > center[1]) bounds.south = center[1];
-                if (bounds.east  < center[0]) bounds.east  = center[0];
-                if (bounds.north < center[1]) bounds.north = center[1];
+                bounds.extend(location.geometry.coordinates);
             });
 
-            var diffLong   = (bounds.east  - bounds.west ) / 2;
-            var diffLat    = (bounds.south - bounds.north) / 2;
-            var centerLong = bounds.west  + diffLong;
-            var centerLat  = bounds.north + diffLat;
-            return $.MAPBOX.initialCenter = [centerLong, centerLat];
+            $.MAPBOX.bounds = bounds;
+            $.MAPBOX.initialCenter = bounds.getCenter();
+
+            // $.MAPBOX.locations = $.MAPBOX.dataset.features;
+        //     var center = $.MAPBOX.dataset.features[0].geometry.coordinates;
+        //     var bounds = {
+        //         north: center[1],
+        //         east:  center[0],
+        //         south: center[1],
+        //         west:  center[0]
+        //     };
+
+
+        //     $.MAPBOX.dataset.features.forEach(function (location) {
+        //         center = location.geometry.coordinates;
+        //         if (bounds.west  > center[0]) bounds.west  = center[0];
+        //         if (bounds.south > center[1]) bounds.south = center[1];
+        //         if (bounds.east  < center[0]) bounds.east  = center[0];
+        //         if (bounds.north < center[1]) bounds.north = center[1];
+        //     });
+
+        //     var diffLong    = (bounds.east   - bounds.west ) / 2;
+        //     var diffLat     = (bounds.south  - bounds.north) / 2;
+        //     var centerLong  = bounds.west    + diffLong;
+        //     var centerLat   = bounds.north   + diffLat;
+        //     $.MAPBOX.bounds = [ bounds.west,
+        //                         bounds.south,
+        //                         bounds.east,
+        //                         bounds.north];
+        //     return $.MAPBOX.initialCenter = [centerLong, centerLat];
         },
 
-        initialOffset: function () {
-            $.MAPBOX.map.panBy(
-                [$.MAPBOX.offset.x(), -$.MAPBOX.offset.y()],
-                { easing: function () { return 1 } }
-            );
+        fitInitialBounds: function () {
+            var padding = {
+                top:    112 + 32,   //top margin + half-marker
+                bottom: 96,         //bottom margin + full-marker
+                left:   64,         //left margin + half-marker
+                right:  64          //full-marker
+            };
+
+            if ($.SCREEN.layout === $.layouts.types.default) {
+                //weird offset hack + full-marker
+                padding.right += $.SCREEN.size.width / 4;
+            }
+
+            if ($.SCREEN.layout === $.layouts.types.compact && $.SCREEN.orientation === $.LANDSCAPE) {
+                padding.top    = 64;                        // full-marker
+                padding.bottom = 64;                        // full-marker
+                padding.left   = 0;                         // removed
+                padding.right  = $.SCREEN.size.width / 4;   //weird offset hack + full-marker
+            }
+
+            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, { padding: padding });
         },
 
         /**

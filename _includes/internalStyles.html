@@ -19,9 +19,11 @@
 
         --sizeNone:     0rem;
         --sizeLogoHalf: 3.4rem;
+        --sizeLogoCompact: 3.2rem;
         --sizeLogo:     calc(var(--sizeLogoHalf) * 2);
 
         --posLogoTop:   6.4rem;
+        --posLogoTopCompact: 3.2rem;
     }
 
     /* @media (min-width: 10em) { :root {--bpw: 'tiny'  } } */
@@ -69,9 +71,14 @@
         color:      var(--white);
         background: var(--black);
         font-family: -apple-system, "Gotham", "Din", BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        max-height: 100vh;
-        max-width: 100vw;
+        position: fixed;
+        margin: 0;
+        top: 0;
         overflow: hidden;
+    }
+
+    .compact .landscape body {
+
     }
 
     main {
@@ -148,6 +155,10 @@
         color: var(--white);
     }
 
+    .compact .logo {
+        width: var(--sizeLogoCompact);
+    }
+
     .logo.centered {
         position: absolute;
         left: 50vw;
@@ -190,7 +201,7 @@
         animation-delay: 1s;
     }
 
-    /* Logo To Top */
+    /* DEFAULT -- Logo To Top */
     @-webkit-keyframes topLogo {
         0%   { top: 50vh; }
         10%  { top: 50.5vh; }
@@ -215,6 +226,31 @@
         65%  { top: calc(var(--posLogoTop) - 1vh); }
         100% { top:      var(--posLogoTop);        }
     }
+    /* COMPACT -- Logo To TOP */
+    @-webkit-keyframes topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
+    @-moz-keyframes    topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
+    @-o-keyframes      topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
+    @keyframes         topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
 
     .logo.top {
         opacity: 1;
@@ -226,6 +262,11 @@
         animation-iteration-count: 1;
         animation-delay: 0s;
     }
+
+    .compact .logo.top {
+        animation-name: topLogoCompact;
+    }
+
     /******************************************************************************/
     /*                         Asset Logo SVG  for reuse                          */
     /* We hide this assest & use the <use xlink:href="#logo"> instead on the page */

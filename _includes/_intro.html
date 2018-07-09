@@ -1,27 +1,38 @@
 
 <section style="font-family: 'Gotham'" id="intro">
-    <h1>Make Selling&nbsp;Easy</h1>
+    <h1>Make<br>Selling&nbsp;Easy</h1>
     <p>Thinking about selling your home?</p>
     <a href="#contact" id="talkToUs">Talk To Us</a>
 </section>
 
 <style type="text/css">
 
-    .compact #intro {
+    /* br {
         display: none;
-    }
+    } */
 
     #intro {
         position: absolute;
-        top: calc(50% - 120px);
-        left: calc(50% + 16px);
-        width: 410px;
+        top: calc(50% - 12rem);
+        left: calc(50% + 1.6rem);
+        width: 41rem;
         font-family: "Gotham", Helvetica, sans-serif;
         color: white;
-        transform: translate(0, 64px);
+        transform: translate(0, 6.4rem);
         opacity: -1;
         transition: all .5s ease .1s;
         z-index: 2000;
+    }
+    .compact.portrait #intro {
+        width: auto;
+        top: 6.1rem;
+        left: 1.6rem;
+        right: 1.6rem;
+        /* outline: 2px solid green; */
+    }
+
+    .compact.landscape #intro {
+        top: 12rem;
     }
 
     #intro.animateIn {
@@ -55,16 +66,29 @@
     #intro h1 {
         font-size: 48px;
         letter-spacing: 4px;
-        font-weight: 800;
+        font-weight: 900;
         margin-bottom: 8px;
         margin-top: -12px;
+    }
+    .compact #intro h1 {
+        font-size: 28px;
+        letter-spacing: 2px;
+        margin-bottom: 14px;
+        margin-top: -2px;
+        line-height: 1;
     }
 
     #intro p {
         font-size: 24px;
-        font-weight: 200;
+        font-weight: 400;
         margin-bottom: 32px;
         line-height: 1;
+    }
+    .compact #intro p {
+        font-size: 14px;
+        letter-spacing: 0px;
+        margin-bottom: 18px;
+        line-height: 1.3rem;
     }
 
     #intro a,
@@ -90,6 +114,10 @@
     #intro a:active {
         -webkit-filter: grayscale(0) brightness(.66);
                 filter: grayscale(0) brightness(.66);
+    }
+
+    .compact #intro a {
+        font-size: 14px;
     }
 
 </style>
