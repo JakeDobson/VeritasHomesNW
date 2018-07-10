@@ -10,62 +10,64 @@
         intro: null,
 
         breakpoints: {
-            ws: "ws",
-            wm: "wm",
-            wl: "wl",
-            hs: "hs",
-            hm: "hm",
-            hl: "hl",
+            ws:   "ws",
+            wm:   "wm",
+            wl:   "wl",
+            hs:   "hs",
+            hm:   "hm",
+            hl:   "hl",
+            null: null
         },
 
         layouts: {
             types: {
                 compact: "compact",
                 default: "default",
-                backup: "backup", // CHECK: if we need this?
+                backup:  "backup",
+                null:    "null",
             },
             rules: {
                 compact: [],
                 default: [],
-                backup: [], // CHECK: if we need this?
+                backup:  [], // TODO: CHECK: if we need this?
             }
         },
 
-        SETUP: {},
+        SETUP:   {},
         LOADING: {},
-        STATES: {},
-        COVER: {},
-        RESIZE: {},
-        ZOOM: {},
-        MAPBOX: {},
-        DEV: {},
-        //list of UI elements...
-        UI: {
+        STATES:  {},
+        COVER:   {},
+        RESIZE:  {},
+        ZOOM:    {},
+        MAPBOX:  {},
+        DEV:     {},
+        UI:      {}, //list of UI elements...
 
-        },
-        //size, ratio, orientation
+        //size, ratio, orientation, categories
         SCREEN: {
-            ratio: null,
+            ratio:       null,
             orientation: null,
-            size: null,          // {width:, height:}
-            layout: null,
+            size:        null, // {width:, height:, etc...}
+            layout:      null,
             breakpoint: {
-                width: null,
+                width:  null,
                 height: null,
             },
         },
-        PORTRAIT: "portrait",
+        PORTRAIT:  "portrait",
         LANDSCAPE: "landscape",
-        WIDTH: "width",
-        HEIGHT: "height",
+        WIDTH:     "width",
+        HEIGHT:    "height",
+        COMPACT:   "compact",
+        DEFAULT:   "default",
     };
 
     //set default size
-    $.SCREEN.breakpoint.width  = $.breakpoints.ws;
-    $.SCREEN.breakpoint.height = $.breakpoints.hs;
+    $.SCREEN.breakpoint.width  = $.breakpoints.null;
+    $.SCREEN.breakpoint.height = $.breakpoints.null;
 
     //set default layout category
-    $.SCREEN.layout = $.layouts.types.compact;
+    $.SCREEN.layout = $.layouts.types.null;
 
     //set layout rules
 
@@ -86,10 +88,10 @@
 
     $.SETUP = {
         getElements: function () {
-            $.body = document.body;
-            $.html = document;
-            $.win = window;
-            $.logo = document.getElementById("veritasLogo");
+            $.body  = document.body;
+            $.html  = document;
+            $.win   = window;
+            $.logo  = document.getElementById("veritasLogo");
             $.cover = document.getElementById("coverSite");
             $.intro = document.getElementById("intro");
         },
@@ -194,13 +196,9 @@
         * @return {void}
         */
         handleResize: function (initial) {
-            console.log("Screen Resized");
-
-            //read CSS psuedo elements and its before & after value
-            var sizeW = $.win.getComputedStyle($.body, ':after').getPropertyValue('content');
-            var sizeH = $.win.getComputedStyle($.body, ':before').getPropertyValue('content');
-
-            console.log("size", sizeW, sizeH);
+            //read CSS psuedo elements and its before & after value - We have to remove quotes because of only Android adding them.
+            var sizeW = $.win.getComputedStyle($.body, ':after' ).getPropertyValue('content').replace(/"/g, '');
+            var sizeH = $.win.getComputedStyle($.body, ':before').getPropertyValue('content').replace(/"/g, '');
 
             function checkBreakpointChange(newSize, dimension, initial) {
                 var bp = $.SCREEN.breakpoint;
@@ -212,18 +210,20 @@
                             //add new class, remove other
                             $.body.classList.remove(bp[dimension]);
                             $.body.classList.add(newSize);
-                            //update global breakpoint width var
+                            //update global breakpoint with var
                             bp[dimension] = newSize;
                         }
                     });
                 }
             }
+
             checkBreakpointChange(sizeW, $.WIDTH,  initial);
             checkBreakpointChange(sizeH, $.HEIGHT, initial);
             //update $.RESIZE properties for layout
             $.RESIZE.getLayoutCategory();
             $.RESIZE.getScreenSize();
             $.RESIZE.getScreenOrientation();
+            // $.RESIZE.getScreenRatio();
             //make sure to update panel size if we have one
             if ($.DEV.enabled) $.DEV.updatePanelSize();
 
@@ -263,7 +263,7 @@
             //loop rules to check if match found yet, once found --> return out
             Object.keys($.layouts.rules).forEach(function (type) {
                 if (layoutMatchFound) return;
-                //if no match, check if breakpoints are equal, set to true --> return out
+                //if no match found, check if breakpoints are equal, set to true --> return out
                 $.layouts.rules[type].forEach(function (rule) {
                     if (layoutMatchFound) return;
                     if (rule[0] == $.SCREEN.breakpoint.width && rule[1] == $.SCREEN.breakpoint.height) {
@@ -310,17 +310,17 @@
     };
 
     $.MAPBOX = {
-        client: null,
-        tiles: null,
+        client:  null,
+        tiles:   null,
         dataset: null,
-        map: null,
+        map:     null,
         markers: {
-            office: null,
+            office:    null,
             locations: []
         },
         locations: {
             current: null,
-            office: {},
+            office:  {},
             initial: {},
         },
         initialCenter: [],
@@ -380,10 +380,10 @@
             $.MAPBOX.getInitialCenter();
             $.MAPBOX.map = new $.MAPBOX.tiles.Map({
                 container: "map",
-                style: "mapbox://styles/mapbox/satellite-v9?optimize=true",
+                style:  "mapbox://styles/mapbox/satellite-v9?optimize=true",
                 center: $.MAPBOX.initialCenter,
-                zoom: $.MAPBOX.initialZoom,
-                pitch: $.MAPBOX.initialPitch,
+                zoom:   $.MAPBOX.initialZoom,
+                pitch:  $.MAPBOX.initialPitch,
                 interactive: false,
                 attributionControl: false,
                 logoPosition: "bottom-right",
@@ -573,22 +573,24 @@
                 panel    = document.createElement('aside');
                 panel.id = "sizePanel";
                 $.body.prepend(panel);
+                // Add click handler
+                panel.addEventListener("click", function(){
+                    document.location.hash = (document.location.hash === "#grid") ? "" : "#grid";
+                });
             };
 
             if (!$.SCREEN.size) $.RESIZE.getScreenSize();
-
-            // Write Status to the panel
-            panel.innerHTML = "<strong>"                    +
-                                $.SCREEN.size.width         +
-                                    "&times;"               +
-                                $.SCREEN.size.height        +
-                                    " | "                   +
-                                $.SCREEN.breakpoint.width   +
-                                    "&nbsp;"                +
-                                $.SCREEN.breakpoint.height  +
-                                    " | "                   +
-                                $.SCREEN.layout             +
-                            "</strong>";
+            panel.innerHTML =   "<strong>"                      +
+                                    $.SCREEN.size.width         +
+                                        "&times;"               +
+                                    $.SCREEN.size.height        +
+                                        " | "                   +
+                                    $.SCREEN.breakpoint.width   +
+                                        "/"                     +
+                                    $.SCREEN.breakpoint.height  +
+                                        " | "                   +
+                                    $.SCREEN.layout             +
+                                "</strong>";
         },
     }
 

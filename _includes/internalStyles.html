@@ -26,27 +26,31 @@
         --posLogoTopCompact: 3.2rem;
     }
 
-    /* @media (min-width: 10em) { :root {--bpw: 'tiny'  } } */
-    @media (min-width: 10rem) { :root {--bpw: 'ws' } } /* 100px  */
-    @media (min-width: 60rem) { :root {--bpw: 'wm' } } /* 600px  */
-    @media (min-width: 140rem){ :root {--bpw: 'wl' } } /* 1400px */
-    /* @media (min-width: 120em){ :root {--bpw: 'huge'  } } */
+    @media (min-width: 10rem)  { :root {--bpw: 'ws' } } /* 100px  */
+    @media (min-width: 60rem)  { :root {--bpw: 'wm' } } /* 600px  */
+    @media (min-width: 140rem) { :root {--bpw: 'wl' } } /* 1400px */
 
-    /* @media (min-height: 10em) { :root {--bph: 'tiny'  } } */
     @media (min-height: 10rem) { :root {--bph: 'hs' } } /* 100px */
     @media (min-height: 40rem) { :root {--bph: 'hm' } } /* 400px */
     @media (min-height: 90rem) { :root {--bph: 'hl' } } /* 900px */
-    /* @media (min-height: 120em){ :root {--bph: 'huge'  } } */
 
-
+    body::before,
     body::after {
-        content: var(--bpw, 'ws');
+        position: absolute;
+        top: 0;
+        z-index: 5000;
         display: none;
     }
 
+
+    body::after {
+        content: var(--bpw, 'null');
+        left: 0;
+    }
+
     body::before {
-        content: var(--bph, 'hs');
-        display: none;
+        content: var(--bph, 'null');
+        right: 0;
     }
 
     body,
@@ -66,15 +70,20 @@
         max-height: 100%;
     }
 
+    body,
+    main {
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
     body {
         font-size: 1.6rem;
         color:      var(--white);
         background: var(--black);
         font-family: -apple-system, "Gotham", "Din", BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         position: fixed;
-        margin: 0;
-        top: 0;
-        overflow: hidden;
+        top:    0;
+        bottom: 0;
     }
 
     .compact .landscape body {
@@ -82,10 +91,10 @@
     }
 
     main {
-        /* margin-top: 1rem; */
         position: relative;
         background: var(--gray);
         z-index: 1;
+        /* border: 3px solid blue; /* TODO: Remove this when done testing */
     }
 
     #coverSite {
@@ -121,13 +130,13 @@
         z-index: 998;
     }
 
-    #gradients #gradientLeft{
+    #gradients #gradientLeft {
         background-image: linear-gradient(112.5deg, rgba(0,0,0,.9), rgba(0,0,0,0) 50%, rgba(0,0,0,0));
         left:     0;
         right:  50%;
     }
 
-    #gradients #gradientRight{
+    #gradients #gradientRight {
         background-image: linear-gradient(90deg, rgba(0,0,0,0),  rgba(0,0,0,.95));
         right:    0;
         left:     40%;
@@ -136,14 +145,18 @@
     /* MAP */
 
     #map {
-        position: relative;
-        width:  100vw;
-        height: 100vh;
+        position: absolute;
+        height: 100%;
+        width:  100%;
+        box-sizing: border-box;
+        /* border: 3px solid red; /* TODO: Remove this when done testing */
     }
 
     .zoomed-out #map .mapboxgl-canvas,
                 #map .mapboxgl-canvas{ -webkit-filter: grayscale(1) contrast(1) brightness(.66);
                                                filter: grayscale(1) contrast(1) brightness(.66); }
+
+    /* TODO: Add a zoomed in brightness */
 
     /******************************************************************************/
     /*													Logo States & Settings    */
@@ -252,7 +265,7 @@
         100% { top:      var(--posLogoTopCompact);        }
     }
 
-    .logo.top {
+    .default .logo.top {
         opacity: 1;
         animation-name: topLogo;
         animation-duration: .75s;
@@ -340,7 +353,5 @@
         -webkit-filter: grayscale(0) brightness(1);
                 filter: grayscale(0) brightness(1);
     }
-
-
 
 </style>
