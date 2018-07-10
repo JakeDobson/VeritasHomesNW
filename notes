@@ -1,0 +1,10 @@
+16 padding top
+32 height -- logo
+112 spacing top -- Content
+  Headline - Gotham Black size 28, letter spacing 2, line spacing 1
+28 spacing to baseline of SubHead
+  SubHead - Gotham Book size 14, letter spacing 0, line spacing 1.3
+18 spacing to top of Button
+  Button - h 44, w 144
+    ButtonText - Gotham Bold size 14, centered(v&h)
+

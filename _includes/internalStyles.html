@@ -19,9 +19,11 @@
 
         --sizeNone:     0rem;
         --sizeLogoHalf: 3.4rem;
+        --sizeLogoCompact: 3.2rem;
         --sizeLogo:     calc(var(--sizeLogoHalf) * 2);
 
         --posLogoTop:   6.4rem;
+        --posLogoTopCompact: 3.2rem;
     }
 
     @media (min-width: 10rem)  { :root {--bpw: 'ws' } } /* 100px  */
@@ -82,6 +84,10 @@
         position: fixed;
         top:    0;
         bottom: 0;
+    }
+
+    .compact .landscape body {
+
     }
 
     main {
@@ -162,6 +168,10 @@
         color: var(--white);
     }
 
+    .compact .logo {
+        width: var(--sizeLogoCompact);
+    }
+
     .logo.centered {
         position: absolute;
         left: 50vw;
@@ -204,7 +214,7 @@
         animation-delay: 1s;
     }
 
-    /* Logo To Top */
+    /* DEFAULT -- Logo To Top */
     @-webkit-keyframes topLogo {
         0%   { top: 50vh; }
         10%  { top: 50.5vh; }
@@ -229,6 +239,31 @@
         65%  { top: calc(var(--posLogoTop) - 1vh); }
         100% { top:      var(--posLogoTop);        }
     }
+    /* COMPACT -- Logo To TOP */
+    @-webkit-keyframes topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
+    @-moz-keyframes    topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
+    @-o-keyframes      topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
+    @keyframes         topLogoCompact {
+        0%   { top: 50vh; }
+        10%  { top: 50.5vh; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        100% { top:      var(--posLogoTopCompact);        }
+    }
 
     .default .logo.top {
         opacity: 1;
@@ -241,11 +276,8 @@
         animation-delay: 0s;
     }
 
-    /* TODO: Replace above and below with Jake's stuff */
-
-    .compact .logo{ width: 3.2rem; }
-    .compact .logo.top{
-        top: 3.2rem !important;
+    .compact .logo.top {
+        animation-name: topLogoCompact;
     }
 
     /******************************************************************************/
