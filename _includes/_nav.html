@@ -1,0 +1,79 @@
+
+<div id="siteNav">
+    <h1>Veritas</h1>
+    <svg id="navWordmark" class="" viewBox="0 0 186 34"><use xlink:href="#wordmark"></use></svg>
+    <div id="navIcon">
+        <span class="top"   ></span>
+        <span class="middle"></span>
+        <span class="bottom"></span>
+    </div>
+    <nav id="nav">
+        <ul>
+            <li><a id="linkBlog"     href="#blog"    >Blog</a></li>
+            <li><a id="linkProjects" href="#projects">Projects</a></li>
+            <li><a id="linkAboutUs"  href="#aboutUs" >About Us</a></li>
+            <li><a id="linkFacebook" href="#facebook">Facebook</a></li>
+        </ul>
+    </nav>
+</div>
+
+<style type="text/css">
+
+    #siteNav {
+        margin: 0;
+        height: 11.2rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        transition: opacity 1s ease-in .25s;
+    }
+
+    #siteNav h1{ font-size: 0; }
+
+    #siteNav #navWordmark{
+        position: absolute;
+        top:    3.2rem;
+        left:   3.2rem;
+        height: 3.4rem;
+    }
+
+    .compact #siteNav #navWordmark {
+        height: 1.4rem;
+        left:   1.6rem;
+        top:    2.6rem;
+        padding-left:   calc(env(safe-area-inset-left) - 2.8rem);
+    }
+
+    /* LOADED STATE */
+    .loaded #siteNav{ opacity: 1; }
+
+    #siteNav nav ul { display: none; }
+
+    .compact #siteNav #navIcon {
+        position: absolute;
+        top:    2.0rem;
+        right:  1.6rem;
+        width:  2.4rem;
+        height: 2.4rem;
+        padding-right:   calc(env(safe-area-inset-left) - 2.8rem);
+    }
+
+    .compact #siteNav #navIcon span {
+        display: block;
+        position: absolute;
+        width: 2.0rem;
+        height: .2rem;
+        background: var(--blue);
+        left: .2rem;
+        border-radius: .1rem;
+
+    }
+
+    .compact #siteNav #navIcon .top    { top: 0.5rem; }
+    .compact #siteNav #navIcon .middle { top: 1.1rem; }
+    .compact #siteNav #navIcon .bottom { top: 1.7rem; }
+
+
+</style>
