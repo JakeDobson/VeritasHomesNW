@@ -8,6 +8,7 @@
         cover: null,
         map:   null,
         intro: null,
+        grads: null,
 
         breakpoints: {
             ws:   "ws",
@@ -94,11 +95,12 @@
             $.logo  = document.getElementById("veritasLogo");
             $.cover = document.getElementById("coverSite");
             $.intro = document.getElementById("intro");
+            $.grads = document.getElementById("gradients");
         },
 
         getMapBoxObjects: function () {
-            $.MAPBOX.client = new MapboxClient($.MAPBOX.dataset.accessToken);
-            $.MAPBOX.tiles = mapboxgl;
+            $.MAPBOX.client            = new MapboxClient($.MAPBOX.dataset.accessToken);
+            $.MAPBOX.tiles             = mapboxgl;
             $.MAPBOX.tiles.accessToken = $.MAPBOX.api.accessToken;
             $.MAPBOX.client.listFeatures($.MAPBOX.dataset.id, {}, $.MAPBOX.datasetCallback);
         },
@@ -123,6 +125,11 @@
                 $.ZOOM.initial();
             });
         },
+
+        moveGradientsOverMapCanvas: function() {
+            var mapCanvas = document.querySelector('.mapboxgl-canvas-container');
+            mapCanvas.appendChild($.grads);
+        }
     }
 
     $.SUPPORTS = {
@@ -144,6 +151,7 @@
     }
 
     $.LOADING = {
+
         exitLoadingState: function () {
             //get opacity of the logo
             var logoOpacity = $.win.getComputedStyle($.logo, null).getPropertyValue("opacity");
@@ -157,7 +165,7 @@
             $.logo.classList.remove("loading");
             $.logo.classList.add("top");
             $.intro.classList.add("animateIn");
-        }
+        },
     }
 
     $.STATES = {
@@ -166,6 +174,8 @@
             $.LOADING.logoTransitionToTop();
             //we need to also remove the site cover
             $.COVER.hide();
+            //Set Body as Loaded
+            $.body.classList.add("loaded");
         },
 
         contentLoaded: function () {
@@ -293,7 +303,7 @@
             } else {
                 if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
             }
-            
+
             //tell office marker to be active if it's selected
             $.MAPBOX.officeMarkerActive((location === $.MAPBOX.locations.office) ? true : false);
 
@@ -354,6 +364,7 @@
         isReady: function () {
             $.SETUP.mapClickHandler();
             $.SETUP.logoClickHandler();
+            $.SETUP.moveGradientsOverMapCanvas();
             $.MAPBOX.map.addSource("points", {
                 "type": "geojson", "data": {
                     "type": "FeatureCollection",
@@ -612,4 +623,5 @@
             $.SETUP.getMapBoxObjects();
         }, stupidZeroDelay);
     });
+
 </script>
