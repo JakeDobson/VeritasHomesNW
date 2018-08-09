@@ -15,15 +15,18 @@
         --gray:  #808080;
         --colorNone: transparent;
 
-        --heightAside: 14rem;
+        --heightAside:     14rem;
 
-        --sizeNone:     0rem;
-        --sizeLogoHalf: 3.4rem;
+        --sizeNone:        0rem;
+        --sizeLogoHalf:    3.4rem;
         --sizeLogoCompact: 3.2rem;
         --sizeLogo:     calc(var(--sizeLogoHalf) * 2);
 
         --posLogoTop:   6.4rem;
         --posLogoTopCompact: 3.2rem;
+
+        --marginFull: 3.2rem;
+        --marginHalf: 1.6rem;
     }
 
     @media (min-width: 10rem)  { :root {--bpw: 'ws' } } /* 100px  */
@@ -86,10 +89,6 @@
         bottom: 0;
     }
 
-    .compact .landscape body {
-
-    }
-
     main {
         position: relative;
         background: var(--gray);
@@ -97,12 +96,17 @@
         /* border: 3px solid blue; /* TODO: Remove this when done testing */
     }
 
+    /* z-index Settings */
+    #siteNav   { z-index: 1000; }
+    #coverSite { z-index:  990; }
+    #gradients { z-index:  1;   }
+    .marker    { z-index:  2;   }
+
     #coverSite {
         position: absolute;
         pointer-events: all;
         opacity: 1;
         background: var(--black);
-        z-index: 999;
         transition: opacity 2s ease-in 1s;
         visibility: visible;
     }
@@ -115,8 +119,8 @@
     /* Gradients */
 
     #gradients,
-    #gradients #gradientLeft,
-    #gradients #gradientRight {
+    #gradients #gradientCover1,
+    #gradients #gradientCover2 {
         position: absolute;
         top:    0;
         bottom: 0;
@@ -127,19 +131,38 @@
         background: transparent;
         left:  0;
         right: 0;
-        z-index: 998;
+        /* -webkit-transform: translate3d(0,0,500px);
+        transform: translate3d(0,0,500px); */
     }
 
-    #gradients #gradientLeft {
+    /* Left Side */
+    #gradients #gradientCover1 {
         background-image: linear-gradient(112.5deg, rgba(0,0,0,.9), rgba(0,0,0,0) 50%, rgba(0,0,0,0));
         left:     0;
         right:  50%;
     }
 
-    #gradients #gradientRight {
+    /* Right Side */
+    #gradients #gradientCover2 {
         background-image: linear-gradient(90deg, rgba(0,0,0,0),  rgba(0,0,0,.95));
         right:    0;
         left:     40%;
+    }
+
+    /* Top Side */
+    .compact.portrait #gradients #gradientCover1{
+        background-image: linear-gradient(169deg, rgba(0,0,0,.9), rgba(0,0,0,.5) 50%, rgba(0,0,0,0));
+        right: 0;
+        bottom: auto;
+        height: 24rem;
+    }
+
+    /* Bottom Side */
+    .compact.portrait #gradients #gradientCover2{
+        background-image: linear-gradient(180deg, rgba(0,0,0,0),  rgba(0,0,0,.95));
+        left: 0;
+        top:  auto;
+        height: 6rem;
     }
 
     /* MAP */
@@ -153,8 +176,10 @@
     }
 
     .zoomed-out #map .mapboxgl-canvas,
-                #map .mapboxgl-canvas{ -webkit-filter: grayscale(1) contrast(1) brightness(.66);
-                                               filter: grayscale(1) contrast(1) brightness(.66); }
+                #map .mapboxgl-canvas{
+        -webkit-filter: grayscale(1) contrast(1) brightness(.66);
+                filter: grayscale(1) contrast(1) brightness(.66);
+    }
 
     /* TODO: Add a zoomed in brightness */
 
@@ -239,6 +264,7 @@
         65%  { top: calc(var(--posLogoTop) - 1vh); }
         100% { top:      var(--posLogoTop);        }
     }
+
     /* COMPACT -- Logo To TOP */
     @-webkit-keyframes topLogoCompact {
         0%   { top: 50vh; }
@@ -265,9 +291,8 @@
         100% { top:      var(--posLogoTopCompact);        }
     }
 
-    .default .logo.top {
+    .logo.top {
         opacity: 1;
-        animation-name: topLogo;
         animation-duration: .75s;
         animation-direction: normal;
         animation-timing-function: ease-in-out;
@@ -276,9 +301,8 @@
         animation-delay: 0s;
     }
 
-    .compact .logo.top {
-        animation-name: topLogoCompact;
-    }
+    .default .logo.top { animation-name: topLogo; }
+    .compact .logo.top { animation-name: topLogoCompact; }
 
     /******************************************************************************/
     /*                         Asset Logo SVG  for reuse                          */
@@ -286,13 +310,19 @@
     /******************************************************************************/
 
     #logo,
-    #mapMarker {
+    #mapMarker,
+    #wordmark {
         width:  var(--sizeNone);
         height: var(--sizeNone);
         display: block;
     }
 
-    #logo > * { fill: currentColor; }
+    #logo     > * { fill: currentColor; }
+    #wordmark > * { fill: currentColor; }
+
+    /******************************************************************************/
+    /*                               Map Markers                                  */
+    /******************************************************************************/
 
     .mapboxgl-ctrl-logo { visibility: hidden; }
 
@@ -307,6 +337,8 @@
         transform-origin: 0 0;
         transition: transform .25s ease-out;
     }
+    /* TODO: Add this back in */
+    .compact .marker > svg { zoom: .75; }
 
     .marker.active > svg { transform: scale(1) translate(-16px, -32px); }
 
@@ -316,8 +348,10 @@
     div.marker.mapboxgl-marker {
         z-index: 1;
         border-radius: 50%;
+
     }
 
+    /* Increases Hit Area */
     div.marker.mapboxgl-marker::before {
         content: "";
         position: absolute;
