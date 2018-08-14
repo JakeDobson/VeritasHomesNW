@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en_US" class ="no-js">
   <head>
-        <title>Veritas Homes</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="initial-scale=1, width=device-width" />
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <meta name='viewport' content='initial-scale=1, viewport-fit=cover'>
+      <meta name="theme-color" content="#000000">
+      <meta name="description" content="A description of the page">
+      <meta name="google" content="notranslate">
+      <title>Veritas Homes</title>
         {% include externalScripts.html %}
         {% include internalStyles.html  %}
         {% include devStyles.html       %}
@@ -13,39 +17,11 @@
         {% include _dev.html   %}
         {% include _index.html %}
         {% include _svg.html   %}
+        {% include fonts.html %}
+{%comment%}
+        {% include header.html %}
+        {% include projects.html %}
+        {% include footer.html %}
+{%endcomment%}
     </body>
 </html>
-
-
-<!--
-
-*********************************************************************************
-|    																		    |
-|                                   TODO									    |
-|   																		    |
-*********************************************************************************
-
- - constant for holding "box-size" and/or "zoom-level" for markers to fall into/use
-
-*** mobile Safari ***
-		- no aside shown until device rotated
-		- markers can be off screen, but should not be
-		- markers also don't offset right, dont think want offset for small/tiny screen?
-		- upside down(orientation (-)180 degrees is not looking good...
-
--->
-
-
-<!--
-
-************************Size Bucket********************************************
-
-->    DEVICE     =  WIDE, TALL  =>  ASIDE	=> RATIO  => OFFSET?
-
--> 6+ portrait   =  375w, 667h  => TINY	    =>  .56   => NO
--> 6+ landscape  =  667w, 375h  => MEDIUM   => 1.77   => YES
--> 5  portrait   =  320w, 529h  => TINY	    =>  .69   => NO
--> 5  landscape  =  568w, 320h  => MEDIUM   => 1.77   => YES
--> ??
-
--->

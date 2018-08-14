@@ -1,6 +1,6 @@
 
 <section id="intro">
-    <h1>Make Selling&nbsp;Easy</h1>
+    <h1>Make <br>Selling&nbsp;Easy</h1>
     <p>Thinking about selling your home?</p>
     <a href="#contact" id="talkToUs">Talk To Us</a>
 </section>
@@ -9,15 +9,28 @@
 
     #intro {
         position: absolute;
-        top: calc(50% - 120px);
-        left: calc(50% + 16px);
-        width: 410px;
-        font-family: Gotham, Helvetica, sans-serif;
+        top: calc(50% - 12rem);
+        left: calc(50% + 1.6rem);
+        width: 41rem;
+        font-family: "Gotham", Helvetica, sans-serif;
         color: white;
-        transform: translate(0, 64px);
+        transform: translate(0, 6.4rem);
         opacity: -1;
         transition: all .5s ease .1s;
-        z-index: 1000;
+        z-index: 2000;
+        pointer-events: none;
+    }
+
+    .compact.portrait #intro {
+        width: auto;
+        top:   9.6rem;
+        left:  1.6rem;
+        right: 1.6rem;
+        transition: all .5s ease .25s;
+    }
+
+    .compact.landscape #intro {
+        top: calc(50% - 4.75rem);
     }
 
     #intro.animateIn {
@@ -51,16 +64,30 @@
     #intro h1 {
         font-size: 48px;
         letter-spacing: 4px;
-        font-weight: 800;
+        font-weight: 900;
         margin-bottom: 8px;
         margin-top: -12px;
     }
 
+    .compact #intro h1 {
+        font-size: 28px;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        margin-top: -2px;
+        line-height: 1;
+    }
+
     #intro p {
         font-size: 24px;
-        font-weight: 200;
+        font-weight: 400;
         margin-bottom: 32px;
         line-height: 1;
+    }
+
+    .compact #intro p {
+        font-size: 12px;
+        margin-bottom: 14px;
+        line-height: 1rem;
     }
 
     #intro a,
@@ -76,6 +103,7 @@
         border-radius: 2px;
         -webkit-filter: grayscale(0) brightness(1);
                 filter: grayscale(0) brightness(1);
+        pointer-events: all;
     }
 
     #intro a:hover {
@@ -88,27 +116,21 @@
                 filter: grayscale(0) brightness(.66);
     }
 
-</style>
-
-
-<!-- <div id="markers"></div>
-<style type="text/css">
-
-    #markers {
-        position: absolute;
-        left: 200px;
-        top: 300px;
-        width: 200px;
-        height: 500px;
-        background-color: red;
-        opacity: .25;
+    .compact #intro a {
+        font-size: 12px;
     }
-</style>
-<script type="text/javascript">
-    // loop over markers to find marker size
-    // ....
-    // Then draw a box does it fit?
 
-    var markers = document.getElementById("markers");
-    markers.style.left = '400px';
-</script> -->
+    .viewLoc #intro,
+    .viewLoc #intro.animateIn {
+        opacity: -1;
+        pointer-events: none;
+        transform: translate(0, -100%);
+        transition: all .25s ease-in 0s;
+    }
+
+    .viewLoc #intro a,
+    .viewLoc #intro a:visited {
+        pointer-events: none;
+    }
+
+</style>
