@@ -177,6 +177,7 @@
             $.body.classList.add("loaded");
         },
 
+        //TODO: Wire this in so we know device capabilities
         contentLoaded: function () {
             $.SUPPORTS.cssFilters();
             $.SUPPORTS.cssPointerEvents();
@@ -202,6 +203,11 @@
             $.SCREEN.size = $.body.getBoundingClientRect();
         },
 
+        /**
+        * Toggle Resize Flag to block duplicative calls. Get layout updates & Update the Map.
+        * TODO: Check if we need to throttle this.
+        * @return {void}
+        */
         handleResize: function(){
             $.RESIZE.active = true;
             $.RESIZE.getLayoutProperties();
@@ -209,10 +215,11 @@
                 $.MAPBOX.updateFromResize();
                 $.RESIZE.active = false;
             }, 200);
+            return null;
         },
 
         /**
-        * Update the document for Resizing and the related variables and CSS classes for layout
+        * Update the document for Resizing CSS Elements and the related variables and CSS classes for layout
         * TODO: Check if we need to throttle this.
         * @param  {Bool}  initial  //Used to force the setting on the inital load of the site
         * @return {void}
@@ -302,18 +309,19 @@
 
     $.ZOOM = {
         to: function (location) {
+            // TODO: Easy out if we are currently animating to Zooming
+
             //easy Out if we don't have what we need
             if (!location) return;
             if (!$.MAPBOX.map) return;
             if (location === $.MAPBOX.locations.current && $.RESIZE.active === false) return;
-            // TODO: Easy out if we are currently animating to Zooming
 
             //update the current location
             $.MAPBOX.locations.current = location;
 
             //tell map to fly to location
             if(location === $.MAPBOX.locations.initial) {
-                $.MAPBOX.fitInitialBounds();
+                $.MAPBOX.fitAllMarkers();
             } else {
                 if ($.MAPBOX.map) $.MAPBOX.map.flyTo(location);
             }
@@ -360,8 +368,11 @@
         },
         offset: {
             // TODO: Need to make these responsive to the window type
-            y: () => 40,
-            x: () => ($.SCREEN.size.width - 32) / 4
+            // TODO: Do we even want to do it this way!?
+            // y: () => 40,
+            // x: () => ($.SCREEN.size.width - 32) / 4
+            y: () => 0,
+            x: () => 0,
         },
         api: {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
@@ -372,19 +383,22 @@
         },
 
         datasetCallback: function (error, dataset) {
+            // console.log("datasetCallback()");
             $.MAPBOX.dataset = dataset;
             $.MAPBOX.createMapAndEvent();
         },
 
         isReady: function () {
+            // console.log("isReady()");
             $.SETUP.mapClickHandler();
             $.SETUP.logoClickHandler();
             $.SETUP.moveGradientsOverMapCanvas();
             $.MAPBOX.map.addSource("points", {
-                "type": "geojson", "data": {
-                    "type": "FeatureCollection",
+                "type": "geojson",
+                "data": {
+                    "type":     "FeatureCollection",
                     "features": $.MAPBOX.dataset.features
-                }
+                },
             });
             $.MAPBOX.setupLocations();
             $.MAPBOX.addMarkers();
@@ -392,6 +406,7 @@
         },
 
         setupLocations: function () {
+            // console.log("setupLocations()");
             $.MAPBOX.locations.office = {
                 center: $.MAPBOX.coordsOffice,
                 zoom:   $.MAPBOX.locationZoom,
@@ -400,6 +415,8 @@
                 offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]// CHECK: ensure updates on Screen Resize
             };
             $.MAPBOX.locations.initial = { center: $.MAPBOX.initialCenter };
+            // TODO: Remove this after debugging
+            $.MAPBOX.locations.current = $.MAPBOX.locations.initial;
         },
 
         createMapAndEvent: function () {
@@ -414,7 +431,7 @@
                 attributionControl: false,
                 logoPosition: "bottom-right",
             });
-            $.MAPBOX.fitInitialBounds(true);
+            $.MAPBOX.fitAllMarkers(true);
             $.MAPBOX.map.on("load", $.MAPBOX.isReady);
         },
 
@@ -424,85 +441,47 @@
             $.MAPBOX.dataset.features.forEach(function (location) {
                 bounds.extend(location.geometry.coordinates);
             });
-
             $.MAPBOX.bounds = bounds;
             $.MAPBOX.initialCenter = bounds.getCenter();
+
         },
 
         updateFromResize: function (){
-            //TODO: Add logic here for determining where to zoom back to depending on state of the app.
+            //TODO: @Jake - Add logic here for determining where to zoom back to depending on state of the app.
             $.ZOOM.initial();
         },
 
-        fitInitialBounds: function (initial) {
+        fitAllMarkers: function (initial) {
 
             var padding = {
-                top:    32, //top margin + half-marker
-                bottom: 32, //bottom margin + full-marker
-                left:   32, //left margin + half-marker
-                right:  32, //full-marker
+                top:    112 + 32,   // top margin    + half-marker
+                bottom: 96,         // bottom margin + full-marker
+                left:   64,         // left margin   + half-marker
+                right:  64          // right margin  + half-marker
             };
 
-            $.MAPBOX.map.fitBounds($.MAPBOX.bounds, { padding: padding });
+            // DESKTOP
+            if ($.SCREEN.layout === $.layouts.types.default) padding.right += $.SCREEN.size.width / 2; // Previous value PLUS Half Screen Width
 
+            // COMPACT
+            if ($.SCREEN.layout === $.layouts.types.compact) padding.bottom = 64; // Bottom Margin + half-marker
 
-            // var padding = {
-            //     top:    112 + 32,   //top margin + half-marker
-            //     bottom: 96,         //bottom margin + full-marker
-            //     left:   64,         //left margin + half-marker
-            //     right:  64          //full-marker
-            // };
-            //
-            // if ($.SCREEN.layout === $.layouts.types.default) {
-            //     //weird offset hack + full-marker
-            //     padding.right += $.SCREEN.size.width / 4;
-            // }
-            //
-            // if ($.SCREEN.layout === $.layouts.types.compact) {
-            //     padding.top    = 112;                        // top margin
-            //     padding.bottom = 64;                         // bottom margin
-            //     padding.left   = 32;                         // left margin
-            //     padding.right  = 32;                         // right margin
-            // }
-            //
-            // if ($.SCREEN.layout === $.layouts.types.compact && $.SCREEN.orientation === $.LANDSCAPE) {
-            //     padding.top    = 0;                         // removed
-            //     padding.bottom = 16;                         // full-marker
-            //     padding.left   = 0;                          // removed
-            //     padding.right  = $.SCREEN.size.width / 2;    //weird offset hack + full-marker
-            //     if(initial){
-            //         padding.top    = 64 + 24;                     // top margin    + 3/4-marker
-            //         padding.bottom = 32 + 16;                     // bottom margin + 1/4-marker
-            //     }
-            //
-            // }
+            // COMPACT & LANDSCAPE
+            if ($.SCREEN.layout === $.layouts.types.compact && $.SCREEN.orientation === $.LANDSCAPE) {
+                padding.right  = $.SCREEN.size.width / 2;    // Half Screen Width
+                padding.top    = 64 + 32;                    // Top Margin    + half-marker
+                padding.bottom = 32 + 32;                    // Bottom Margin + half-marker
+                padding.left   = 0;                          // Removed
+            }
 
+            var newCameraTransform = $.MAPBOX.map.cameraForBounds($.MAPBOX.bounds, {
+                padding: padding,
+                pitch:   $.MAPBOX.initialPitch,
+                zoom:    $.MAPBOX.initialZoom,
+                animate: (initial) ? false : true
+             });
 
-
-
-
-
-
-            // $.MAPBOX.map.fitBounds($.MAPBOX.bounds, { padding: padding });
-            // console.log($.SCREEN.layout, $.SCREEN.orientation, $.MAPBOX.bounds, padding);
-
-            // var mapLoadDelay = 100;
-            // setTimeout(function(){
-            //     var newCameraTransform = $.MAPBOX.map.cameraForBounds($.MAPBOX.bounds, { padding: padding });
-            //     $.MAPBOX.map.flyTo(newCameraTransform);
-            // }, mapLoadDelay);
-
-
-            // TODO: I have the icons spacing right in the viewport but the zoom levels are very different.
-            // See if the new Camera Transform above will help and can be stored.
-
-
-
-
-            // var mapLoadDelay = 100;
-            // setTimeout(function(){
-            //     $.MAPBOX.map.fitBounds($.MAPBOX.bounds, { padding: padding });
-            // }, mapLoadDelay);
+            $.MAPBOX.map.flyTo(newCameraTransform);
         },
 
         /**
@@ -522,11 +501,9 @@
             $.MAPBOX.dataset.features.forEach(function (location, index) {
                 $.MAPBOX.setupMarker(location.geometry.coordinates, index);
             });
-            //add the Office, our Custom Property...and a great show
+
+            //add the Office, our Custom Property
             $.MAPBOX.setupMarker($.MAPBOX.locations.office.center, $.MAPBOX.dataset.features.length, true);
-            //add the center point
-            // TODO: Make sure we need this or not?
-            // $.MAPBOX.setupMarker($.MAPBOX.locations.initial.center, $.MAPBOX.dataset.features.length+1, false);
         },
 
         /**
@@ -537,7 +514,7 @@
         * @return {void}
         */
         setupMarker: (coordinates, index, isOffice = false) => {
-            const htmlMarker = $.MAPBOX.createHTMLMarker(index, isOffice);
+            const htmlMarker = $.MAPBOX.createHTMLMarker(index, coordinates, isOffice);
             const marker = new $.MAPBOX.tiles.Marker(htmlMarker).setLngLat(coordinates).addTo($.MAPBOX.map);
 
             htmlMarker.addEventListener('click', function (event) {
@@ -558,7 +535,8 @@
                 pitch:  $.MAPBOX.locationPitch,
                 zoom:   $.MAPBOX.locationZoom,
                 speed:  $.MAPBOX.animation.speed,
-                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()], // Check! - ensure updates on Screen Resize
+                // TODO: Make sure we don't need Offset
+                // offset: [0,0], // Check! - ensure updates on Screen Resize
             };
             return null;
         },
@@ -571,6 +549,7 @@
         */
         officeMarkerActive: (toActive) => {
             const officeMarker = document.querySelector(".marker.office");
+            if(!officeMarker) return;
             if (toActive) {
                 $.MAPBOX.clearActiveMarkers();
                 officeMarker.classList.add("active");
@@ -580,21 +559,25 @@
             return null
         },
 
-        createHTMLMarker: (index, isOffice) => {
-            const m = document.createElement("div");
+        createHTMLMarker: (index, coords, isOffice) => {
+            const m  = document.createElement("div");
             const cn = (isOffice) ? "marker office" : "marker";
 
-            m.className = cn;
-            m.index = index;
-            m.isOffice = isOffice;
-            m.style.width = "32px";
-            m.style.height = "32px";
-            m.style.cursor = "pointer";
-            m.innerHTML = "<svg><use xlink:href='#mapMarker'></use></svg>";
+            m.className      = cn;
+            m.index          = index;
+            m.isOffice       = isOffice;
+            m.style.width    = "50px";
+            m.style.height   = "50px";
+            m.style.cursor   = "pointer";
+            m.dataset.coords = coords;
 
             if (isOffice) {
+                // LOGO SVG
+                m.innerHTML = "<svg class='logo blue'><use xlink:href='#logo'></use></svg>";
                 $.MAPBOX.markers.office = m;
             } else {
+                // MARKER SVG
+                m.innerHTML = "<svg><use xlink:href='#mapMarker'></use></svg>";
                 $.MAPBOX.markers.locations[index] = m;
             }
 
@@ -605,6 +588,7 @@
             if (marker === $.MAPBOX.markers.office) return null;
 
             $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
+
             // TODO: Implement this when Stable Map is built
             //secondaryTransition("show")
 
