@@ -183,7 +183,7 @@
 
         checkAllAssetsLoaded: function () {
             if (!$.loaded.fonts) { return setTimeout($.LOADING.checkAllAssetsLoaded, 100); }
-                $.LOADING.exitLoadingState();
+            $.LOADING.exitLoadingState();
         },
 
         exitLoadingState: function () {
@@ -383,7 +383,7 @@
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
-        office: () => {
+        office: function () {
             $.ZOOM.to($.MAPBOX.locations.office);
         },
 
@@ -410,9 +410,7 @@
         locationPitch: 50,
         coordsOffice: [-122.386888, 47.5791677],
         bounds: [],
-        animation: {
-            speed: 2
-        },
+        animation: { speed: 2.5 },
         api: {
             accessToken: "pk.eyJ1IjoiamFrZWRvYnNvbiIsImEiOiJjajdzMHAwZ2Y0amhsMnFxdTgzZzRoa280In0.S2TkU2UgGv7dcsUsmy12cw"
         },
@@ -497,7 +495,10 @@
             if ($.SCREEN.layout === $.layouts.types.default) padding.right += $.SCREEN.size.width / 2; // Previous value PLUS Half Screen Width
 
             // COMPACT
-            if ($.SCREEN.layout === $.layouts.types.compact) padding.bottom = 64; // Bottom Margin + half-marker
+            if ($.SCREEN.layout === $.layouts.types.compact){
+                padding.bottom = 64;         // Bottom Margin + half-marker
+                padding.top    = 112 + 64;   // Top Margin    + full-marker
+            }
 
             // COMPACT & LANDSCAPE
             if ($.SCREEN.layout === $.layouts.types.compact && $.SCREEN.orientation === $.LANDSCAPE) {
@@ -510,6 +511,7 @@
                 padding: padding,
                 pitch:   $.MAPBOX.initialPitch,
                 zoom:    $.MAPBOX.initialZoom,
+                speed:   $.MAPBOX.animation.speed,
                 animate: (initial) ? false : true
             });
             
