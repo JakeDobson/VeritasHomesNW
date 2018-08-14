@@ -55,12 +55,15 @@
                 height: null,
             },
         },
+
         PORTRAIT:  "portrait",
         LANDSCAPE: "landscape",
         WIDTH:     "width",
         HEIGHT:    "height",
         COMPACT:   "compact",
         DEFAULT:   "default",
+        VIEWALL:   "viewAll",
+        VIEWLOC:   "viewLoc",
     };
 
     //set default size
@@ -168,6 +171,18 @@
     }
 
     $.STATES = {
+
+        setMapView: function() {
+            console.log("mapView()", location);
+            if ($.MAPBOX.locations.current === $.MAPBOX.locations.initial){
+                $.body.classList.remove($.VIEWLOC);
+                $.body.classList.add($.VIEWALL);
+            } else {
+                $.body.classList.remove($.VIEWALL);
+                $.body.classList.add($.VIEWLOC);
+            }
+        },
+
         loadingComplete: function () {
             //move the logo to the top
             $.LOADING.logoTransitionToTop();
@@ -318,6 +333,8 @@
 
             //update the current location
             $.MAPBOX.locations.current = location;
+
+            $.STATES.setMapView();
 
             //tell map to fly to location
             if(location === $.MAPBOX.locations.initial) {
@@ -556,7 +573,7 @@
             } else {
                 officeMarker.classList.remove("active");
             }
-            return null
+            return null;
         },
 
         createHTMLMarker: (index, coords, isOffice) => {
