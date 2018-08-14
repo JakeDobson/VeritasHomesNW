@@ -184,15 +184,20 @@
         /* border: 3px solid red; /* TODO: Remove this when done testing */
     }
 
-    /* TODO: Add a zoomed in brightness = .viewLoc */
     .viewAll #map .mapboxgl-canvas,
              #map .mapboxgl-canvas {
         -webkit-filter: grayscale(1) contrast(1) brightness(.66);
                 filter: grayscale(1) contrast(1) brightness(.66);
+        transition: filter 1s ease;
+    }
+
+    .viewLoc #map .mapboxgl-canvas{
+        -webkit-filter: grayscale(1) contrast(1.5) brightness(.5);
+                filter: grayscale(1) contrast(1.5) brightness(.5);
     }
 
     /******************************************************************************/
-    /*													Logo States & Settings    */
+    /* Logo States & Settings                                                     */
     /******************************************************************************/
 
     .logo {
@@ -346,18 +351,18 @@
     .mapboxgl-ctrl-logo { visibility: hidden; }
 
     .marker > svg {
-        width:  var(--markerSvgWidth,    64px);
-        height: var(--markerSvgHeight, 76.8px);
+        width:  var(--markerSvgWidth );
+        height: var(--markerSvgHeight);
         position: absolute;
         top:  0;
         left: 0;
         filter: drop-shadow(0 0 5px rgba(0,0,0,.75));
-        transform: scale(var(--markerScale)) translate(var(--markerPaddingLeft), 0);
+        transform: scale(var(--markerScale)) translate(var(--markerPaddingLeft));
         transform-origin: 0 0;
         transition: transform .25s ease-out;
     }
 
-    .marker.active > svg {
+    .default .marker.active > svg {
         transform: scale(1) translate(var(--markerPaddingLeftActive), var(--markerPaddingTopActive));
     }
 
@@ -367,6 +372,7 @@
     .viewLoc .marker {
         opacity: 0;
         transition: opacity .5s ease 0s;
+        pointer-events: none;
     }
 
     /* VISIBLE MARKER */
@@ -375,6 +381,7 @@
     .viewAll .marker {
         opacity: 1;
         transition: opacity .5s ease .25s;
+        pointer-events: all;
     }
 
     .marker.office        { pointer-events: none; }
@@ -430,7 +437,8 @@
     /* COMPACT */
 
     .compact .marker > svg {
-        zoom: var(--markerCompactZoom);
+        /* zoom: var(--markerCompactZoom); */
+        /* zoom: 2; */
     }
 
     /* OFFICE */
