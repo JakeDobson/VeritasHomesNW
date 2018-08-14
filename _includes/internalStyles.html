@@ -184,13 +184,12 @@
         /* border: 3px solid red; /* TODO: Remove this when done testing */
     }
 
-    /* TODO: Add a zoomed in brightness */
-    .zoomed-out #map .mapboxgl-canvas,
-                #map .mapboxgl-canvas{
+    /* TODO: Add a zoomed in brightness = .viewLoc */
+    .viewAll #map .mapboxgl-canvas,
+             #map .mapboxgl-canvas {
         -webkit-filter: grayscale(1) contrast(1) brightness(.66);
                 filter: grayscale(1) contrast(1) brightness(.66);
     }
-
 
     /******************************************************************************/
     /*													Logo States & Settings    */
@@ -208,8 +207,6 @@
 
     .logo.centered {
         position: absolute;
-        /* left: 50vw;
-        top:  50vh; */
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
@@ -314,6 +311,17 @@
 
     .default .logo.top { animation-name: topLogo; }
     .compact .logo.top { animation-name: topLogoCompact; }
+
+
+    .viewAll .logo.top {
+        transform: translate(-50%, -50%);
+        transition: transform .25s ease 0s;
+    }
+
+    .viewLoc .logo.top {
+        transform: translate(-50%, -300%);
+        transition: transform .125s ease-in 0s;
+    }
 
     /******************************************************************************/
     /*                         Asset Logo SVG  for reuse                          */

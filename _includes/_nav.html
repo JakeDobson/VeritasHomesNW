@@ -71,9 +71,19 @@
 
     }
 
+    /* TODO: Check what these are and if we need them */
     .compact #siteNav #navIcon .top    { top: 0.5rem; }
     .compact #siteNav #navIcon .middle { top: 1.1rem; }
     .compact #siteNav #navIcon .bottom { top: 1.7rem; }
 
+    .viewAll #siteNav #navWordmark{
+        transform: translate(0, 0);
+        transition: transform .25s ease 0s;
+    }
+
+    .viewLoc #siteNav #navWordmark {
+        transform: translate(0, -300%);
+        transition: transform .125s ease-in 0s;
+    }
 
 </style>

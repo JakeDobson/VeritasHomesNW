@@ -183,7 +183,7 @@
 
         checkAllAssetsLoaded: function () {
             if (!$.loaded.fonts) { return setTimeout($.LOADING.checkAllAssetsLoaded, 100); }
-                $.LOADING.exitLoadingState();
+            $.LOADING.exitLoadingState();
         },
 
         exitLoadingState: function () {
@@ -385,7 +385,7 @@
             $.ZOOM.to($.MAPBOX.locations.initial);
         },
 
-        office: () => {
+        office: function () {
             $.ZOOM.to($.MAPBOX.locations.office);
         },
 
@@ -412,9 +412,7 @@
         locationPitch: 50,
         coordsOffice: [-122.386888, 47.5791677],
         bounds: [],
-        animation: {
-            speed: 2
-        },
+        animation: { speed: 2.5 },
         offset: {
             // TODO: Need to make these responsive to the window type
             // TODO: Do we even want to do it this way!?
@@ -461,7 +459,6 @@
                 zoom:   $.MAPBOX.locationZoom,
                 pitch:  $.MAPBOX.locationPitch,
                 speed:  $.MAPBOX.animation.speed,
-                offset: [-$.MAPBOX.offset.x(), $.MAPBOX.offset.y()]// CHECK: ensure updates on Screen Resize
             };
             $.MAPBOX.locations.initial = { center: $.MAPBOX.initialCenter };
             // TODO: Remove this after debugging
@@ -513,7 +510,10 @@
             if ($.SCREEN.layout === $.layouts.types.default) padding.right += $.SCREEN.size.width / 2; // Previous value PLUS Half Screen Width
 
             // COMPACT
-            if ($.SCREEN.layout === $.layouts.types.compact) padding.bottom = 64; // Bottom Margin + half-marker
+            if ($.SCREEN.layout === $.layouts.types.compact){
+                padding.bottom = 64;         // Bottom Margin + half-marker
+                padding.top    = 112 + 64;   // Top Margin    + full-marker
+            }
 
             // COMPACT & LANDSCAPE
             if ($.SCREEN.layout === $.layouts.types.compact && $.SCREEN.orientation === $.LANDSCAPE) {
@@ -527,6 +527,7 @@
                 padding: padding,
                 pitch:   $.MAPBOX.initialPitch,
                 zoom:    $.MAPBOX.initialZoom,
+                speed:   $.MAPBOX.animation.speed,
                 animate: (initial) ? false : true
              });
 
