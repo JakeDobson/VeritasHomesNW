@@ -10,6 +10,10 @@
         intro: null,
         grads: null,
 
+        loaded: {
+            fonts: false,
+        },
+
         breakpoints: {
             ws:   "ws",
             wm:   "wm",
@@ -88,6 +92,29 @@
     ];
 
     $.SETUP = {
+        getFontObjects: function () {
+            //create fonts
+            var gotham400 = new FontFaceObserver('Gotham400');
+            var gotham600 = new FontFaceObserver('Gotham600');
+            var gotham900 = new FontFaceObserver('Gotham900');
+            var din400    = new FontFaceObserver('Din400');
+            var din600    = new FontFaceObserver('Din600');
+            //load fonts
+            Promise.all(
+                [gotham400.load(),
+                 gotham600.load(),
+                 gotham900.load(),
+                    din400.load(),
+                    din600.load()]
+            ).then(function () {
+                //fonts loaded, proceed
+                $.loaded.fonts = true;
+            }, function () {
+                //give "error" value to safely continue without fonts
+                $.loaded.fonts = "error";
+            });
+        },
+
         getElements: function () {
             $.body  = document.body;
             $.html  = document;
@@ -150,6 +177,11 @@
     }
 
     $.LOADING = {
+
+        checkAllAssetsLoaded: function () {
+            if (!$.loaded.fonts) { return setTimeout($.LOADING.checkAllAssetsLoaded, 100); }
+                $.LOADING.exitLoadingState();
+        },
 
         exitLoadingState: function () {
             //get opacity of the logo
@@ -402,7 +434,7 @@
             });
             $.MAPBOX.setupLocations();
             $.MAPBOX.addMarkers();
-            $.LOADING.exitLoadingState();
+            $.LOADING.checkAllAssetsLoaded();
         },
 
         setupLocations: function () {
@@ -641,11 +673,13 @@
     });
 
     document.addEventListener("DOMContentLoaded", function (event) {
+        //load map with 0 second delay ¯\_(ツ)_/¯
         var stupidZeroDelay = 0;
         setTimeout(function(){
             $.SETUP.getElements();
             $.RESIZE.getLayoutProperties(true);
             $.SETUP.getMapBoxObjects();
+            $.SETUP.getFontObjects();
         }, stupidZeroDelay);
     });
 
