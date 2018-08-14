@@ -367,6 +367,7 @@
     .viewLoc .marker {
         opacity: 0;
         transition: opacity .5s ease 0s;
+        pointer-events: none;
     }
 
     /* VISIBLE MARKER */
@@ -375,6 +376,7 @@
     .viewAll .marker {
         opacity: 1;
         transition: opacity .5s ease .25s;
+        pointer-events: all;
     }
 
     .marker.office        { pointer-events: none; }
