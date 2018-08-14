@@ -353,8 +353,24 @@
         transform: scale(1) translate(var(--markerPaddingLeftActive), var(--markerPaddingTopActive));
     }
 
-    .marker.office        { opacity: 0; transition: opacity .5s ease   0s; pointer-events: none; }
-    .marker.office.active { opacity: 1; transition: opacity .5s ease .25s; pointer-events: all;  }
+    /* HIDDEN MARKERS */
+    .marker.office,
+    .viewAll .marker.office,
+    .viewLoc .marker {
+        opacity: 0;
+        transition: opacity .5s ease 0s;
+    }
+
+    /* VISIBLE MARKER */
+    .viewLoc .marker.active.office,
+    .viewLoc .marker.active,
+    .viewAll .marker {
+        opacity: 1;
+        transition: opacity .5s ease .25s;
+    }
+
+    .marker.office        { pointer-events: none; }
+    .marker.office.active { pointer-events: all; }
 
     /* Increases Hit Area */
     .marker::before {
@@ -394,11 +410,14 @@
                 filter: grayscale(0) brightness(1);
     }
 
-    /* Bring markers in front of others */
-    .marker[data-coords*="47.413388"],
-    .marker[data-coords*="47.231441"]{ z-index: 10; }
-    .marker[data-coords*="47.250291"]{ z-index:  9; }
-
+    /* Bring markers in front of others - lowest to highest latitudes */
+    .marker[data-coords*="46.826851"]{ z-index: 10; }
+    .marker[data-coords*="47.063957"]{ z-index:  9; }
+    .marker[data-coords*="47.231441"]{ z-index:  8; }
+    .marker[data-coords*="47.250291"]{ z-index:  7; }
+    .marker[data-coords*="47.259175"]{ z-index:  6; }
+    .marker[data-coords*="47.413388"]{ z-index:  5; }
+    .marker[data-coords*="47.510993"]{ z-index:  4; }
 
     /* COMPACT */
 
@@ -408,8 +427,6 @@
 
     /* OFFICE */
 
-    /* .marker.office { outline: 1px solid blue; } */
-
     .marker.office        > svg.logo,
     .marker.office.active > svg.logo {
         width:  var(--markerSize);
@@ -418,8 +435,6 @@
         outline: 1px solid red;
         zoom: 1;
     }
-
-
 
 
 </style>
