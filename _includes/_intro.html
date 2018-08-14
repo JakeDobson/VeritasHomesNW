@@ -23,14 +23,10 @@
 
     .compact.portrait #intro {
         width: auto;
-        /* top:   8.0rem;
-        top:  11.2rem;
-        top:   8.8rem; */
         top:   9.6rem;
         left:  1.6rem;
         right: 1.6rem;
         transition: all .5s ease .25s;
-        /* outline: 2px solid green; */
     }
 
     .compact.landscape #intro {
@@ -122,6 +118,19 @@
 
     .compact #intro a {
         font-size: 12px;
+    }
+
+    .viewLoc #intro,
+    .viewLoc #intro.animateIn {
+        opacity: -1;
+        pointer-events: none;
+        transform: translate(0, -100%);
+        transition: all .25s ease-in 0s;
+    }
+
+    .viewLoc #intro a,
+    .viewLoc #intro a:visited {
+        pointer-events: none;
     }
 
 </style>
