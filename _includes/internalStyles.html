@@ -27,6 +27,15 @@
 
         --marginFull: 3.2rem;
         --marginHalf: 1.6rem;
+
+        --markerSize:      5.00rem;
+        --markerSvgWidth:  6.40rem;
+        --markerSvgHeight: 7.68rem;
+        --markerScale:       .66;
+        --markerCompactZoom: .75;
+        --markerPaddingLeft:       calc((var(--markerSvgHeight) - var(--markerSvgWidth)) /  2);
+        --markerPaddingLeftActive: calc((var(--markerSvgWidth)  - var(--markerSize)    ) / -2);
+        --markerPaddingTopActive:  calc((var(--markerSvgHeight) - var(--markerSize)    ) / -2);
     }
 
     @media (min-width: 10rem)  { :root {--bpw: 'ws' } } /* 100px  */
@@ -175,16 +184,20 @@
         /* border: 3px solid red; /* TODO: Remove this when done testing */
     }
 
-    .zoomed-out #map .mapboxgl-canvas,
-                #map .mapboxgl-canvas{
+    .viewAll #map .mapboxgl-canvas,
+             #map .mapboxgl-canvas {
         -webkit-filter: grayscale(1) contrast(1) brightness(.66);
                 filter: grayscale(1) contrast(1) brightness(.66);
+        transition: filter 1s ease;
     }
 
-    /* TODO: Add a zoomed in brightness */
+    .viewLoc #map .mapboxgl-canvas{
+        -webkit-filter: grayscale(1) contrast(1.5) brightness(.5);
+                filter: grayscale(1) contrast(1.5) brightness(.5);
+    }
 
     /******************************************************************************/
-    /*													Logo States & Settings    */
+    /* Logo States & Settings                                                     */
     /******************************************************************************/
 
     .logo {
@@ -199,8 +212,8 @@
 
     .logo.centered {
         position: absolute;
-        left: 50vw;
-        top:  50vh;
+        left: 50%;
+        top: 50%;
         transform: translate(-50%, -50%);
         z-index: 2000;
     }
@@ -241,53 +254,53 @@
 
     /* DEFAULT -- Logo To Top */
     @-webkit-keyframes topLogo {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTop) - 1%); }
         100% { top:      var(--posLogoTop);        }
     }
     @-moz-keyframes    topLogo {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTop) - 1%); }
         100% { top:      var(--posLogoTop);        }
     }
     @-o-keyframes      topLogo {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTop) - 1%); }
         100% { top:      var(--posLogoTop);        }
     }
     @keyframes         topLogo {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTop) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTop) - 1%); }
         100% { top:      var(--posLogoTop);        }
     }
 
     /* COMPACT -- Logo To TOP */
     @-webkit-keyframes topLogoCompact {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1%);  }
         100% { top:      var(--posLogoTopCompact);        }
     }
     @-moz-keyframes    topLogoCompact {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1%); }
         100% { top:      var(--posLogoTopCompact);        }
     }
     @-o-keyframes      topLogoCompact {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        0%   { top: 50%; }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1%);  }
         100% { top:      var(--posLogoTopCompact);        }
     }
     @keyframes         topLogoCompact {
-        0%   { top: 50vh; }
-        10%  { top: 50.5vh; }
-        65%  { top: calc(var(--posLogoTopCompact) - 1vh); }
+        0%   { top: 50%;   }
+        10%  { top: 50.5%; }
+        65%  { top: calc(var(--posLogoTopCompact) - 1%);  }
         100% { top:      var(--posLogoTopCompact);        }
     }
 
@@ -303,6 +316,17 @@
 
     .default .logo.top { animation-name: topLogo; }
     .compact .logo.top { animation-name: topLogoCompact; }
+
+
+    .viewAll .logo.top {
+        transform: translate(-50%, -50%);
+        transition: transform .25s ease 0s;
+    }
+
+    .viewLoc .logo.top {
+        transform: translate(-50%, -300%);
+        transition: transform .125s ease-in 0s;
+    }
 
     /******************************************************************************/
     /*                         Asset Logo SVG  for reuse                          */
@@ -327,32 +351,44 @@
     .mapboxgl-ctrl-logo { visibility: hidden; }
 
     .marker > svg {
-        width:  64px;
-        height: 76.8px;
+        width:  var(--markerSvgWidth );
+        height: var(--markerSvgHeight);
         position: absolute;
         top:  0;
         left: 0;
         filter: drop-shadow(0 0 5px rgba(0,0,0,.75));
-        transform: scale(.66) translate(-8px, -12px);
+        transform: scale(var(--markerScale)) translate(var(--markerPaddingLeft));
         transform-origin: 0 0;
         transition: transform .25s ease-out;
     }
-    /* TODO: Add this back in */
-    .compact .marker > svg { zoom: .75; }
 
-    .marker.active > svg { transform: scale(1) translate(-16px, -32px); }
-
-    .marker.office        { opacity: 0; transition: opacity .5s ease   0s; pointer-events: none; }
-    .marker.office.active { opacity: 1; transition: opacity .5s ease .25s; pointer-events: all;  }
-
-    div.marker.mapboxgl-marker {
-        z-index: 1;
-        border-radius: 50%;
-
+    .default .marker.active > svg {
+        transform: scale(1) translate(var(--markerPaddingLeftActive), var(--markerPaddingTopActive));
     }
 
+    /* HIDDEN MARKERS */
+    .marker.office,
+    .viewAll .marker.office,
+    .viewLoc .marker {
+        opacity: 0;
+        transition: opacity .5s ease 0s;
+        pointer-events: none;
+    }
+
+    /* VISIBLE MARKER */
+    .viewLoc .marker.active.office,
+    .viewLoc .marker.active,
+    .viewAll .marker {
+        opacity: 1;
+        transition: opacity .5s ease .25s;
+        pointer-events: all;
+    }
+
+    .marker.office        { pointer-events: none; }
+    .marker.office.active { pointer-events: all; }
+
     /* Increases Hit Area */
-    div.marker.mapboxgl-marker::before {
+    .marker::before {
         content: "";
         position: absolute;
         top:     50%;
@@ -364,11 +400,12 @@
         border-radius: 50%;
     }
 
-    div.marker.mapboxgl-marker:first-of-type + div.marker.mapboxgl-marker { z-index: 200; }
-
-    .marker{
+    .marker {
+        width:  var(--markerSize, 50px);
+        height: var(--markerSize, 50px);
         -webkit-filter: grayscale(0) brightness(1);
                 filter: grayscale(0) brightness(1);
+        border-radius: 50%;
     }
 
     .marker:hover{
@@ -387,5 +424,33 @@
         -webkit-filter: grayscale(0) brightness(1);
                 filter: grayscale(0) brightness(1);
     }
+
+    /* Bring markers in front of others - lowest to highest latitudes */
+    .marker[data-coords*="46.826851"]{ z-index: 10; }
+    .marker[data-coords*="47.063957"]{ z-index:  9; }
+    .marker[data-coords*="47.231441"]{ z-index:  8; }
+    .marker[data-coords*="47.250291"]{ z-index:  7; }
+    .marker[data-coords*="47.259175"]{ z-index:  6; }
+    .marker[data-coords*="47.413388"]{ z-index:  5; }
+    .marker[data-coords*="47.510993"]{ z-index:  4; }
+
+    /* COMPACT */
+
+    .compact .marker > svg {
+        /* zoom: var(--markerCompactZoom); */
+        /* zoom: 2; */
+    }
+
+    /* OFFICE */
+
+    .marker.office        > svg.logo,
+    .marker.office.active > svg.logo {
+        width:  var(--markerSize);
+        height: var(--markerSize);
+        transform: none;
+        outline: 1px solid red;
+        zoom: 1;
+    }
+
 
 </style>
