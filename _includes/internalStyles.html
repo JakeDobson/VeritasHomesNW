@@ -452,5 +452,22 @@
         zoom: 1;
     }
 
+    /******************************************************************************/
+    /*                              Content Screen                                */
+    /******************************************************************************/
+
+    #content {
+        color: green;
+        opacity: 0;
+    }
+
+    #content.show {
+        position: absolute;
+        opacity: 1;
+        /* color: white; */
+        width: 500px;
+        height: 500px;
+        z-index: 100000;
+    }
 
 </style>

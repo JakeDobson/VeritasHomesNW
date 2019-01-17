@@ -1,14 +1,15 @@
 <script text="text/javascript">
     //global obj
     var $ = {
-        body:  null,
-        html:  null,
-        win:   null,
-        logo:  null,
-        cover: null,
-        map:   null,
-        intro: null,
-        grads: null,
+        body:    null,
+        html:    null,
+        win:     null,
+        logo:    null,
+        cover:   null,
+        map:     null,
+        intro:   null,
+        grads:   null,
+        content: null,
 
         loaded: {
             fonts: false,
@@ -119,13 +120,14 @@
         },
 
         getElements: function () {
-            $.body  = document.body;
-            $.html  = document;
-            $.win   = window;
-            $.logo  = document.getElementById("veritasLogo");
-            $.cover = document.getElementById("coverSite");
-            $.intro = document.getElementById("intro");
-            $.grads = document.getElementById("gradients");
+            $.body    = document.body;
+            $.html    = document;
+            $.win     = window;
+            $.logo    = document.getElementById("veritasLogo");
+            $.cover   = document.getElementById("coverSite");
+            $.intro   = document.getElementById("intro");
+            $.grads   = document.getElementById("gradients");
+            $.content = document.getElementById("content");
         },
 
         getMapBoxObjects: function () {
@@ -370,7 +372,10 @@
             if(location === $.MAPBOX.locations.initial) {
                 $.MAPBOX.fitAllMarkers();
             } else {
-                if ($.MAPBOX.map) $.MAPBOX.fitLocationMarker(location);
+                if ($.MAPBOX.map) {
+                    $.MAPBOX.fitLocationMarker(location);
+                    console.log("show content?");
+                }
             }
 
             //tell office marker to be active if it's selected
@@ -550,6 +555,7 @@
              });
 
             $.MAPBOX.map.flyTo(newCameraTransform);
+            $.content.classList.add("show");
         },
 
         /**
