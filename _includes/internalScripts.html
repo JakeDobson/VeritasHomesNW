@@ -1,14 +1,15 @@
 <script text="text/javascript">
     //global obj
     var $ = {
-        body:  null,
-        html:  null,
-        win:   null,
-        logo:  null,
-        cover: null,
-        map:   null,
-        intro: null,
-        grads: null,
+        body:    null,
+        html:    null,
+        win:     null,
+        logo:    null,
+        cover:   null,
+        map:     null,
+        intro:   null,
+        grads:   null,
+        content: null,
 
         loaded: {
             fonts: false,
@@ -119,13 +120,14 @@
         },
 
         getElements: function () {
-            $.body  = document.body;
-            $.html  = document;
-            $.win   = window;
-            $.logo  = document.getElementById("veritasLogo");
-            $.cover = document.getElementById("coverSite");
-            $.intro = document.getElementById("intro");
-            $.grads = document.getElementById("gradients");
+            $.body    = document.body;
+            $.html    = document;
+            $.win     = window;
+            $.logo    = document.getElementById("veritasLogo");
+            $.cover   = document.getElementById("coverSite");
+            $.intro   = document.getElementById("intro");
+            $.grads   = document.getElementById("gradients");
+            $.content = document.getElementById("content");
         },
 
         getMapBoxObjects: function () {
@@ -370,7 +372,10 @@
             if(location === $.MAPBOX.locations.initial) {
                 $.MAPBOX.fitAllMarkers();
             } else {
-                if ($.MAPBOX.map) $.MAPBOX.fitLocationMarker(location);
+                if ($.MAPBOX.map) {
+                    $.MAPBOX.fitLocationMarker(location);
+                    console.log("show content?");
+                }
             }
 
             //tell office marker to be active if it's selected
@@ -408,7 +413,7 @@
         initialZoom: 9.5,
         locationZoom: 13.5,
         locationPitch: 50,
-        coordsOffice: [-122.386888, 47.5791677],
+        coordsOffice: [-122.357834, 47.466889],
         bounds: [],
         animation: { speed: 2.5 },
         api: {
@@ -550,6 +555,7 @@
              });
 
             $.MAPBOX.map.flyTo(newCameraTransform);
+            $.content.classList.add("show");
         },
 
         /**
@@ -653,7 +659,7 @@
         markerClicked: function (marker) {
             if (marker === $.MAPBOX.markers.office) return null;
 
-            $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
+            //$.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
 
 
 

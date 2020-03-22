@@ -363,7 +363,7 @@
     }
 
     .default .marker.active > svg {
-        transform: scale(1) translate(var(--markerPaddingLeftActive), var(--markerPaddingTopActive));
+        /* transform: scale(1) translate(var(--markerPaddingLeftActive), var(--markerPaddingTopActive)); */
     }
 
     /* HIDDEN MARKERS */
@@ -403,9 +403,11 @@
     .marker {
         width:  var(--markerSize, 50px);
         height: var(--markerSize, 50px);
-        -webkit-filter: grayscale(0) brightness(1);
-                filter: grayscale(0) brightness(1);
+        -webkit-filter: grayscale(1) brightness(1);
+                filter: grayscale(1) brightness(1);
         border-radius: 50%;
+        /* use when want icons always gray */
+        cursor: default !important;
     }
 
     .marker:hover{
@@ -414,15 +416,27 @@
     }
 
     .marker:active{
-        -webkit-filter: grayscale(0) brightness(.66);
-                filter: grayscale(0) brightness(.66);
+        /* -webkit-filter: grayscale(0) brightness(.66);
+                filter: grayscale(0) brightness(.66); */
+
+
+                
+        /* use when want icons always gray */
+        -webkit-filter: grayscale(1) brightness(1);
+                filter: grayscale(1) brightness(1);
     }
 
     /* When Cursor is selected */
     .marker.active {
-        cursor: default !important;
+        /* cursor: default !important;
         -webkit-filter: grayscale(0) brightness(1);
-                filter: grayscale(0) brightness(1);
+                filter: grayscale(0) brightness(1); */
+
+
+
+        /* use when want icons always gray */
+        -webkit-filter: grayscale(1) brightness(1);
+                filter: grayscale(1) brightness(1);
     }
 
     /* Bring markers in front of others - lowest to highest latitudes */
