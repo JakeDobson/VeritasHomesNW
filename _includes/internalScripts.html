@@ -120,13 +120,13 @@
         },
 
         getElements: function () {
-            $.body  = document.body;
-            $.html  = document;
-            $.win   = window;
-            $.logo  = document.getElementById("veritasLogo");
-            $.cover = document.getElementById("coverSite");
-            $.intro = document.getElementById("intro");
-            $.grads = document.getElementById("gradients");
+            $.body    = document.body;
+            $.html    = document;
+            $.win     = window;
+            $.logo    = document.getElementById("veritasLogo");
+            $.cover   = document.getElementById("coverSite");
+            $.intro   = document.getElementById("intro");
+            $.grads   = document.getElementById("gradients");
             $.content = document.getElementById("content");
         },
 
@@ -372,11 +372,10 @@
             if(location === $.MAPBOX.locations.initial) {
                 $.MAPBOX.fitAllMarkers();
             } else {
-                // if ($.MAPBOX.map) $.MAPBOX.fitLocationMarker(location);
                 if ($.MAPBOX.map) {
-                     $.MAPBOX.fitLocationMarker(location);
-                     console.log("show content?");
-                 }
+                    $.MAPBOX.fitLocationMarker(location);
+                    console.log("show content?");
+                }
             }
 
             //tell office marker to be active if it's selected
@@ -660,7 +659,7 @@
         markerClicked: function (marker) {
             if (marker === $.MAPBOX.markers.office) return null;
 
-            // $.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
+            //$.ZOOM.to($.MAPBOX.locations[`location${marker.index}`]);
 
 
 
